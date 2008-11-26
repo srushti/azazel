@@ -1,0 +1,195 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{832572F6-F3D9-46C7-B922-E7F69D35FE6A}</ProjectGuid>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <RootNamespace>Azazel</RootNamespace>
+    <AssemblyName>Azazel</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <OutputType>winexe</OutputType>
+    <MinFrameworkVersionRequired>3.0</MinFrameworkVersionRequired>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>false</MapFileExtensions>
+    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <PublishUrl>Publish\</PublishUrl>
+    <ApplicationIcon>mercury.ico</ApplicationIcon>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Lucene.Net, Version=2.0.0.4, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="XStream, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\XStream.dll</HintPath>
+    </Reference>
+    <Page Include="Simple Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Resource Include="Hermes.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PluggingIn\SelectKeyboardShortcut.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppFinder.cs" />
+    <Compile Include="Arrays.cs" />
+    <Compile Include="AzazelException.cs" />
+    <Compile Include="Clipboard.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Dictionary.cs" />
+    <Compile Include="Extensions\StaticEnumerable.cs" />
+    <Compile Include="FileRank.cs" />
+    <Compile Include="FileSystem\Files.cs" />
+    <Compile Include="FileSystem\FileSystemElement.cs" />
+    <Compile Include="FileSystem\Folder.cs" />
+    <Compile Include="FileSystem\File.cs" />
+    <Compile Include="FileSystem\Folders.cs" />
+    <Compile Include="FileSystem\FoldersConverter.cs" />
+    <Compile Include="FileSystem\FoldersToParse.cs" />
+    <Compile Include="FileSystem\IconExtractor.cs" />
+    <Compile Include="FileSystem\Launchable.cs" />
+    <Compile Include="FileSystem\Paths.cs" />
+    <Compile Include="FileSystem\PersistanceHelper.cs" />
+    <Compile Include="FileSystem\Runner.cs" />
+    <Compile Include="History.cs" />
+    <Compile Include="KeyHelper.cs" />
+    <Compile Include="MainWindowCommand.cs" />
+    <Compile Include="MainWindowController.cs" />
+    <Compile Include="MainWindow.States.cs" />
+    <Compile Include="Modifiers.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="HotKey.cs" />
+    <Compile Include="PluggingIn\CharacterPlugin.cs" />
+    <Compile Include="PluggingIn\ExecutedCommand.cs" />
+    <Compile Include="PluggingIn\Plugin.cs" />
+    <Compile Include="PluggingIn\Recent.cs" />
+    <Compile Include="PluggingIn\SelectKeyboardShortcut.xaml.cs">
+      <DependentUpon>SelectKeyboardShortcut.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PluggingIn\SelfPlugin.cs" />
+    <Compile Include="PluggingIn\LaunchablePlugin.cs" />
+    <Compile Include="PluggingIn\PluginLoader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\StaticString.cs" />
+    <Compile Include="Thread.cs" />
+    <Compile Include="Timer.cs" />
+    <Compile Include="TODO.cs" />
+    <Compile Include="WindowHider.cs" />
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="mercury.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)\mercury.ico $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
+</Project>

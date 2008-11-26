@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<project name="Mercury" default="full">
+  <property name="msbuildForVs10" value="C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com"/>
+  <property name="basename" value="Mercury"/>
+    <target name="clean">
+      <exec program="${msbuildForVs10}" commandline="Mercury.sln /Clean" failonerror="true" />
+    </target>
+
+    <target name="build" depends="clean">
+      <exec program="${msbuildForVs10}" commandline="Mercury.sln /Build" failonerror="true" />
+      <!--      <solution configuration="release" solutionfile="Mercury.sln" failonerror="true">-->
+      <!--        <projects>-->
+<!--          <include name="MercurySetup"/>-->
+<!--        </projects>-->
+<!--      </solution>-->
+    </target>
+
+  <target name="test" >
+    <nunit2>
+      <formatter type="Plain" />
+      <test assemblyname="MercuryTests\bin\Debug\MercuryTests.dll" appconfig="MercuryTests.dll.config" />
+      <test assemblyname="VenusTests\bin\Debug\VenusTests.dll"/>
+    </nunit2>
+  </target>
+
+  <target name="full" depends="build, test" />
+</project>
+
