@@ -13,7 +13,7 @@ namespace Venus.Browser {
             var processStartInfo = CommandToExecute("", "");
             var fileName = processStartInfo.FileName;
             if (fileName[0] == '\"') fileName = fileName.Split('\"')[1];
-            BrowserIcon = new IconExtractor().Extract(new File(fileName), IconSize.Large);
+            BrowserIcon = IconExtractor.Instance.Extract(new File(fileName), IconSize.Large);
         }
 
         public static ProcessStartInfo CommandToExecute(string url, string arguments) {

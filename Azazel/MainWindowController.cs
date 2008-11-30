@@ -67,7 +67,9 @@ namespace Azazel {
 
     internal class KeyboardShortcutChangeCommand {
         public void Execute() {
-            new SelectKeyboardShortcut().Show();
+            var window = new SelectKeyboardShortcut();
+            window.Show();
+            window.Activate();
         }
     }
 }

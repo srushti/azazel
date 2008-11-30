@@ -14,9 +14,11 @@ namespace Azazel.FileSystem {
     }
 
     public class IconExtractor {
+        public static IconExtractor Instance = new IconExtractor();
         private const uint SHGFI_ICON = 0x100;
         private const uint SHGFI_LARGEICON = 0x0;
         private const uint SHGFI_SMALLICON = 0x1;
+        private IconExtractor() {}
 
         [DllImport("shell32.dll")]
         private static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);

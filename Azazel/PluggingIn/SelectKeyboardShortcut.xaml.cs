@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using System.Windows.Input;
 
 namespace Azazel.PluggingIn {
@@ -22,15 +23,12 @@ namespace Azazel.PluggingIn {
                 if (modifiers.HasShift) keyboardCombo.Append("Shift + ");
                 if (modifiers.HasWin) keyboardCombo.Append("Ctrl + Win");
                 keyboardCombo.Append(key);
-                currentlySelected.Text = keyboardCombo.ToString();
+                if (!new List<Key> {Key.LeftAlt, Key.LeftCtrl, Key.LeftShift, Key.RightAlt, Key.RightCtrl, Key.RightShift, Key.LWin, Key.RWin}.Contains(key))
+                    currentlySelected.Text = keyboardCombo.ToString();
             }
-            else {
-                Close();
-            }
+            else Close();
         }
 
-        private void SaveAsKeyboardShortcut() {
-            
-        }
+        private void SaveAsKeyboardShortcut() {}
     }
 }

@@ -7,7 +7,7 @@ namespace Azazel.FileSystem {
     public abstract class FileSystemElement<T, U> : IEquatable<FileSystemElement<T, U>> where T : FileSystemInfo where U : FileSystemElement<T, U> {
         protected T fileSystemInfo;
 
-        public FileSystemElement(T fileSystemInfo) {
+        protected FileSystemElement(T fileSystemInfo) {
             this.fileSystemInfo = fileSystemInfo;
         }
 

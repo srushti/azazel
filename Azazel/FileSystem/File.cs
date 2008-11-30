@@ -18,7 +18,7 @@ namespace Azazel.FileSystem {
         }
 
         public virtual ImageSource Icon {
-            get { return new IconExtractor().Extract(this, IconSize.Large); }
+            get { return IconExtractor.Instance.Extract(this, IconSize.Large); }
         }
 
         public Folder ParentFolder {
