@@ -19,7 +19,7 @@ namespace Azazel {
         public void RunsAfterHalfASecond() {
             var startTime = new DateTime();
             var autoResetEvent = new AutoResetEvent(false);
-            var timer = new Timer(delegate {
+            var timer = new Timer(() => {
                                       ThreadAssertion(DateTime.Now.Subtract(startTime), new GreaterThanConstraint(TimeSpan.FromSeconds(.5)));
                                       autoResetEvent.Set();
                                   });
@@ -32,7 +32,7 @@ namespace Azazel {
         public void DoesntRunIfTimerIsStartedAgain() {
             var startTime = new DateTime();
             var autoResetEvent = new AutoResetEvent(false);
-            var timer = new Timer(delegate {
+            var timer = new Timer(() => {
                                       ThreadAssertion(DateTime.Now.Subtract(startTime), new GreaterThanOrEqualConstraint(TimeSpan.FromSeconds(.9)));
                                       autoResetEvent.Set();
                                   });
@@ -45,7 +45,7 @@ namespace Azazel {
 
         private void ThreadAssertion(object elapsed, Constraint constraint) {
             lock (((ICollection) wrongThreadAssertions).SyncRoot)
-                wrongThreadAssertions.Add(delegate { Assert.That(elapsed, constraint); });
+                wrongThreadAssertions.Add(() => Assert.That(elapsed, constraint));
         }
 
         [TearDown]

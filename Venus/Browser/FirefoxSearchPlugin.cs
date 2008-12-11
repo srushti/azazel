@@ -30,8 +30,7 @@ namespace Venus.Browser {
         public Launchables Launchables() {
             var launchables = new Launchables();
             var searchConfigurations = new Launchables();
-            searchPluginsFolder.GetFiles().ForEach(
-                delegate(Launchable launchable) { if (((File) launchable).FullName.EndsWith(".xml")) searchConfigurations.Add(launchable); });
+            searchPluginsFolder.GetFiles().ForEach(launchable => { if (((File) launchable).FullName.EndsWith(".xml")) searchConfigurations.Add(launchable); });
             foreach (File searchConfiguration in searchConfigurations) launchables.Add(CreateSearchPlugin(searchConfiguration.Contents()));
             return launchables;
         }

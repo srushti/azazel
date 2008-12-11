@@ -1,11 +1,11 @@
 using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Azazel.Extensions;
 using Azazel.FileSystem;
 using xstream;
 using xstream.Converters;
 using Action=Azazel.FileSystem.Action;
-using Azazel.Extensions;
 
 namespace Azazel.PluggingIn {
     public class Recent : Launchable {
@@ -72,7 +72,7 @@ namespace Azazel.PluggingIn {
         }
 
         private void SaveExecutedCommands(XStream xStream) {
-            File.WriteAllText(Paths.Instance.ExecutedCommands, xStream.ToXml(executedCommands));
+            new Thread(() => File.WriteAllText(Paths.Instance.ExecutedCommands, xStream.ToXml(executedCommands))).Start();
         }
 
         public class RecentConverter : Converter {

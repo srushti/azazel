@@ -15,7 +15,7 @@ namespace Venus.Browser {
         public Launchables Launchables() {
             var folder = new Folder(Environment.GetFolderPath(Environment.SpecialFolder.Favorites));
             var favouritesFiles = new Launchables();
-            folder.GetFiles().ForEach(delegate(Launchable launchable) { if (((File) launchable).FullName.EndsWith(".url")) favouritesFiles.Add(launchable); });
+            folder.GetFiles().ForEach(launchable => { if (((File) launchable).FullName.EndsWith(".url")) favouritesFiles.Add(launchable); });
             var favourites = new Launchables();
             foreach (File favouritesFile in favouritesFiles) {
                 var contents = favouritesFile.Contents();

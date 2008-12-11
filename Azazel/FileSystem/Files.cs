@@ -32,7 +32,7 @@ namespace Azazel.FileSystem {
         public Launchables Sort(string input, History history) {
             var context = new FileRankContext();
             var result = new Launchables(this);
-            result.Sort(delegate(Launchable x, Launchable y) {
+            result.Sort((x, y) => {
                             if (ReferenceEquals(x, y)) return 0;
                             return context.Rank(y, history, input) - context.Rank(x, history, input);
                         });
@@ -47,7 +47,7 @@ namespace Azazel.FileSystem {
             if (string.IsNullOrEmpty(searchString)) return new Files();
             var result = new Launchables();
             var regex = Regex(searchString);
-            ForEach(delegate(Launchable launchable) {
+            ForEach(launchable => {
                         if (regex.IsMatch(launchable.Name))
                             result.Add(launchable);
                     });

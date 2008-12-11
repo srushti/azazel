@@ -27,7 +27,7 @@ namespace Azazel.FileSystem {
         public Launchables GetFiles() {
             try {
                 var files = GetTopFiles();
-                GetFolders().ForEach(delegate(Folder folder) {
+                GetFolders().ForEach(folder => {
                                          if (!folder.IsHidden)
                                              files.AddRange(folder.GetFiles());
                                      });

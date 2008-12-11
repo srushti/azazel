@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics;
 using System.Windows.Media;
 using System.Xml.Serialization;
-using Azazel;
 using Azazel.FileSystem;
 
 namespace Venus.Browser {

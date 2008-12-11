@@ -54,7 +54,7 @@ namespace Venus.Shortcuts {
             }
 
             public void Launch(string arguments) {
-                new Runner(command, arguments).AsyncStart();
+                new Runner("\"" + command + "\"", arguments).AsyncStart();
             }
 
             public bool ShouldStoreHistory {
