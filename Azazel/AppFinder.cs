@@ -16,7 +16,6 @@ namespace Azazel {
         public AppFinder(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins) {
             LoadFiles(launchablePlugins);
             history = new History(new File(new FileInfo(Paths.Instance.History)), xstream);
-            SelfPlugin.INSTANCE.Recent.LoadExecutedCommands(xstream);
             this.characterPlugins = characterPlugins;
         }
 

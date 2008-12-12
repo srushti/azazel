@@ -6,7 +6,7 @@ namespace Azazel {
     public class MainWindowCommand {
         private readonly Hotkey displayHotkey = new Hotkey(ModifierKeys.Windows, Keys.Space);
         private readonly VoidDelegate killApplication;
-        private readonly Hotkey killHotkey = new Hotkey(ModifierKeys.Shift, Keys.F4);
+        private readonly Hotkey killHotkey = new Hotkey(ModifierKeys.Shift | ModifierKeys.Alt | ModifierKeys.Control, Keys.F4);
         private WPFHotkeyManager hotkeyManager;
         private readonly MainWindowController controller;
         private MainWindow window;
@@ -43,6 +43,7 @@ namespace Azazel {
                 if (hotkey.Equals(displayHotkey)) Execute();
                 else if (hotkey.Equals(killHotkey)) killApplication();
             }
+            if (hotkey.Equals(displayHotkey)) window.Activate();
         }
     }
 

@@ -9,7 +9,7 @@ using Action=Azazel.FileSystem.Action;
 
 namespace Azazel.PluggingIn {
     public class Recent : Launchable {
-        private Actions executedCommands = new Actions();
+        private readonly Actions executedCommands = new Actions();
         private const int MAX_HISTORY_SIZE = 10;
 
         public string Name {
@@ -41,7 +41,6 @@ namespace Azazel.PluggingIn {
             if (executedCommands.Count == MAX_HISTORY_SIZE) executedCommands.RemoveAt(MAX_HISTORY_SIZE - 1);
             if (executedCommands.Contains(executedCommand)) executedCommands.Remove(executedCommand);
             executedCommands.Insert(0, executedCommand);
-            SaveExecutedCommands(SelfPlugin.xstream);
         }
 
         public void AddExecutedCommand(Launchable launchable, string arguments) {
@@ -62,17 +61,6 @@ namespace Azazel.PluggingIn {
 
         public override int GetHashCode() {
             return 0;
-        }
-
-        public void LoadExecutedCommands(XStream xStream) {
-            executedCommands = PersistanceHelper.SaveOrLoadAndSave<Actions>(xStream, Paths.Instance.ExecutedCommands,
-                                                                            () => File.Contents(Paths.Instance.ExecutedCommands),
-                                                                            () => SaveExecutedCommands(xStream),
-                                                                            "We've lost the history of recently executed commands!!");
-        }
-
-        private void SaveExecutedCommands(XStream xStream) {
-            new Thread(() => File.WriteAllText(Paths.Instance.ExecutedCommands, xStream.ToXml(executedCommands))).Start();
         }
 
         public class RecentConverter : Converter {

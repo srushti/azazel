@@ -19,7 +19,6 @@ namespace Venus.Shortcuts {
                                       new Shortcut(Environment.SpecialFolder.Recent),
                                       new Shortcut(Environment.SpecialFolder.ProgramFiles),
                                       new Shortcut(Environment.SpecialFolder.MyPictures),
-                                      new Shortcut(Environment.SpecialFolder.Personal),
                                       new Shortcut("Add or Remove Programs", "appwiz.cpl"),
                                   };
             return launchables;
@@ -54,7 +53,7 @@ namespace Venus.Shortcuts {
             }
 
             public void Launch(string arguments) {
-                new Runner("\"" + command + "\"", arguments).AsyncStart();
+                new Runner(command, arguments).AsyncStart();
             }
 
             public bool ShouldStoreHistory {
