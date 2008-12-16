@@ -16,19 +16,24 @@ namespace Azazel.PluggingIn {
 
         private void KeyPressed(Key key, Modifiers modifiers) {
             if (key == Key.Enter) SaveAsKeyboardShortcut();
-            else if (key != Key.Escape) {
+            else if (key == Key.Escape && modifiers.IsNone) Close();
+            else {
                 var keyboardCombo = new StringBuilder();
                 if (modifiers.HasCtrl) keyboardCombo.Append("Ctrl + ");
                 if (modifiers.HasAlt) keyboardCombo.Append("Alt + ");
                 if (modifiers.HasShift) keyboardCombo.Append("Shift + ");
-                if (modifiers.HasWin) keyboardCombo.Append("Ctrl + Win");
+                if (modifiers.HasWin) keyboardCombo.Append("Win + ");
                 keyboardCombo.Append(key);
-                if (!new List<Key> {Key.LeftAlt, Key.LeftCtrl, Key.LeftShift, Key.RightAlt, Key.RightCtrl, Key.RightShift, Key.LWin, Key.RWin}.Contains(key))
+                if (
+                    !new List<Key> {Key.LeftAlt, Key.LeftCtrl, Key.LeftShift, Key.RightAlt, Key.RightCtrl, Key.RightShift, Key.LWin, Key.RWin, Key.System}.
+                         Contains(key))
                     currentlySelected.Text = keyboardCombo.ToString();
+//                newHotkey = new Hotkey(modifiers, key);
             }
-            else Close();
         }
 
-        private void SaveAsKeyboardShortcut() {}
+        private void SaveAsKeyboardShortcut() {
+//            PersistanceHelper.SaveOrLoadAndSave<Hotkey>()
+        }
     }
 }

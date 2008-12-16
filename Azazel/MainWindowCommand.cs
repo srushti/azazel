@@ -4,9 +4,9 @@ using Azazel.PluggingIn;
 
 namespace Azazel {
     public class MainWindowCommand {
-        private readonly Hotkey displayHotkey = new Hotkey(ModifierKeys.Windows, Keys.Space);
+        private readonly Hotkey displayHotkey = new Hotkey(Modifiers.Windows, Keys.Space);
         private readonly VoidDelegate killApplication;
-        private readonly Hotkey killHotkey = new Hotkey(ModifierKeys.Shift | ModifierKeys.Alt | ModifierKeys.Control, Keys.F4);
+        private readonly Hotkey killHotkey = new Hotkey(Modifiers.Shift | Modifiers.Alt | Modifiers.Control, Keys.F4);
         private WPFHotkeyManager hotkeyManager;
         private readonly MainWindowController controller;
         private MainWindow window;

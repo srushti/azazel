@@ -34,13 +34,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Db4objects.Db4o, Version=7.4.71.12224, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Db4objects.Db4o.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\nunit\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Lucene.Net, Version=2.0.0.4, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppFinderTest.cs" />
+    <Compile Include="Db4o\Tests.cs" />
     <Compile Include="FileSystem\FilesTest.cs" />
     <Compile Include="HistoryTest.cs" />
     <Compile Include="PluggingIn\LoadPluginTest.cs" />

@@ -15,9 +15,9 @@ namespace Azazel {
     public struct Hotkey {
         internal int id;
         public Keys key;
-        public ModifierKeys modifiers;
+        public Modifiers modifiers;
 
-        public Hotkey(ModifierKeys modifiers, Keys key) {
+        public Hotkey(Modifiers modifiers, Keys key) {
             this.modifiers = modifiers;
             this.key = key;
             id = -1;
@@ -42,18 +42,18 @@ namespace Azazel {
             if (m.Groups["shift"].Success)
                 mods |= ModifierKeys.Shift;
 
-            return new Hotkey(mods, (Keys) Enum.Parse(typeof (Keys), m.Groups["key"].Value, true));
+            return new Hotkey(new Modifiers(mods), (Keys) Enum.Parse(typeof (Keys), m.Groups["key"].Value, true));
         }
 
         public override string ToString() {
             var hotKeyString = new StringBuilder();
-            if ((ModifierKeys.Windows & modifiers) == ModifierKeys.Windows)
+            if (modifiers.HasWin)
                 hotKeyString.Append("WIN + ");
-            if ((ModifierKeys.Control & modifiers) == ModifierKeys.Control)
+            if (modifiers.HasCtrl)
                 hotKeyString.Append("CTRL + ");
-            if ((ModifierKeys.Alt & modifiers) == ModifierKeys.Alt)
+            if (modifiers.HasAlt)
                 hotKeyString.Append("ALT + ");
-            if ((ModifierKeys.Shift & modifiers) == ModifierKeys.Shift)
+            if (modifiers.HasShift)
                 hotKeyString.Append("SHIFT + ");
             return hotKeyString.Append(key).ToString();
         }
@@ -127,9 +127,7 @@ namespace Azazel {
         private void OnSourceInitialized(object sender, EventArgs e) {
             window = new WindowInteropHelper(actualWindow);
             handle = window.Handle;
-
             HwndSource.FromHwnd(handle).AddHook(WndProc);
-
             Hotkeys = new Dictionary<int, Hotkey>();
             observableHotkeys = new ObservableCollection<Hotkey>();
         }
@@ -141,7 +139,7 @@ namespace Azazel {
         public void Register(Hotkey key) {
             if (handle == IntPtr.Zero)
                 throw new InvalidOperationException("You can't register hotkeys until your Window is loaded.");
-            if (NativeMethods.RegisterHotKey(handle, ++id, key.modifiers, key.key)) {
+            if (NativeMethods.RegisterHotKey(handle, ++id, key.modifiers.ModifierKeys, key.key)) {
                 key.id = id;
                 Hotkeys.Add(id, key);
                 observableHotkeys.Add(key);
