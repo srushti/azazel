@@ -128,5 +128,9 @@ namespace Azazel.FileSystem {
             System.IO.File.Copy(FullName, destinationFileName, true);
             return new File(destinationFileName);
         }
+
+        public static void Delete(string fileName) {
+            System.IO.File.Delete(fileName);
+        }
     }
 }

@@ -3,6 +3,8 @@ using System.IO;
 using System.Windows.Forms;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
+using Db4objects.Db4o;
+using Db4objects.Db4o.Linq;
 using xstream;
 using File=Azazel.FileSystem.File;
 
@@ -12,8 +14,11 @@ namespace Azazel {
         private readonly XStream xstream = SelfPlugin.xstream;
         private Launchables allLaunchables;
         private readonly CharacterPlugins characterPlugins;
+//        private readonly IObjectContainer objectContainer;
 
         public AppFinder(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins) {
+//            File.Delete(Paths.Instance.Db4o);
+//            objectContainer = Db4oFactory.OpenFile(Paths.Instance.Db4o);
             LoadFiles(launchablePlugins);
             history = new History(new File(new FileInfo(Paths.Instance.History)), xstream);
             this.characterPlugins = characterPlugins;
@@ -22,6 +27,8 @@ namespace Azazel {
         internal void LoadFiles(LaunchablePlugins launchablePlugins) {
             var foldersToParse = new FoldersToParse(LoadFoldersToParse(), launchablePlugins);
             allLaunchables = foldersToParse.LoadFiles();
+//            allLaunchables.ForEach(objectContainer.Store);
+//            objectContainer.Commit();
         }
 
         private Folders LoadFoldersToParse() {
@@ -43,6 +50,7 @@ namespace Azazel {
                 if (plugin.IsValidFor(searchString))
                     return new Launchables(plugin.Launchable(searchString));
             }
+//            return new Launchables(from Launchable l in objectContainer where l.Name.Contains(searchString) select l);
             return launchables.Find(searchString, history);
         }
 

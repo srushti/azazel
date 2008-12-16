@@ -17,14 +17,18 @@ namespace Azazel.PluggingIn {
             characterPlugins = new CharacterPlugins();
             launchablePlugins = new LaunchablePlugins();
             var executableLocation = ConfigurationManager.AppSettings["executableLocation"];
-            if (string.IsNullOrEmpty(executableLocation))
-                executableLocation = new File(Assembly.GetExecutingAssembly().Location).ParentFolder.FullName;
+            var executingAssembly = Assembly.GetExecutingAssembly();
+            if (string.IsNullOrEmpty(executableLocation)) {
+                executableLocation = new File(executingAssembly.Location).ParentFolder.FullName;
+            }
             var pluginAssemblyFiles = new Folder(Path.Combine(executableLocation, "plugins")).GetFiles("*.dll");
             for (var i = 0; i < pluginAssemblyFiles.Count; i++) {
                 var assembly = Assembly.LoadFrom(((File) pluginAssemblyFiles.Get(i)).FullName);
-                assemblies.Add(assembly);
-                new List<Type>(assembly.GetTypes()).ForEach(type => AddPlugin(type, typeof (LaunchablePlugin), launchablePlugins));
-                new List<Type>(assembly.GetTypes()).ForEach(type => AddPlugin(type, typeof (CharacterPlugin), characterPlugins));
+                if (new List<AssemblyName>(assembly.GetReferencedAssemblies()).Exists(name => name.FullName == executingAssembly.FullName)) {
+                    assemblies.Add(assembly);
+                    new List<Type>(assembly.GetTypes()).ForEach(type => AddPlugin(type, typeof (LaunchablePlugin), launchablePlugins));
+                    new List<Type>(assembly.GetTypes()).ForEach(type => AddPlugin(type, typeof (CharacterPlugin), characterPlugins));
+                }
             }
             launchablePlugins.Add(SelfPlugin.INSTANCE);
         }

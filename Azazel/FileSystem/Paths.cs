@@ -6,6 +6,10 @@ namespace Azazel.FileSystem {
         public static Paths Instance = new Paths();
         private Paths() {}
 
+        public string Db4o {
+            get { return AppDataFile("Db4o"); }
+        }
+
         public string Folders {
             get { return AppDataFile("folders.xml"); }
         }
