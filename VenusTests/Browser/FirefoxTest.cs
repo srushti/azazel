@@ -8,19 +8,14 @@ namespace Venus.Browser {
         [Test]
         public void RegularExpression() {
             var files = new Firefox().Launchables();
-            AssertContainsLaunchable(files, "wp", "http://en.wikipedia.org/wiki/Special:Search?search=%s");
-            AssertContainsLaunchable(files, "Wikipedia", "http://en.wikipedia.org/wiki/Special:Search?search=%s");
+            var wikipediaUrl = "https://secure.wikimedia.org/wikipedia/en/wiki/Special:Search?go=Go&search=%s";
+            AssertContainsLaunchable(files, "wp", wikipediaUrl);
+            AssertContainsLaunchable(files, "Wikipedia", wikipediaUrl);
         }
 
         private static void AssertContainsLaunchable(IEnumerable<Launchable> launchables, string name, string url) {
-            var count = 0;
-            foreach (Bookmark launchable in launchables) {
-                if (launchable.Name.Equals(name)) {
-                    Assert.AreEqual(url, launchable.FullName);
-                    ++count;
-                }
-            }
-            Assert.AreEqual(2, count, "Didn't find " + name);
+            foreach (Bookmark launchable in launchables) if (launchable.Name.Equals(name) && launchable.FullName.Equals(url)) return;
+            Assert.Fail("Didn't find " + name);
         }
     }
 }

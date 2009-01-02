@@ -1,5 +1,6 @@
 using System.Windows;
-using System.Windows.Input;
+using System.Windows.Forms;
+using Azazel.KeyHookup;
 using Azazel.PluggingIn;
 
 namespace Azazel {

@@ -18,8 +18,7 @@ namespace Venus.Browser {
         }
 
         [Test]
-        public void MethodName()
-        {
+        public void MethodName() {
             Assert.AreEqual(false, new DirectBrowsePlugin().IsValidFor("mail."));
         }
     }

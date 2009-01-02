@@ -24,12 +24,5 @@ Prop3=19,2
             Assert.AreEqual("http://www.google.co.in/firefox", bookmark.FullName);
             Assert.AreEqual("Mozilla Firefox Start Page", bookmark.Name);
         }
-
-        [Test]
-        public void MethodName() {
-            var file = new File(Paths.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Internet Explorer", "iexplore.exe"));
-            Assert.AreEqual("", file.FullName);
-//            new IconExtractor().Extract(file)
-        }
     }
 }

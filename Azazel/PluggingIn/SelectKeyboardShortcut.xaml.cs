@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 using System.Windows.Input;
+using Azazel.KeyHookup;
 
 namespace Azazel.PluggingIn {
     public partial class SelectKeyboardShortcut {
@@ -28,7 +31,7 @@ namespace Azazel.PluggingIn {
                     !new List<Key> {Key.LeftAlt, Key.LeftCtrl, Key.LeftShift, Key.RightAlt, Key.RightCtrl, Key.RightShift, Key.LWin, Key.RWin, Key.System}.
                          Contains(key))
                     currentlySelected.Text = keyboardCombo.ToString();
-//                newHotkey = new Hotkey(modifiers, key);
+                var newHotkey = new Hotkey(modifiers, (Keys) Enum. Parse(typeof (Keys), key.ToString()));
             }
         }
 

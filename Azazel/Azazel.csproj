@@ -22,7 +22,8 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>Publish\</PublishUrl>
-    <ApplicationIcon>mercury.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -89,7 +90,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Resource Include="Hermes.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -135,13 +135,13 @@
     <Compile Include="FileSystem\PersistanceHelper.cs" />
     <Compile Include="FileSystem\Runner.cs" />
     <Compile Include="History.cs" />
+    <Compile Include="KeyHookup\InterceptKeys.cs" />
     <Compile Include="KeyHelper.cs" />
     <Compile Include="MainWindowCommand.cs" />
     <Compile Include="MainWindowController.cs" />
     <Compile Include="MainWindow.States.cs" />
     <Compile Include="Modifiers.cs" />
-    <Compile Include="NativeMethods.cs" />
-    <Compile Include="HotKey.cs" />
+    <Compile Include="KeyHookup\HotKey.cs" />
     <Compile Include="PluggingIn\CharacterPlugin.cs" />
     <Compile Include="PluggingIn\ExecutedCommand.cs" />
     <Compile Include="PluggingIn\Plugin.cs" />
@@ -179,9 +179,6 @@
     <Compile Include="TODO.cs" />
     <Compile Include="WindowHider.cs" />
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="mercury.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">

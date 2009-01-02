@@ -36,11 +36,5 @@ namespace Venus.Browser {
         public void LoadsAllSearchPlugins() {
             Assert.AreEqual(8, new FirefoxSearchPlugin().Launchables().Count);
         }
-
-        [Test]
-        public void MethodName() {
-            Assert.AreEqual(true, typeof(Action).IsAssignableFrom(typeof(ExecutedCommand)));
-            Assert.AreEqual(true, typeof(ExecutedCommand).IsAssignableFrom(typeof(Action)));
-        }
     }
 }
