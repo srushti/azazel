@@ -28,10 +28,11 @@ namespace Azazel.PluggingIn {
                 if (modifiers.HasWin) keyboardCombo.Append("Win + ");
                 keyboardCombo.Append(key);
                 if (
-                    !new List<Key> {Key.LeftAlt, Key.LeftCtrl, Key.LeftShift, Key.RightAlt, Key.RightCtrl, Key.RightShift, Key.LWin, Key.RWin, Key.System}.
-                         Contains(key))
+                    !new List<Key> { Key.LeftAlt, Key.LeftCtrl, Key.LeftShift, Key.RightAlt, Key.RightCtrl, Key.RightShift, Key.LWin, Key.RWin, Key.System }.
+                         Contains(key)) {
                     currentlySelected.Text = keyboardCombo.ToString();
-                var newHotkey = new Hotkey(modifiers, (Keys) Enum. Parse(typeof (Keys), key.ToString()));
+                    var newHotkey = new Hotkey(modifiers, (Keys) Enum.Parse(typeof (Keys), key.ToString()));
+                }
             }
         }
 

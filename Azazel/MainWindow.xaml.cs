@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using Azazel.FileSystem;
 using Action=Azazel.FileSystem.Action;
 using Azazel.Extensions;
@@ -18,12 +19,13 @@ namespace Azazel {
         private readonly Timer timer;
         private bool closing;
         private CommandState state;
+        private string inputText = string.Empty;
 
         public MainWindow() {
             state = new CommandSelectingState(this);
             InitializeComponent();
             HookEvents();
-            timer = new Timer(Dispatcher, RefreshMenu);
+            timer = new Timer(TimedMenuRefresh);
             ParameterStoryboard = (Storyboard) Resources["Parameter"];
             ResetStoryboard = (Storyboard) Resources["Reset"];
             DisplayOptionsStoryboard = (Storyboard) Resources["DisplayOptions"];
@@ -53,11 +55,16 @@ namespace Azazel {
         }
 
         private void InputChanged() {
-            timer.Start(.15);
+            inputText = input.Text;
+            timer.Start(input.Text.Length == 1?.30:.15);
+        }
+
+        private void TimedMenuRefresh() {
+            controller.Input = inputText;
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new VoidDelegate(RefreshMenu));
         }
 
         private void RefreshMenu() {
-            controller.Input = input.Text.Trim();
             selectedCommand.Text = controller.CommandName;
             image.Source = controller.Command(0).Icon;
             command2Text.Text = controller.Command(1).Name;
@@ -101,8 +108,7 @@ namespace Azazel {
         }
 
         private void LoadFirstResult() {
-            timer.Stop();
-            RefreshMenu();
+            timer.ForceCall();
         }
 
         public void MoveDown(int count) {

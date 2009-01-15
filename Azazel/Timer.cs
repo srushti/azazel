@@ -27,8 +27,13 @@ namespace Azazel {
             else dispatcher.BeginInvoke(DispatcherPriority.Normal, voidDelegate);
         }
 
-        public void Stop() {
+        private void Stop() {
             if (running) timer.Dispose();
+        }
+
+        public void ForceCall() {
+            Stop();
+            InvokeDelegate();
         }
     }
 }
