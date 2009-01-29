@@ -11,16 +11,15 @@ namespace Venus.Shortcuts {
         }
 
         public Launchables Launchables() {
-            var launchables = new Launchables
-                                  {
-                                      new Shortcut(Environment.SpecialFolder.MyDocuments),
-                                      new Shortcut(Environment.SpecialFolder.MyMusic),
-                                      new Shortcut(Environment.SpecialFolder.Desktop),
-                                      new Shortcut(Environment.SpecialFolder.Recent),
-                                      new Shortcut(Environment.SpecialFolder.ProgramFiles),
-                                      new Shortcut(Environment.SpecialFolder.MyPictures),
-                                      new Shortcut("Add or Remove Programs", "appwiz.cpl"),
-                                  };
+            var launchables = new Launchables();
+            var specialFolders = new[]
+                                     {
+                                         Environment.SpecialFolder.MyDocuments, Environment.SpecialFolder.MyMusic, Environment.SpecialFolder.Desktop,
+                                         Environment.SpecialFolder.Recent, Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolder.MyPictures,
+                                     };
+            foreach (var specialFolder in specialFolders)
+                if (Folder.Exists(Environment.GetFolderPath(specialFolder))) launchables.Add(new Shortcut(specialFolder));
+            launchables.Add(new Shortcut("Add or Remove Programs", "appwiz.cpl"));
             return launchables;
         }
 

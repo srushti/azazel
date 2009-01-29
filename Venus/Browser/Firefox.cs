@@ -54,7 +54,7 @@ namespace Venus.Browser {
         }
 
         public bool IsAvailable {
-            get { return true; }
+            get { return Folder.Exists(profilesPath); }
         }
 
         private static Bookmarks LoadFF2Bookmarks(File file) {

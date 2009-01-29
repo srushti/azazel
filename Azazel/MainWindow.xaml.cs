@@ -6,9 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Azazel.Extensions;
 using Azazel.FileSystem;
 using Action=Azazel.FileSystem.Action;
-using Azazel.Extensions;
 
 namespace Azazel {
     public partial class MainWindow {
@@ -56,12 +56,12 @@ namespace Azazel {
 
         private void InputChanged() {
             inputText = input.Text;
-            timer.Start(input.Text.Length == 1?.30:.15);
+            timer.Start(.15);
         }
 
         private void TimedMenuRefresh() {
-            controller.Input = inputText;
-            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new VoidDelegate(RefreshMenu));
+            if (controller.SetInput(inputText))
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new VoidDelegate(RefreshMenu));
         }
 
         private void RefreshMenu() {
@@ -108,7 +108,9 @@ namespace Azazel {
         }
 
         private void LoadFirstResult() {
-            timer.ForceCall();
+            timer.Stop();
+            controller.SetInput(inputText);
+            RefreshMenu();
         }
 
         public void MoveDown(int count) {

@@ -17,6 +17,10 @@ namespace Azazel.FileSystem {
             get { return Path.GetFileNameWithoutExtension(fileSystemInfo.Name); }
         }
 
+        public string Extension {
+            get { return fileSystemInfo.Extension; }
+        }
+
         public virtual ImageSource Icon {
             get { return IconExtractor.Instance.Extract(this, IconSize.Large); }
         }

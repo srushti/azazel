@@ -7,13 +7,15 @@ using Azazel.PluggingIn;
 namespace Venus.Browser {
     public class InternetExplorer : LaunchablePlugin {
         private static readonly ImageSource icon = UrlLauncher.BrowserIcon;
+        private string path;
 
         public bool IsAvailable {
-            get { return true; }
+            get { return Folder.Exists(path); }
         }
 
         public Launchables Launchables() {
-            var folder = new Folder(Environment.GetFolderPath(Environment.SpecialFolder.Favorites));
+            path = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
+            var folder = new Folder(path);
             var favouritesFiles = new Launchables();
             folder.GetFiles().ForEach(launchable => { if (((File) launchable).FullName.EndsWith(".url")) favouritesFiles.Add(launchable); });
             var favourites = new Launchables();

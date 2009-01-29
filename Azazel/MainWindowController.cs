@@ -17,14 +17,15 @@ namespace Azazel {
             SelfPlugin.INSTANCE.ChangeShortcut += (() => new KeyboardShortcutChangeCommand().Execute());
         }
 
-        public string Input {
-            set {
-                if (input == value) return;
-                if (value.Contains(input) && !selectedFiles.IsEmpty()) selectedFiles = appFinder.FindFiles(selectedFiles, value);
-                else selectedFiles = appFinder.FindFiles(value);
-                input = value;
-                index = 0;
-            }
+        public bool SetInput(string value) {
+            if (input == value) return false;
+            var oldValue = input;
+            input = value;
+            var newFiles = value.Contains(oldValue) && !selectedFiles.IsEmpty() ? appFinder.FindFiles(selectedFiles, value) : appFinder.FindFiles(value);
+            if (input != value) return false;
+            selectedFiles = newFiles;
+            index = 0;
+            return true;
         }
 
         public string CommandName {

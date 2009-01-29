@@ -16,6 +16,10 @@ namespace Azazel {
             this.voidDelegate = voidDelegate;
         }
 
+        public bool Running {
+            get { return running; }
+        }
+
         public void Start(double seconds) {
             Stop();
             timer = new System.Threading.Timer(delegate { InvokeDelegate(); }, null, TimeSpan.FromSeconds(seconds), TimeSpan.FromTicks(Timeout.Infinite));
@@ -23,12 +27,16 @@ namespace Azazel {
         }
 
         private void InvokeDelegate() {
+            Stop();
             if (dispatcher == null) voidDelegate();
             else dispatcher.BeginInvoke(DispatcherPriority.Normal, voidDelegate);
         }
 
-        private void Stop() {
-            if (running) timer.Dispose();
+        public void Stop() {
+            if (running) {
+                timer.Dispose();
+                running = false;
+            }
         }
 
         public void ForceCall() {
