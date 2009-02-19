@@ -14,6 +14,7 @@ namespace Azazel {
             if (launchable.Name.ContainsIgnoreCase(input)) rank += RankValue.NameContains;
             if (history.Contains(launchable)) rank += RankValue.HistoryContainsFile;
             if (history.ContainsAsSubstring(input, launchable)) rank += RankValue.HistoryContainsAsSubstring;
+            if (launchable is File) ++rank;
         }
 
         public static int operator -(FileRank x, FileRank y) {

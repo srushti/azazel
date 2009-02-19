@@ -88,10 +88,10 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>md $(SolutionDir)Azazel\bin\Debug\plugins
-copy $(TargetDir)* $(SolutionDir)Azazel\bin\Debug\plugins\
-md $(SolutionDir)AzazelTests\bin\Debug\plugins
-copy $(TargetDir)* $(SolutionDir)AzazelTests\bin\Debug\plugins\</PostBuildEvent>
-    <PreBuildEvent>del /Q $(SolutionDir)Azazel\bin\Debug\plugins\*</PreBuildEvent>
+    <PostBuildEvent>md "$(SolutionDir)Azazel\bin\Debug\plugins"
+copy "$(TargetDir)*" "$(SolutionDir)Azazel\bin\Debug\plugins\"
+md "$(SolutionDir)AzazelTests\bin\Debug\plugins"
+copy "$(TargetDir)*" "$(SolutionDir)AzazelTests\bin\Debug\plugins\"</PostBuildEvent>
+    <PreBuildEvent>del /Q "$(SolutionDir)Azazel\bin\Debug\plugins\*"</PreBuildEvent>
   </PropertyGroup>
 </Project>
