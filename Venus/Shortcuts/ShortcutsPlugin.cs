@@ -20,6 +20,7 @@ namespace Venus.Shortcuts {
             foreach (var specialFolder in specialFolders)
                 if (Folder.Exists(Environment.GetFolderPath(specialFolder))) launchables.Add(new Shortcut(specialFolder));
             launchables.Add(new Shortcut("Add or Remove Programs", "appwiz.cpl"));
+            launchables.Add(new Shortcut("Windows Explorer", "explorer.exe"));
             return launchables;
         }
 
