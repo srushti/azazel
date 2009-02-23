@@ -1,0 +1,31 @@
+
+# /
+/_ReSharper.Azazel
+/*.user
+/*.suo
+/*.cache
+
+# /AfterInstallRun/
+/AfterInstallRun/bin
+/AfterInstallRun/obj
+
+# /Azazel/
+/Azazel/bin
+/Azazel/obj
+/Azazel/*.user
+
+# /AzazelSetup/
+/AzazelSetup/Debug
+/AzazelSetup/Release
+
+# /AzazelTests/
+/AzazelTests/bin
+/AzazelTests/obj
+
+# /Venus/
+/Venus/bin
+/Venus/obj
+
+# /VenusTests/
+/VenusTests/bin
+/VenusTests/obj
