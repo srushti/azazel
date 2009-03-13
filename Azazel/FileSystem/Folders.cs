@@ -16,10 +16,11 @@ namespace Azazel.FileSystem {
         }
 
         private void WatchFolder(Folder folder) {
-            new FileSystemStalker(folder, FileChangeTypes.AllOfTheAbove, delegate(File changedFile) {
-                                                                             if (!changedFile.IsHidden)
-                                                                                 Changed(this);
-                                                                         });
+            new FileSystemStalker(folder, FileChangeTypes.Created | FileChangeTypes.Deleted | FileChangeTypes.Renamed, delegate(File changedFile) {
+                                                                                                                           if (!changedFile.Exists() ||
+                                                                                                                               !changedFile.IsHidden)
+                                                                                                                               Changed(this);
+                                                                                                                       });
         }
 
         public new void Add(Folder folder) {

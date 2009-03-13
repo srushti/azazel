@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using Azazel.FileSystem;
+using Azazel.Logging;
 using Azazel.PluggingIn;
 using xstream;
 using File=Azazel.FileSystem.File;
@@ -25,6 +26,7 @@ namespace Azazel {
             dictionary = foldersToParse.LoadLaunchables();
             allLaunchables = dictionary.Launchables;
             foldersToParse.LaunchablesChanged += delegate(LaunchablePlugin plugin, Launchables launchables) {
+                                                     LogManager.WriteLog("Refresh caused by " + plugin);
                                                      dictionary.SetValue(plugin.GetType(), launchables);
                                                      allLaunchables = dictionary.Launchables;
                                                  };

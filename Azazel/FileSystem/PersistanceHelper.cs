@@ -11,7 +11,7 @@ namespace Azazel.FileSystem {
             }
             catch (Exception) {
                 var file = new File(filePath);
-                File.WriteAllText(file.Name + DateTime.Now.ToString().Replace("/", "").Replace("\\", "").Replace(" ", "").Replace(":", "") + file.Extension,
+                File.WriteAllText(file.FullName + DateTime.Now.ToString().Replace("/", "").Replace("\\", "").Replace(" ", "").Replace(":", "") + file.Extension,
                                   File.Contents(filePath));
                 defaultSave();
                 return (T) xStream.FromXml(File.Contents(filePath).Trim());
