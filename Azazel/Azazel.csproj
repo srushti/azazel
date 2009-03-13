@@ -118,6 +118,7 @@
     <Compile Include="FileRank.cs" />
     <Compile Include="FileSystem\Files.cs" />
     <Compile Include="FileSystem\FileSystemElement.cs" />
+    <Compile Include="FileSystem\FileSystemStalker.cs" />
     <Compile Include="FileSystem\Folder.cs" />
     <Compile Include="FileSystem\File.cs" />
     <Compile Include="FileSystem\Folders.cs" />

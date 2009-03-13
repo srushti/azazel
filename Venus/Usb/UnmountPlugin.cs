@@ -14,7 +14,7 @@ namespace Venus.Usb {
             return new Launchables {new UnmountLaunchable()};
         }
 
-        public event FileChangedDelegate FileChanged;
+        public event PluginChangedDelegate Changed = delegate { };
     }
 
     internal class UnmountLaunchable : Launchable {

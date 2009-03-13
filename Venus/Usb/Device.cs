@@ -9,17 +9,17 @@ namespace Venus.Usb {
     /// </summary>
     [TypeConverter(typeof (ExpandableObjectConverter))]
     public class Device : IComparable {
-        private readonly string _path;
-        private readonly DeviceClass _deviceClass;
-        private string _description;
-        private string _class;
-        private string _classGuid;
-        private Device _parent;
-        private readonly int _index;
-        private DeviceCapabilities _capabilities = DeviceCapabilities.Unknown;
-        private List<Device> _removableDevices;
-        private string _friendlyName;
-        private readonly Native.SP_DEVINFO_DATA _deviceInfoData;
+        private readonly string path;
+        private readonly DeviceClass deviceClass;
+        private string description;
+        private string @class;
+        private string classGuid;
+        private Device parent;
+        private readonly int index;
+        private DeviceCapabilities capabilities = DeviceCapabilities.Unknown;
+        private List<Device> removableDevices;
+        private string friendlyName;
+        private readonly Native.SP_DEVINFO_DATA deviceInfoData;
 
         internal Device(DeviceClass deviceClass, Native.SP_DEVINFO_DATA deviceInfoData, string path, int index) {
             if (deviceClass == null)
@@ -28,17 +28,17 @@ namespace Venus.Usb {
             if (deviceInfoData == null)
                 throw new ArgumentNullException("deviceInfoData");
 
-            _deviceClass = deviceClass;
-            _path = path; // may be null
-            _deviceInfoData = deviceInfoData;
-            _index = index;
+            this.deviceClass = deviceClass;
+            this.path = path; // may be null
+            this.deviceInfoData = deviceInfoData;
+            this.index = index;
         }
 
         /// <summary>
         /// Gets the device's index.
         /// </summary>
         public int Index {
-            get { return _index; }
+            get { return index; }
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Venus.Usb {
         /// </summary>
         [Browsable(false)]
         public DeviceClass DeviceClass {
-            get { return _deviceClass; }
+            get { return deviceClass; }
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace Venus.Usb {
         /// </summary>
         public string Path {
             get {
-                if (_path == null) {}
-                return _path;
+                if (path == null) {}
+                return path;
             }
         }
 
@@ -63,7 +63,7 @@ namespace Venus.Usb {
         /// Gets the device's instance handle.
         /// </summary>
         public int InstanceHandle {
-            get { return _deviceInfoData.devInst; }
+            get { return deviceInfoData.devInst; }
         }
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace Venus.Usb {
         /// </summary>
         public string Class {
             get {
-                if (_class == null)
-                    _class = _deviceClass.GetProperty(_deviceInfoData, Native.SPDRP_CLASS, null);
-                return _class;
+                if (@class == null)
+                    @class = deviceClass.GetProperty(deviceInfoData, Native.SPDRP_CLASS, null);
+                return @class;
             }
         }
 
@@ -82,9 +82,9 @@ namespace Venus.Usb {
         /// </summary>
         public string ClassGuid {
             get {
-                if (_classGuid == null)
-                    _classGuid = _deviceClass.GetProperty(_deviceInfoData, Native.SPDRP_CLASSGUID, null);
-                return _classGuid;
+                if (classGuid == null)
+                    classGuid = deviceClass.GetProperty(deviceInfoData, Native.SPDRP_CLASSGUID, null);
+                return classGuid;
             }
         }
 
@@ -93,9 +93,9 @@ namespace Venus.Usb {
         /// </summary>
         public string Description {
             get {
-                if (_description == null)
-                    _description = _deviceClass.GetProperty(_deviceInfoData, Native.SPDRP_DEVICEDESC, null);
-                return _description;
+                if (description == null)
+                    description = deviceClass.GetProperty(deviceInfoData, Native.SPDRP_DEVICEDESC, null);
+                return description;
             }
         }
 
@@ -104,9 +104,9 @@ namespace Venus.Usb {
         /// </summary>
         public string FriendlyName {
             get {
-                if (_friendlyName == null)
-                    _friendlyName = _deviceClass.GetProperty(_deviceInfoData, Native.SPDRP_FRIENDLYNAME, null);
-                return _friendlyName;
+                if (friendlyName == null)
+                    friendlyName = deviceClass.GetProperty(deviceInfoData, Native.SPDRP_FRIENDLYNAME, null);
+                return friendlyName;
             }
         }
 
@@ -115,9 +115,9 @@ namespace Venus.Usb {
         /// </summary>
         public DeviceCapabilities Capabilities {
             get {
-                if (_capabilities == DeviceCapabilities.Unknown)
-                    _capabilities = (DeviceCapabilities) _deviceClass.GetProperty(_deviceInfoData, Native.SPDRP_CAPABILITIES, 0);
-                return _capabilities;
+                if (capabilities == DeviceCapabilities.Unknown)
+                    capabilities = (DeviceCapabilities) deviceClass.GetProperty(deviceInfoData, Native.SPDRP_CAPABILITIES, 0);
+                return capabilities;
             }
         }
 
@@ -141,13 +141,13 @@ namespace Venus.Usb {
         /// </summary>
         public Device Parent {
             get {
-                if (_parent == null) {
+                if (parent == null) {
                     int parentDevInst = 0;
-                    int hr = Native.CM_Get_Parent(ref parentDevInst, _deviceInfoData.devInst, 0);
+                    int hr = Native.CM_Get_Parent(ref parentDevInst, deviceInfoData.devInst, 0);
                     if (hr == 0)
-                        _parent = new Device(_deviceClass, _deviceClass.GetInfo(parentDevInst), null, -1);
+                        parent = new Device(deviceClass, deviceClass.GetInfo(parentDevInst), null, -1);
                 }
-                return _parent;
+                return parent;
             }
         }
 
@@ -157,19 +157,19 @@ namespace Venus.Usb {
         /// </summary>
         public virtual List<Device> RemovableDevices {
             get {
-                if (_removableDevices == null) {
-                    _removableDevices = new List<Device>();
+                if (removableDevices == null) {
+                    removableDevices = new List<Device>();
 
                     if ((Capabilities & DeviceCapabilities.Removable) != 0)
-                        _removableDevices.Add(this);
+                        removableDevices.Add(this);
                     else {
                         if (Parent != null) {
                             foreach (var device in Parent.RemovableDevices)
-                                _removableDevices.Add(device);
+                                removableDevices.Add(device);
                         }
                     }
                 }
-                return _removableDevices;
+                return removableDevices;
             }
         }
 
@@ -182,11 +182,9 @@ namespace Venus.Usb {
             foreach (var device in RemovableDevices) {
                 if (allowUI) {
                     Native.CM_Request_Device_Eject_NoUi(device.InstanceHandle, IntPtr.Zero, null, 0, 0);
-                    // don't handle errors, there should be a UI for this
                 }
                 else {
                     var sb = new StringBuilder(1024);
-
                     Native.PNP_VETO_TYPE veto;
                     int hr = Native.CM_Request_Device_Eject(device.InstanceHandle, out veto, sb, sb.Capacity, 0);
                     if (hr != 0)

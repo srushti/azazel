@@ -13,7 +13,7 @@ namespace Venus.Browser {
             return new Launchables(new Browse());
         }
 
-        public event FileChangedDelegate FileChanged = delegate { };
+        public event PluginChangedDelegate Changed = delegate { };
 
         public class Browse : Launchable {
             public string Name {

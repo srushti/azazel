@@ -9,9 +9,9 @@ namespace Venus.Usb {
     /// A generic base class for physical device classes.
     /// </summary>
     public abstract class DeviceClass : IDisposable {
-        private IntPtr _deviceInfoSet;
-        private Guid _classGuid;
-        private List<Device> _devices;
+        private IntPtr deviceInfoSet;
+        private Guid classGuid;
+        private List<Device> devices;
 
         protected DeviceClass(Guid classGuid) : this(classGuid, IntPtr.Zero) {}
 
@@ -25,10 +25,10 @@ namespace Venus.Usb {
         /// <param name="classGuid">A device class Guid.</param>
         /// <param name="hwndParent">The handle of the top-level window to be used for any user interface or IntPtr.Zero for no handle.</param>
         protected DeviceClass(Guid classGuid, IntPtr hwndParent) {
-            _classGuid = classGuid;
+            this.classGuid = classGuid;
 
-            _deviceInfoSet = Native.SetupDiGetClassDevs(ref _classGuid, 0, hwndParent, Native.DIGCF_DEVICEINTERFACE | Native.DIGCF_PRESENT);
-            if (_deviceInfoSet.ToInt32() == Native.INVALID_HANDLE_VALUE)
+            deviceInfoSet = Native.SetupDiGetClassDevs(ref this.classGuid, 0, hwndParent, Native.DIGCF_DEVICEINTERFACE | Native.DIGCF_PRESENT);
+            if (deviceInfoSet.ToInt32() == Native.INVALID_HANDLE_VALUE)
                 throw new Win32Exception(Marshal.GetLastWin32Error());
         }
 
@@ -36,9 +36,9 @@ namespace Venus.Usb {
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose() {
-            if (_deviceInfoSet != IntPtr.Zero) {
-                Native.SetupDiDestroyDeviceInfoList(_deviceInfoSet);
-                _deviceInfoSet = IntPtr.Zero;
+            if (deviceInfoSet != IntPtr.Zero) {
+                Native.SetupDiDestroyDeviceInfoList(deviceInfoSet);
+                deviceInfoSet = IntPtr.Zero;
             }
         }
 
@@ -46,7 +46,7 @@ namespace Venus.Usb {
         /// Gets the device class's guid.
         /// </summary>
         public Guid ClassGuid {
-            get { return _classGuid; }
+            get { return classGuid; }
         }
 
         /// <summary>
@@ -54,13 +54,13 @@ namespace Venus.Usb {
         /// </summary>
         public List<Device> Devices {
             get {
-                if (_devices == null) {
-                    _devices = new List<Device>();
+                if (devices == null) {
+                    devices = new List<Device>();
                     int index = 0;
                     while (true) {
                         var interfaceData = new Native.SP_DEVICE_INTERFACE_DATA();
 
-                        if (!Native.SetupDiEnumDeviceInterfaces(_deviceInfoSet, null, ref _classGuid, index, interfaceData)) {
+                        if (!Native.SetupDiEnumDeviceInterfaces(deviceInfoSet, null, ref classGuid, index, interfaceData)) {
                             int error = Marshal.GetLastWin32Error();
                             if (error != Native.ERROR_NO_MORE_ITEMS)
                                 throw new Win32Exception(error);
@@ -69,7 +69,7 @@ namespace Venus.Usb {
 
                         var devData = new Native.SP_DEVINFO_DATA();
                         int size = 0;
-                        if (!Native.SetupDiGetDeviceInterfaceDetail(_deviceInfoSet, interfaceData, IntPtr.Zero, 0, ref size, devData)) {
+                        if (!Native.SetupDiGetDeviceInterfaceDetail(deviceInfoSet, interfaceData, IntPtr.Zero, 0, ref size, devData)) {
                             int error = Marshal.GetLastWin32Error();
                             if (error != Native.ERROR_INSUFFICIENT_BUFFER)
                                 throw new Win32Exception(error);
@@ -80,7 +80,7 @@ namespace Venus.Usb {
                         detailData.cbSize = Marshal.SizeOf(typeof (Native.SP_DEVICE_INTERFACE_DETAIL_DATA));
                         Marshal.StructureToPtr(detailData, buffer, false);
 
-                        if (!Native.SetupDiGetDeviceInterfaceDetail(_deviceInfoSet, interfaceData, buffer, size, ref size, devData)) {
+                        if (!Native.SetupDiGetDeviceInterfaceDetail(deviceInfoSet, interfaceData, buffer, size, ref size, devData)) {
                             Marshal.FreeHGlobal(buffer);
                             throw new Win32Exception(Marshal.GetLastWin32Error());
                         }
@@ -90,13 +90,13 @@ namespace Venus.Usb {
                         Marshal.FreeHGlobal(buffer);
 
                         Device device = CreateDevice(this, devData, devicePath, index);
-                        _devices.Add(device);
+                        devices.Add(device);
 
                         index++;
                     }
-                    _devices.Sort();
+                    devices.Sort();
                 }
-                return _devices;
+                return devices;
             }
         }
 
@@ -108,7 +108,7 @@ namespace Venus.Usb {
 
             var devData = new Native.SP_DEVINFO_DATA();
             devData.cbSize = Marshal.SizeOf(typeof (Native.SP_DEVINFO_DATA));
-            if (!Native.SetupDiOpenDeviceInfo(_deviceInfoSet, sb.ToString(), IntPtr.Zero, 0, devData))
+            if (!Native.SetupDiOpenDeviceInfo(deviceInfoSet, sb.ToString(), IntPtr.Zero, 0, devData))
                 throw new Win32Exception(Marshal.GetLastWin32Error());
 
             return devData;
@@ -124,7 +124,7 @@ namespace Venus.Usb {
 
             IntPtr propertyBuffer = Marshal.AllocHGlobal(propertyBufferSize);
             if (
-                !Native.SetupDiGetDeviceRegistryProperty(_deviceInfoSet, devData, property, out propertyRegDataType, propertyBuffer, propertyBufferSize,
+                !Native.SetupDiGetDeviceRegistryProperty(deviceInfoSet, devData, property, out propertyRegDataType, propertyBuffer, propertyBufferSize,
                                                          out requiredSize)) {
                 Marshal.FreeHGlobal(propertyBuffer);
                 int error = Marshal.GetLastWin32Error();
@@ -148,7 +148,7 @@ namespace Venus.Usb {
 
             IntPtr propertyBuffer = Marshal.AllocHGlobal(propertyBufferSize);
             if (
-                !Native.SetupDiGetDeviceRegistryProperty(_deviceInfoSet, devData, property, out propertyRegDataType, propertyBuffer, propertyBufferSize,
+                !Native.SetupDiGetDeviceRegistryProperty(deviceInfoSet, devData, property, out propertyRegDataType, propertyBuffer, propertyBufferSize,
                                                          out requiredSize)) {
                 Marshal.FreeHGlobal(propertyBuffer);
                 int error = Marshal.GetLastWin32Error();
@@ -172,7 +172,7 @@ namespace Venus.Usb {
 
             IntPtr propertyBuffer = Marshal.AllocHGlobal(propertyBufferSize);
             if (
-                !Native.SetupDiGetDeviceRegistryProperty(_deviceInfoSet, devData, property, out propertyRegDataType, propertyBuffer, propertyBufferSize,
+                !Native.SetupDiGetDeviceRegistryProperty(deviceInfoSet, devData, property, out propertyRegDataType, propertyBuffer, propertyBufferSize,
                                                          out requiredSize)) {
                 Marshal.FreeHGlobal(propertyBuffer);
                 int error = Marshal.GetLastWin32Error();

@@ -1,13 +1,11 @@
 using System;
 using System.Data;
 using System.Data.SQLite;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
-using File=Azazel.FileSystem.File;
 
 namespace Venus.Browser {
     public class Firefox : LaunchablePlugin {
@@ -19,15 +17,18 @@ namespace Venus.Browser {
                                                                     @"Mozilla\Firefox\Profiles");
 
         private static readonly ImageSource icon = UrlLauncher.BrowserIcon;
+        private readonly Folder profilesFolder = new Folder(profilesPath);
 
         public Firefox() {
-            var watcher = new FileSystemWatcher(profilesPath);
-            watcher.Changed += delegate(object sender, FileSystemEventArgs e) {
-                                   var changedFileName = e.Name;
-                                   if (ff2Bookmarks.Equals(changedFileName) || ff3Bookmarks.Equals(changedFileName) ||
-                                       deliciousBookmarks.Equals(changedFileName))
-                                       FileChanged(this);
-                               };
+            if (IsAvailable) {
+                new FileSystemStalker(profilesFolder, FileChangeTypes.Changed, delegate(File changedFile) {
+                                                                                   var changedFileName = changedFile.Name;
+                                                                                   if (ff2Bookmarks.Equals(changedFileName) ||
+                                                                                       ff3Bookmarks.Equals(changedFileName) ||
+                                                                                       deliciousBookmarks.Equals(changedFileName))
+                                                                                       Changed(this);
+                                                                               });
+            }
         }
 
         public static Regex Regex {
@@ -48,7 +49,7 @@ namespace Venus.Browser {
         public Launchables Launchables() {
             var bookmarks = new Launchables();
             if (!IsAvailable) return bookmarks;
-            foreach (var profileFolder in new Folder(profilesPath).GetFolders()) {
+            foreach (var profileFolder in profilesFolder.GetFolders()) {
                 var bookmarksFile = profileFolder.GetFile(ff2Bookmarks);
                 if (bookmarksFile.Exists()) bookmarks.AddRange(LoadFF2Bookmarks(bookmarksFile));
                 bookmarksFile = profileFolder.GetFile(ff3Bookmarks);
@@ -87,7 +88,7 @@ namespace Venus.Browser {
         }
 
         public bool IsAvailable {
-            get { return Folder.Exists(profilesPath); }
+            get { return profilesFolder.Exists(); }
         }
 
         private static Bookmarks LoadFF2Bookmarks(File file) {
@@ -115,7 +116,7 @@ namespace Venus.Browser {
             return "(?: " + attributeName + (capturing ? "=\"([^\"]*)\"" : "=\"[^\"]*\"") + ")?";
         }
 
-        public event FileChangedDelegate FileChanged = delegate { };
+        public event PluginChangedDelegate Changed = delegate { };
 
         private class Bookmarks : Files {}
     }

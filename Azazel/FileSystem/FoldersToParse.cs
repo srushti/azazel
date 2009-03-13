@@ -13,7 +13,7 @@ namespace Azazel.FileSystem {
             var dictionary = new LaunchablesDictionary();
             foreach (var plugin in launchablePlugins) {
                 dictionary.SetValue(plugin.GetType(), plugin.Launchables());
-                plugin.FileChanged += FileChanged;
+                plugin.Changed += FileChanged;
             }
             return dictionary;
         }

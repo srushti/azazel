@@ -9,11 +9,11 @@ namespace Venus.Usb {
     /// A volume device.
     /// </summary>
     public class Volume : Device, IComparable {
-        private string _volumeName;
-        private string _logicalDrive;
-        private int[] _diskNumbers;
-        private List<Device> _disks;
-        private List<Device> _removableDevices;
+        private string volumeName;
+        private string logicalDrive;
+        private int[] diskNumbers;
+        private List<Device> disks;
+        private List<Device> removableDevices;
 
         internal Volume(DeviceClass deviceClass, Native.SP_DEVINFO_DATA deviceInfoData, string path, int index)
             : base(deviceClass, deviceInfoData, path, index) {}
@@ -23,16 +23,16 @@ namespace Venus.Usb {
         /// </summary>
         public string VolumeName {
             get {
-                if (_volumeName == null) {
+                if (volumeName == null) {
                     var sb = new StringBuilder(1024);
                     if (!Native.GetVolumeNameForVolumeMountPoint(Path + "\\", sb, sb.Capacity)) {
                         // throw new Win32Exception(Marshal.GetLastWin32Error());
                     }
 
                     if (sb.Length > 0)
-                        _volumeName = sb.ToString();
+                        volumeName = sb.ToString();
                 }
-                return _volumeName;
+                return volumeName;
             }
         }
 
@@ -41,9 +41,9 @@ namespace Venus.Usb {
         /// </summary>
         public string LogicalDrive {
             get {
-                if ((_logicalDrive == null) && (VolumeName != null))
-                    ((VolumeDeviceClass) DeviceClass)._logicalDrives.TryGetValue(VolumeName, out _logicalDrive);
-                return _logicalDrive;
+                if ((logicalDrive == null) && (VolumeName != null))
+                    ((VolumeDeviceClass) DeviceClass).logicalDrives.TryGetValue(VolumeName, out logicalDrive);
+                return logicalDrive;
             }
         }
 
@@ -67,24 +67,24 @@ namespace Venus.Usb {
         /// </summary>
         public List<Device> Disks {
             get {
-                if (_disks == null) {
-                    _disks = new List<Device>();
+                if (disks == null) {
+                    disks = new List<Device>();
 
                     if (DiskNumbers != null) {
-                        var disks = new DiskDeviceClass();
+                        var diskDevice = new DiskDeviceClass();
                         foreach (int index in DiskNumbers) {
-                            if (index < disks.Devices.Count)
-                                _disks.Add(disks.Devices[index]);
+                            if (index < diskDevice.Devices.Count)
+                                disks.Add(diskDevice.Devices[index]);
                         }
                     }
                 }
-                return _disks;
+                return disks;
             }
         }
 
         private int[] DiskNumbers {
             get {
-                if (_diskNumbers == null) {
+                if (diskNumbers == null) {
                     var numbers = new List<int>();
                     if (LogicalDrive != null) {
                         IntPtr hFile = Native.CreateFile(@"\\.\" + LogicalDrive, Native.GENERIC_READ, Native.FILE_SHARE_READ | Native.FILE_SHARE_WRITE,
@@ -117,10 +117,10 @@ namespace Venus.Usb {
                         Marshal.FreeHGlobal(buffer);
                     }
 
-                    _diskNumbers = new int[numbers.Count];
-                    numbers.CopyTo(_diskNumbers);
+                    diskNumbers = new int[numbers.Count];
+                    numbers.CopyTo(diskNumbers);
                 }
-                return _diskNumbers;
+                return diskNumbers;
             }
         }
 
@@ -129,18 +129,18 @@ namespace Venus.Usb {
         /// </summary>
         public override List<Device> RemovableDevices {
             get {
-                if (_removableDevices == null) {
-                    _removableDevices = new List<Device>();
+                if (removableDevices == null) {
+                    removableDevices = new List<Device>();
                     if (Disks == null)
-                        _removableDevices = base.RemovableDevices;
+                        removableDevices = base.RemovableDevices;
                     else {
                         foreach (var disk in Disks) {
                             foreach (var device in disk.RemovableDevices)
-                                _removableDevices.Add(device);
+                                removableDevices.Add(device);
                         }
                     }
                 }
-                return _removableDevices;
+                return removableDevices;
             }
         }
 

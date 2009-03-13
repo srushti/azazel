@@ -7,7 +7,7 @@ namespace Venus.Usb {
     /// The device class for volume devices.
     /// </summary>
     public class VolumeDeviceClass : DeviceClass {
-        internal SortedDictionary<string, string> _logicalDrives = new SortedDictionary<string, string>();
+        internal SortedDictionary<string, string> logicalDrives = new SortedDictionary<string, string>();
 
         /// <summary>
         /// Initializes a new instance of the VolumeDeviceClass class.
@@ -16,7 +16,7 @@ namespace Venus.Usb {
             foreach (string drive in Environment.GetLogicalDrives()) {
                 var sb = new StringBuilder(1024);
                 if (Native.GetVolumeNameForVolumeMountPoint(drive, sb, sb.Capacity))
-                    _logicalDrives[sb.ToString()] = drive.Replace("\\", "");
+                    logicalDrives[sb.ToString()] = drive.Replace("\\", "");
             }
         }
 

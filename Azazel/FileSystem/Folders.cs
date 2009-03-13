@@ -12,11 +12,19 @@ namespace Azazel.FileSystem {
 
         public Folders(IEnumerable<Folder> folders) {
             AddRange(folders);
-            foreach (var folder in folders) {
-                var watcher = new FileSystemWatcher(folder.FullName);
-                watcher.Created += delegate { FileChanged(this); };
-                watcher.Deleted += delegate { FileChanged(this); };
-            }
+            foreach (var folder in folders) WatchFolder(folder);
+        }
+
+        private void WatchFolder(Folder folder) {
+            new FileSystemStalker(folder, FileChangeTypes.AllOfTheAbove, delegate(File changedFile) {
+                                                                             if (!changedFile.IsHidden)
+                                                                                 Changed(this);
+                                                                         });
+        }
+
+        public new void Add(Folder folder) {
+            base.Add(folder);
+            WatchFolder(folder);
         }
 
         public Folders(IEnumerable<DirectoryInfo> directoryInfos) {
@@ -33,7 +41,7 @@ namespace Azazel.FileSystem {
             return files;
         }
 
-        public event FileChangedDelegate FileChanged = delegate { };
+        public event PluginChangedDelegate Changed = delegate { };
 
         public bool IsAvailable {
             get { return true; }

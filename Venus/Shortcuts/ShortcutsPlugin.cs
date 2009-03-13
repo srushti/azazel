@@ -24,7 +24,7 @@ namespace Venus.Shortcuts {
             return launchables;
         }
 
-        public event FileChangedDelegate FileChanged = delegate { };
+        public event PluginChangedDelegate Changed = delegate { };
 
         public class Shortcut : Launchable {
             private readonly string name;

@@ -1,10 +1,8 @@
 using System;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
-using File=Azazel.FileSystem.File;
 
 namespace Venus.Browser {
     public class InternetExplorer : LaunchablePlugin {
@@ -13,9 +11,7 @@ namespace Venus.Browser {
 
         public InternetExplorer() {
             path = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
-            var watcher = new FileSystemWatcher(path, "*.url");
-            watcher.Created += delegate { FileChanged(this); };
-            watcher.Deleted += delegate { FileChanged(this); };
+            new FileSystemStalker(new Folder(path), FileChangeTypes.Created | FileChangeTypes.Deleted, delegate { Changed(this); });
         }
 
         public bool IsAvailable {
@@ -34,7 +30,7 @@ namespace Venus.Browser {
             return favourites;
         }
 
-        public event FileChangedDelegate FileChanged = delegate { };
+        public event PluginChangedDelegate Changed = delegate { };
 
         public static Bookmark CreateBookmark(string name, string contents) {
             return new Bookmark(name, Regex.Match(contents, "URL=(.*)\r").Groups[1].Value, icon);
