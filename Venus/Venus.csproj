@@ -72,12 +72,25 @@
     <Compile Include="Run\RunPlugin.cs" />
     <Compile Include="Shortcuts\ShortcutsPlugin.cs" />
     <Compile Include="TemporaryDomainTypeCreator.cs" />
+    <Compile Include="Usb\Device.cs" />
+    <Compile Include="Usb\DeviceCapabilities.cs" />
+    <Compile Include="Usb\DeviceClass.cs" />
+    <Compile Include="Usb\DiskDeviceClass.cs" />
+    <Compile Include="Usb\Native.cs" />
+    <Compile Include="Usb\UnmountPlugin.cs" />
+    <Compile Include="Usb\Volume.cs" />
+    <Compile Include="Usb\VolumeDeviceClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Azazel\Azazel.csproj">
       <Project>{832572F6-F3D9-46C7-B922-E7F69D35FE6A}</Project>
       <Name>Azazel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Usb\UsbEject.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -92,6 +105,6 @@
 copy "$(TargetDir)*" "$(SolutionDir)Azazel\bin\Debug\plugins\"
 md "$(SolutionDir)AzazelTests\bin\Debug\plugins"
 copy "$(TargetDir)*" "$(SolutionDir)AzazelTests\bin\Debug\plugins\"</PostBuildEvent>
-    <PreBuildEvent>del /Q "$(SolutionDir)Azazel\bin\Debug\plugins\*"</PreBuildEvent>
+    <PreBuildEvent>if exist "$(SolutionDir)Azazel\bin\Debug\plugins\*" del /Q "$(SolutionDir)Azazel\bin\Debug\plugins\*"</PreBuildEvent>
   </PropertyGroup>
 </Project>

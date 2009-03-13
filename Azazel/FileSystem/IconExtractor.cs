@@ -39,6 +39,15 @@ namespace Azazel.FileSystem {
                 var bmp = icon.ToBitmap();
                 var strm = new MemoryStream();
                 bmp.Save(strm, ImageFormat.Png);
+                return Extract(strm);
+            }
+            catch (ArgumentException) {
+                return new BitmapImage();
+            }
+        }
+
+        public ImageSource Extract(Stream strm) {
+            try {
                 var bmpImage = new BitmapImage();
                 bmpImage.BeginInit();
                 strm.Seek(0, SeekOrigin.Begin);
@@ -46,7 +55,7 @@ namespace Azazel.FileSystem {
                 bmpImage.EndInit();
                 return bmpImage;
             }
-            catch (ArgumentException) {
+            catch {
                 return new BitmapImage();
             }
         }

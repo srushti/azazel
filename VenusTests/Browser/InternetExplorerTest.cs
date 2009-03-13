@@ -1,13 +1,10 @@
-using System;
-using System.IO;
-using Azazel.FileSystem;
 using NUnit.Framework;
-using File=Azazel.FileSystem.File;
 
 namespace Venus.Browser {
     [TestFixture]
     public class InternetExplorerTest {
-        private const string urlFileContents = @"[DEFAULT]
+        private const string urlFileContents =
+            @"[DEFAULT]
 BASEURL=http://www.google.co.in/firefox
 [InternetShortcut]
 URL=http://www.google.co.in/firefox

@@ -3,23 +3,27 @@ using Azazel.PluggingIn;
 
 namespace Azazel.FileSystem {
     public class FoldersToParse {
-        internal readonly Folders Folders;
         [XmlIgnore] private readonly LaunchablePlugins launchablePlugins;
 
         public FoldersToParse(Folders folders, LaunchablePlugins launchablePlugins) {
-            Folders = folders;
-            this.launchablePlugins = launchablePlugins;
+            this.launchablePlugins = new LaunchablePlugins(launchablePlugins) {folders};
         }
 
-        public Launchables LoadFiles() {
-            var files = Folders.GetFiles();
-            foreach (var plugin in launchablePlugins) files.AddRange(plugin.Launchables());
-            return files;
+        public LaunchablesDictionary LoadLaunchables() {
+            var dictionary = new LaunchablesDictionary();
+            foreach (var plugin in launchablePlugins) {
+                dictionary.SetValue(plugin.GetType(), plugin.Launchables());
+                plugin.FileChanged += FileChanged;
+            }
+            return dictionary;
         }
 
-        public void AddFolder(string path) {
-            var newFolder = new Folder(path);
-            if (!Folders.Contains(newFolder)) Folders.Add(newFolder);
+        private void FileChanged(LaunchablePlugin plugin) {
+            LaunchablesChanged(plugin, plugin.Launchables());
         }
+
+        public event LaunchablesChangedDelegate LaunchablesChanged = delegate { };
     }
+
+    public delegate void LaunchablesChangedDelegate(LaunchablePlugin plugin, Launchables launchables);
 }

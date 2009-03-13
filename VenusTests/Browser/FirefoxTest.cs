@@ -8,7 +8,7 @@ namespace Venus.Browser {
         [Test]
         public void RegularExpression() {
             var files = new Firefox().Launchables();
-            var wikipediaUrl = "https://secure.wikimedia.org/wikipedia/en/wiki/Special:Search?go=Go&search=%s";
+            var wikipediaUrl = "https://secure.wikimedia.org/wikipedia/en/wiki/Special:Search?search=%s";
             AssertContainsLaunchable(files, "wp", wikipediaUrl);
             AssertContainsLaunchable(files, "Wikipedia", wikipediaUrl);
         }

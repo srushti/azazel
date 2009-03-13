@@ -7,11 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus", "Venus\Venus.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VenusTests", "VenusTests\VenusTests.csproj", "{B4FF5CC0-68A5-45EE-8089-77A4CA9D372C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{94DC114A-4700-493C-B537-FD0692A34B91}"
-	ProjectSection(SolutionItems) = preProject
-		App.config = App.config
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azazel", "Azazel\Azazel.csproj", "{832572F6-F3D9-46C7-B922-E7F69D35FE6A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzazelTests", "AzazelTests\AzazelTests.csproj", "{1586CC3E-8261-4AC0-B1BC-72558A313A25}"

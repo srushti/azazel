@@ -33,6 +33,8 @@ namespace Azazel.PluggingIn {
             return new Launchables(operations, Recent);
         }
 
+        public event FileChangedDelegate FileChanged = delegate { };
+
         public bool IsAvailable {
             get { return false; }
         }

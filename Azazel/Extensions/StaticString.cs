@@ -14,8 +14,7 @@ namespace Azazel.Extensions {
             return fullString.Substring(startIndex, length);
         }
 
-        public static string AllButLastCharacter(this string s)
-        {
+        public static string AllButLastCharacter(this string s) {
             if (s.Length == 0) return s;
             return s.Substring(0, s.Length - 1);
         }

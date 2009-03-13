@@ -1,9 +1,19 @@
 ﻿<Window x:Class="Azazel.PluggingIn.SelectKeyboardShortcut"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Select Keyboard Shortcut" Height="48" Width="480" Opacity="1" OpacityMask="#B2000000" Visibility="Visible" Background="#00000000" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="WidthAndHeight" Topmost="True" WindowStartupLocation="CenterScreen" MinWidth="480" MinHeight="48">
+    Title="Select Keyboard Shortcut" Height="60" Width="480" Opacity="1" OpacityMask="#B2000000" Visibility="Visible" Background="#00000000" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="WidthAndHeight" Topmost="True" WindowStartupLocation="CenterScreen" MinWidth="480" MinHeight="48">
 	<Canvas SnapsToDevicePixels="False" HorizontalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" x:Name="canvas" MaxWidth="480" MaxHeight="48" MinWidth="480" MinHeight="48">
-		<Rectangle OpacityMask="{DynamicResource opacityMask}" VerticalAlignment="Stretch" Fill="{DynamicResource background}" RenderTransformOrigin="0.5,0.5" x:Name="rectangle" HorizontalAlignment="Stretch" Width="480" Height="48"/>
-		<TextBlock xml:space="preserve" Opacity="1" FontFamily="Times New Roman" FontSize="36" FontStretch="Normal" FontWeight="Light" TextWrapping="Wrap" Foreground="{DynamicResource text}" OpacityMask="{DynamicResource opacityMask}" Background="{DynamicResource background}" VerticalAlignment="Top" x:Name="currentlySelected" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Right" Width="480" Height="48" Text=""/>
+		<Rectangle OpacityMask="{DynamicResource opacityMask}" VerticalAlignment="Stretch" Fill="{DynamicResource background}" RenderTransformOrigin="0.5,0.5" x:Name="rectangle" HorizontalAlignment="Stretch" Width="480" Height="60" Canvas.Top="-6"/>
+		<TextBlock xml:space="preserve" Opacity="1" FontFamily="Times New Roman" FontSize="36" FontStretch="Normal" FontWeight="Light" TextWrapping="Wrap" Foreground="{DynamicResource text}" OpacityMask="{DynamicResource opacityMask}" Background="{DynamicResource background}" VerticalAlignment="Top" x:Name="currentlySelected" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Right" Width="480" Height="48" Text="" Canvas.Top="-6">
+			<TextBlock.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleX="1" ScaleY="1"/>
+					<SkewTransform AngleX="0" AngleY="0"/>
+					<RotateTransform Angle="0"/>
+					<TranslateTransform X="0" Y="0"/>
+				</TransformGroup>
+			</TextBlock.RenderTransform>
+		</TextBlock>
+		<CheckBox Canvas.Top="42" Content="Use Windows Key modifier" RenderTransformOrigin="3.716,-0.615" ToolTip="Because of technical limitations we can't listen to Windows key before registering the key" IsChecked="True" x:Name="windowsKey" Height="12"/>
 	</Canvas>
 </Window>

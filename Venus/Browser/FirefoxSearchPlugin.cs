@@ -1,10 +1,12 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Azazel.Extensions;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
 using Microsoft.Win32;
+using File=Azazel.FileSystem.File;
 
 namespace Venus.Browser {
     public class FirefoxSearchPlugin : LaunchablePlugin {
@@ -17,6 +19,9 @@ namespace Venus.Browser {
                 var curVersionNumber = (string) firefoxSubKey.GetValue("CurrentVersion");
                 var firefoxInstallationDirectory = (string) firefoxSubKey.OpenSubKey(curVersionNumber + @"\Main").GetValue("Install Directory");
                 searchPluginsFolder = new Folder(Paths.Combine(firefoxInstallationDirectory, "searchplugins"));
+                var watcher = new FileSystemWatcher(searchPluginsFolder.FullName);
+                watcher.Created += delegate { FileChanged(this); };
+                watcher.Deleted += delegate { FileChanged(this); };
             }
             catch (NullReferenceException) {
                 isAvailable = false;
@@ -34,6 +39,8 @@ namespace Venus.Browser {
             foreach (File searchConfiguration in searchConfigurations) launchables.Add(CreateSearchPlugin(searchConfiguration.Contents()));
             return launchables;
         }
+
+        public event FileChangedDelegate FileChanged = delegate { };
 
         public static Search CreateSearchPlugin(string contents) {
             var name = Regex.Match(contents, "<ShortName>(.*)</ShortName>").Groups[1].Value;

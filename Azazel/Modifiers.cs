@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using Azazel.Extensions;
 
 namespace Azazel {
     public class Modifiers {
@@ -10,6 +11,11 @@ namespace Azazel {
 
         public Modifiers(ModifierKeys modifierKeys) {
             this.modifierKeys = modifierKeys;
+        }
+
+        public Modifiers(params Modifiers[] modifiers) {
+            if (!modifiers.IsEmpty())
+                foreach (var modifier in modifiers) modifierKeys |= modifier.modifierKeys;
         }
 
         public bool HasShift {
@@ -44,7 +50,7 @@ namespace Azazel {
             return (modifierKeys & modifier) == modifier;
         }
 
-        public static Modifiers operator | (Modifiers first, Modifiers second) {
+        public static Modifiers operator |(Modifiers first, Modifiers second) {
             return new Modifiers(first.modifierKeys | second.modifierKeys);
         }
     }

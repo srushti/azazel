@@ -1,17 +1,34 @@
 using System;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
+using File=Azazel.FileSystem.File;
 
 namespace Venus.Browser {
     public class Firefox : LaunchablePlugin {
+        private const string ff3Bookmarks = "places.sqlite";
+        private const string deliciousBookmarks = "ybookmarks.sqlite";
+        private const string ff2Bookmarks = "bookmarks.html";
+
         private static readonly string profilesPath = Paths.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                                                     @"Mozilla\Firefox\Profiles");
+
         private static readonly ImageSource icon = UrlLauncher.BrowserIcon;
+
+        public Firefox() {
+            var watcher = new FileSystemWatcher(profilesPath);
+            watcher.Changed += delegate(object sender, FileSystemEventArgs e) {
+                                   var changedFileName = e.Name;
+                                   if (ff2Bookmarks.Equals(changedFileName) || ff3Bookmarks.Equals(changedFileName) ||
+                                       deliciousBookmarks.Equals(changedFileName))
+                                       FileChanged(this);
+                               };
+        }
 
         public static Regex Regex {
             get {
@@ -31,24 +48,22 @@ namespace Venus.Browser {
         public Launchables Launchables() {
             var bookmarks = new Launchables();
             if (!IsAvailable) return bookmarks;
-            foreach (Folder profileFolder in new Folder(profilesPath).GetFolders()) {
-                var bookmarksFile = profileFolder.GetFile("bookmarks.html");
+            foreach (var profileFolder in new Folder(profilesPath).GetFolders()) {
+                var bookmarksFile = profileFolder.GetFile(ff2Bookmarks);
                 if (bookmarksFile.Exists()) bookmarks.AddRange(LoadFF2Bookmarks(bookmarksFile));
-                bookmarksFile = profileFolder.GetFile("places.sqlite");
+                bookmarksFile = profileFolder.GetFile(ff3Bookmarks);
                 if (bookmarksFile.Exists()) bookmarks.AddRange(LoadFF3Bookmarks(bookmarksFile.Copy("places_copy.sqlite")));
-                bookmarksFile = profileFolder.GetFile("ybookmarks.sqlite");
+                bookmarksFile = profileFolder.GetFile(deliciousBookmarks);
                 if (bookmarksFile.Exists()) bookmarks.AddRange(LoadFFDeliciousBookmarks(bookmarksFile.Copy("ybookmarks_copy.sqlite")));
             }
             return bookmarks;
         }
 
-        private static Launchables LoadFFDeliciousBookmarks(File file)
-        {
+        private static Launchables LoadFFDeliciousBookmarks(File file) {
             var connection = new SQLiteConnection(@"Data Source=" + file.FullName + @";Version=3;New=False;Compress=True;");
             connection.Open();
             var command = connection.CreateCommand();
-            command.CommandText =
-                "SELECT name as title, url, shortcut as keyword FROM bookmarks where title is not null";
+            command.CommandText = "SELECT name as title, url, shortcut as keyword FROM bookmarks where title is not null";
             var reader = command.ExecuteReader(CommandBehavior.SequentialAccess);
             var bookmarks = new Launchables();
             while (reader.Read())
@@ -65,8 +80,8 @@ namespace Venus.Browser {
             var reader = command.ExecuteReader(CommandBehavior.SequentialAccess);
             var bookmarks = new Launchables();
             while (reader.Read()) {
-                if(!reader["url"].ToString().StartsWith("place:"))
-                bookmarks.AddRange(CreateBookmarks(reader["title"].ToString(), reader["url"].ToString(), reader["keyword"].ToString()));
+                if (!reader["url"].ToString().StartsWith("place:"))
+                    bookmarks.AddRange(CreateBookmarks(reader["title"].ToString(), reader["url"].ToString(), reader["keyword"].ToString()));
             }
             return bookmarks;
         }
@@ -99,6 +114,8 @@ namespace Venus.Browser {
         private static string Attribute(string attributeName, bool capturing) {
             return "(?: " + attributeName + (capturing ? "=\"([^\"]*)\"" : "=\"[^\"]*\"") + ")?";
         }
+
+        public event FileChangedDelegate FileChanged = delegate { };
 
         private class Bookmarks : Files {}
     }

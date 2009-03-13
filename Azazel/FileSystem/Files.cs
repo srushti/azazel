@@ -8,7 +8,7 @@ namespace Azazel.FileSystem {
         public Launchables() {}
 
         public Launchables(IEnumerable<FileInfo> fileInfos) {
-            foreach (FileInfo fileInfo in fileInfos) {
+            foreach (var fileInfo in fileInfos) {
                 var file = new File(fileInfo);
                 if (!file.IsHidden) Add(file);
             }
@@ -17,7 +17,7 @@ namespace Azazel.FileSystem {
         public Launchables(params Launchable[] launchables) : this(((IEnumerable<Launchable>) launchables)) {}
 
         public Launchables(IEnumerable<Launchable> launchables) {
-            foreach (Launchable launchable in launchables) Add(launchable);
+            foreach (var launchable in launchables) Add(launchable);
         }
 
         public bool IsReadOnly {

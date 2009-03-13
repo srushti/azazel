@@ -3,8 +3,6 @@ using System.IO;
 using System.Windows.Forms;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
-using Db4objects.Db4o;
-using Db4objects.Db4o.Linq;
 using xstream;
 using File=Azazel.FileSystem.File;
 
@@ -14,11 +12,9 @@ namespace Azazel {
         private readonly XStream xstream = SelfPlugin.xstream;
         private Launchables allLaunchables;
         private readonly CharacterPlugins characterPlugins;
-//        private readonly IObjectContainer objectContainer;
+        private LaunchablesDictionary dictionary;
 
         public AppFinder(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins) {
-//            File.Delete(Paths.Instance.Db4o);
-//            objectContainer = Db4oFactory.OpenFile(Paths.Instance.Db4o);
             LoadFiles(launchablePlugins);
             history = new History(new File(new FileInfo(Paths.Instance.History)), xstream);
             this.characterPlugins = characterPlugins;
@@ -26,9 +22,12 @@ namespace Azazel {
 
         internal void LoadFiles(LaunchablePlugins launchablePlugins) {
             var foldersToParse = new FoldersToParse(LoadFoldersToParse(), launchablePlugins);
-            allLaunchables = foldersToParse.LoadFiles();
-//            allLaunchables.ForEach(objectContainer.Store);
-//            objectContainer.Commit();
+            dictionary = foldersToParse.LoadLaunchables();
+            allLaunchables = dictionary.Launchables;
+            foldersToParse.LaunchablesChanged += delegate(LaunchablePlugin plugin, Launchables launchables) {
+                                                     dictionary.SetValue(plugin.GetType(), launchables);
+                                                     allLaunchables = dictionary.Launchables;
+                                                 };
         }
 
         private Folders LoadFoldersToParse() {
@@ -50,7 +49,6 @@ namespace Azazel {
                 if (plugin.IsValidFor(searchString))
                     return new Launchables(plugin.Launchable(searchString));
             }
-//            return new Launchables(from Launchable l in objectContainer where l.Name.Contains(searchString) select l);
             return launchables.Find(searchString, history);
         }
 
@@ -59,10 +57,11 @@ namespace Azazel {
         }
 
         public void AddFolder(LaunchablePlugins launchablePlugins) {
-            var foldersToParse = new FoldersToParse(LoadFoldersToParse(), launchablePlugins);
+            var folders = LoadFoldersToParse();
             var dialog = new FolderBrowserDialog {SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)};
-            if (dialog.ShowDialog() == DialogResult.OK) foldersToParse.AddFolder(dialog.SelectedPath);
-            File.WriteAllText(Paths.Instance.Folders, xstream.ToXml(foldersToParse.Folders));
+            if (dialog.ShowDialog() == DialogResult.OK) folders.Add(new Folder(dialog.SelectedPath));
+            File.WriteAllText(Paths.Instance.Folders, xstream.ToXml(folders));
+            LoadFiles(launchablePlugins);
         }
     }
 }

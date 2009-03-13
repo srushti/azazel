@@ -25,8 +25,7 @@ namespace Azazel {
             return rank.ToString();
         }
 
-        private struct RankValue
-        {
+        private struct RankValue {
             internal const int NameContains = 04;
             internal const int HistoryContainsFile = NameContains*32;
             internal const int HistoryContainsAsSubstring = HistoryContainsFile*32;
@@ -34,6 +33,7 @@ namespace Azazel {
             internal const int PerfectMatch = ExactMatch*32;
         }
     }
+
     internal class FileRankContext {
         private readonly Dictionary<Launchable, FileRank> fileRanks = new Dictionary<Launchable, FileRank>();
 

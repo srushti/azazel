@@ -9,6 +9,7 @@ namespace Azazel {
         private int index;
         private string input = "";
         private Launchables selectedFiles = new Launchables();
+        private Token latestToken = new Token();
 
         public MainWindowController(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins) {
             appFinder = new AppFinder(launchablePlugins, characterPlugins);
@@ -18,11 +19,11 @@ namespace Azazel {
         }
 
         public bool SetInput(string value) {
+            var workingToken = latestToken = new Token();
             if (input == value) return false;
-            var oldValue = input;
+            var newFiles = value.Contains(input) && !selectedFiles.IsEmpty() ? appFinder.FindFiles(selectedFiles, value) : appFinder.FindFiles(value);
+            if (!latestToken.Equals(workingToken)) return false;
             input = value;
-            var newFiles = value.Contains(oldValue) && !selectedFiles.IsEmpty() ? appFinder.FindFiles(selectedFiles, value) : appFinder.FindFiles(value);
-            if (input != value) return false;
             selectedFiles = newFiles;
             index = 0;
             return true;

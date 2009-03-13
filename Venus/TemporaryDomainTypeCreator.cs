@@ -1,10 +1,9 @@
 using System;
-using System.Diagnostics;
 using System.Reflection;
 using Azazel.FileSystem;
 
 namespace Venus {
-    public class TemporaryDomainTypeCreator<T> : IDisposable where T : MarshalByRefObject{
+    public class TemporaryDomainTypeCreator<T> : IDisposable where T : MarshalByRefObject {
         private static readonly AppDomainSetup setup = new AppDomainSetup();
         private readonly AppDomain domain;
 

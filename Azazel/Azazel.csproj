@@ -48,14 +48,6 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Db4objects.Db4o, Version=7.4.71.12224, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Db4objects.Db4o.dll</HintPath>
-    </Reference>
-    <Reference Include="Db4objects.Db4o.Linq, Version=7.4.71.12224, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Db4objects.Db4o.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -121,7 +113,7 @@
     <Compile Include="AzazelException.cs" />
     <Compile Include="Clipboard.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Dictionary.cs" />
+    <Compile Include="Extensions\StaticDictionary.cs" />
     <Compile Include="Extensions\StaticEnumerable.cs" />
     <Compile Include="FileRank.cs" />
     <Compile Include="FileSystem\Files.cs" />
@@ -139,6 +131,7 @@
     <Compile Include="History.cs" />
     <Compile Include="KeyHookup\InterceptKeys.cs" />
     <Compile Include="KeyHelper.cs" />
+    <Compile Include="LaunchablesDictionary.cs" />
     <Compile Include="MainWindowCommand.cs" />
     <Compile Include="MainWindowController.cs" />
     <Compile Include="MainWindow.States.cs" />
@@ -160,7 +153,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -178,6 +170,7 @@
     <Compile Include="Extensions\StaticString.cs" />
     <Compile Include="Thread.cs" />
     <Compile Include="Timer.cs" />
+    <Compile Include="Token.cs" />
     <Compile Include="TODO.cs" />
     <Compile Include="WindowHider.cs" />
     <AppDesigner Include="Properties\" />

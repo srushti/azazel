@@ -18,9 +18,7 @@ namespace Azazel.PluggingIn {
             launchablePlugins = new LaunchablePlugins();
             var executableLocation = ConfigurationManager.AppSettings["executableLocation"];
             var executingAssembly = Assembly.GetExecutingAssembly();
-            if (string.IsNullOrEmpty(executableLocation)) {
-                executableLocation = new File(executingAssembly.Location).ParentFolder.FullName;
-            }
+            if (string.IsNullOrEmpty(executableLocation)) executableLocation = new File(executingAssembly.Location).ParentFolder.FullName;
             var pluginAssemblyFiles = new Folder(Path.Combine(executableLocation, "plugins")).GetFiles("*.dll");
             for (var i = 0; i < pluginAssemblyFiles.Count; i++) {
                 var assembly = Assembly.LoadFrom(((File) pluginAssemblyFiles.Get(i)).FullName);

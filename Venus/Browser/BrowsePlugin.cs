@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Azazel.FileSystem;
@@ -13,6 +12,8 @@ namespace Venus.Browser {
         public Launchables Launchables() {
             return new Launchables(new Browse());
         }
+
+        public event FileChangedDelegate FileChanged = delegate { };
 
         public class Browse : Launchable {
             public string Name {

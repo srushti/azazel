@@ -1,5 +1,3 @@
-using Azazel.FileSystem;
-using Azazel.PluggingIn;
 using NUnit.Framework;
 
 namespace Venus.Browser {
@@ -34,7 +32,7 @@ namespace Venus.Browser {
 
         [Test]
         public void LoadsAllSearchPlugins() {
-            Assert.AreEqual(8, new FirefoxSearchPlugin().Launchables().Count);
+            Assert.AreEqual(7, new FirefoxSearchPlugin().Launchables().Count);
         }
     }
 }
