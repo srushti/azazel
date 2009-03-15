@@ -8,7 +8,7 @@ namespace Venus.Usb {
     /// <summary>
     /// A volume device.
     /// </summary>
-    public class Volume : Device, IComparable {
+    public class Volume : Device {
         private string volumeName;
         private string logicalDrive;
         private int[] diskNumbers;
@@ -144,11 +144,6 @@ namespace Venus.Usb {
             }
         }
 
-        /// <summary>
-        /// Compares the current instance with another object of the same type.
-        /// </summary>
-        /// <param name="obj">An object to compare with this instance.</param>
-        /// <returns>A 32-bit signed integer that indicates the relative order of the comparands.</returns>
         public override int CompareTo(object obj) {
             var device = obj as Volume;
             if (device == null)
@@ -162,5 +157,18 @@ namespace Venus.Usb {
 
             return LogicalDrive.CompareTo(device.LogicalDrive);
         }
+
+//
+//        public override bool Equals(object obj) {
+//            return Equals(((Volume) obj));
+//        }
+//
+//        private bool Equals(Volume volume) {
+//            return logicalDrive.Equals(volume.logicalDrive) && base.
+//        }
+//
+//        public override int GetHashCode() {
+//            return base.GetHashCode();
+//        }
     }
 }

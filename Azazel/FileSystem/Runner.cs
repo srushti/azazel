@@ -3,11 +3,16 @@ using System.Diagnostics;
 
 namespace Azazel.FileSystem {
     public class Runner {
+        private readonly VoidDelegate voidDelegate;
         private readonly ProcessStartInfo startInfo;
 
         public Runner(ProcessStartInfo startInfo) {
             this.startInfo = startInfo;
             startInfo.UseShellExecute = true;
+        }
+
+        public Runner(VoidDelegate voidDelegate) {
+            this.voidDelegate = voidDelegate;
         }
 
         public Runner(string fileName, string arguments) : this(new ProcessStartInfo(fileName, arguments)) {}
@@ -17,8 +22,12 @@ namespace Azazel.FileSystem {
         }
 
         public void AsyncStart() {
-            startInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            new VoidDelegate(() => Process.Start(startInfo)).BeginInvoke(null, null);
+            if (voidDelegate == null) {
+                startInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                new VoidDelegate(() => Process.Start(startInfo)).BeginInvoke(null, null);
+            }
+            else
+                voidDelegate();
         }
     }
 }

@@ -60,8 +60,7 @@ namespace Venus.Usb {
         }
 
         public void Act() {
-            if (device != null)
-                device.Eject(true);
+            if (device != null) new Runner(() => device.Eject(true)).AsyncStart();
         }
 
         public string Name {
