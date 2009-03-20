@@ -1,0 +1,14 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Azazel.PluggingIn.KeyboardShortcut"
+	x:Name="Window"
+	Title="KeyboardShortcut"
+	Width="432" Height="72" OpacityMask="#B2000000" Background="#00000000" AllowsTransparency="True" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" Foreground="#00000000">
+
+	<Grid x:Name="LayoutRoot">
+		<Rectangle Fill="{DynamicResource background}" Stroke="#FF000000" OpacityMask="{DynamicResource opacityMask}"/>
+		<Label d:LayoutOverrides="Height" FontSize="22" x:Name="currentlySelected" Content="" VerticalAlignment="Top" HorizontalAlignment="Left" Width="213"/>
+		<CheckBox Margin="0,0,0,20.1" x:Name="useWindowsKey" Content="Use Windows Key?" d:LayoutOverrides="Width, Height" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+	</Grid>
+</Window>
