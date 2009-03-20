@@ -84,10 +84,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\XStream.dll</HintPath>
     </Reference>
+    <Page Include="PluggingIn\KeyboardShortcut.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Simple Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="PluggingIn\KeyboardShortcut.xaml.cs">
+      <DependentUpon>KeyboardShortcut.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -97,10 +104,6 @@
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PluggingIn\SelectKeyboardShortcut.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -147,9 +150,6 @@
     <Compile Include="PluggingIn\ExecutedCommand.cs" />
     <Compile Include="PluggingIn\Plugin.cs" />
     <Compile Include="PluggingIn\Recent.cs" />
-    <Compile Include="PluggingIn\SelectKeyboardShortcut.xaml.cs">
-      <DependentUpon>SelectKeyboardShortcut.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PluggingIn\SelfPlugin.cs" />
     <Compile Include="PluggingIn\LaunchablePlugin.cs" />
     <Compile Include="PluggingIn\PluginLoader.cs" />

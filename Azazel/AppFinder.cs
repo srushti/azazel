@@ -25,11 +25,11 @@ namespace Azazel {
             var foldersToParse = new FoldersToParse(LoadFoldersToParse(), launchablePlugins);
             dictionary = foldersToParse.LoadLaunchables();
             allLaunchables = dictionary.Launchables;
-            foldersToParse.LaunchablesChanged += delegate(LaunchablePlugin plugin, Launchables launchables) {
-                                                     LogManager.WriteLog("Refresh caused by " + plugin);
-                                                     dictionary.SetValue(plugin.GetType(), launchables);
-                                                     allLaunchables = dictionary.Launchables;
-                                                 };
+            foldersToParse.LaunchablesChanged += ((plugin, launchables) => new Runner(delegate {
+                                                                                          LogManager.WriteLog("Refresh caused by " + plugin);
+                                                                                          dictionary.SetValue(plugin.GetType(), launchables);
+                                                                                          allLaunchables = dictionary.Launchables;
+                                                                                      }).AsyncStart());
         }
 
         private Folders LoadFoldersToParse() {

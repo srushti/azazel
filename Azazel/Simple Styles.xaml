@@ -1118,6 +1118,7 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+	<SolidColorBrush x:Key="windowBackground" Color="#00000000"/>
 	<SolidColorBrush x:Key="opacityMask" Color="#FF000000"/>
 	<SolidColorBrush x:Key="background" Color="#FF444444"/>
 	<SolidColorBrush x:Key="text" Color="#FFFFFFFF"/>

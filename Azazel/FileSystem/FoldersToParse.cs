@@ -1,4 +1,5 @@
 using System.Xml.Serialization;
+using Azazel.Logging;
 using Azazel.PluggingIn;
 
 namespace Azazel.FileSystem {
@@ -10,11 +11,14 @@ namespace Azazel.FileSystem {
         }
 
         public LaunchablesDictionary LoadLaunchables() {
+            LogManager.WriteLog("Loading all launchables");
             var dictionary = new LaunchablesDictionary();
             foreach (var plugin in launchablePlugins) {
+                LogManager.WriteLog("Loading launchables from " + plugin);
                 dictionary.SetValue(plugin.GetType(), plugin.Launchables());
                 plugin.Changed += FileChanged;
             }
+            LogManager.WriteLog("Done loading all launchables");
             return dictionary;
         }
 

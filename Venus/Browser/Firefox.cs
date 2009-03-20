@@ -21,13 +21,13 @@ namespace Venus.Browser {
 
         public Firefox() {
             if (IsAvailable) {
-                new FileSystemStalker(profilesFolder, FileChangeTypes.Changed, delegate(File changedFile) {
-                                                                                   var changedFileName = changedFile.Name;
-                                                                                   if (ff2Bookmarks.Equals(changedFileName) ||
-                                                                                       ff3Bookmarks.Equals(changedFileName) ||
-                                                                                       deliciousBookmarks.Equals(changedFileName))
-                                                                                       Changed(this);
-                                                                               });
+                new FileSystemStalker(profilesFolder, FileChangeTypes.Changed | FileChangeTypes.Created, delegate(File changedFile) {
+                                                                                                             var changedFileName = changedFile.Name;
+                                                                                                             if (ff2Bookmarks.Equals(changedFileName) ||
+                                                                                                                 ff3Bookmarks.Equals(changedFileName) ||
+                                                                                                                 deliciousBookmarks.Equals(changedFileName))
+                                                                                                                 Changed(this);
+                                                                                                         });
             }
         }
 
