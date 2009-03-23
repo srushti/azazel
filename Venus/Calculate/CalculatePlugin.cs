@@ -24,7 +24,7 @@ namespace Venus.Calculate {
             return new CalculateLaunchable(searchString);
         }
 
-        public class CalculateLaunchable : Launchable {
+        private class CalculateLaunchable : Launchable {
             private readonly string result;
             private static string lastUsedEquation;
             private static string lastCalculatedResult;
@@ -65,7 +65,7 @@ namespace Venus.Calculate {
             }
 
             public void Launch(string arguments) {
-                Clipboard.AddString(result);
+                Clipboard.AddString(Name);
             }
 
             public bool ShouldStoreHistory {
@@ -73,7 +73,7 @@ namespace Venus.Calculate {
             }
 
             public bool Compiled {
-                get { return !string.IsNullOrEmpty(result); }
+                get { return !string.IsNullOrEmpty(Name); }
             }
         }
     }

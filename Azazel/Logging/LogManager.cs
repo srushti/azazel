@@ -9,6 +9,10 @@ namespace Azazel.Logging {
             XmlConfigurator.Configure();
         }
 
+        public static void WriteLog(object log) {
+            logger.Debug(log.ToString());
+        }
+
         public static void WriteLog(string log) {
             logger.Debug(log);
         }

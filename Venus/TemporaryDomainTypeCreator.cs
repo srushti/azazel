@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Azazel.FileSystem;
+using Azazel.Logging;
 
 namespace Venus {
     public class TemporaryDomainTypeCreator<T> : IDisposable where T : MarshalByRefObject {
@@ -11,16 +12,26 @@ namespace Venus {
             //Debugger.Launch();
             setup.ApplicationBase = new File(Type.Assembly.Location).ParentFolder.FullName;
             domain = AppDomain.CreateDomain("SomethingElse", null, setup);
+            AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs args) {
+                                          LogManager.WriteLog("trying to load " + args.Name);
+                                          return Assembly.Load(args.Name);
+                                      };
         }
 
         public T Create(params object[] arguments) {
-            return
-                (T)
-                domain.CreateInstanceAndUnwrap(Type.Assembly.FullName, Type.FullName, false, BindingFlags.Default, null, arguments, null, new object[] {},
-                                               null);
+            try {
+                return
+                    (T)
+                    domain.CreateInstanceAndUnwrap(Type.Assembly.FullName, Type.FullName, false, BindingFlags.Default, null, arguments, null, new object[] {},
+                                                   null);
+            }
+            catch (Exception exception) {
+                LogManager.WriteLog(exception);
+                throw;
+            }
         }
 
-        public Type Type {
+        private static Type Type {
             get { return typeof (T); }
         }
 

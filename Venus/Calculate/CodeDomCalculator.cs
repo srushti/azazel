@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.CSharp;
 
 namespace Venus.Calculate {
+    [Serializable]
     public class CodeDomCalculator : MarshalByRefObject {
         private readonly string expression;
         private readonly CSharpCodeProvider codeProvider;
