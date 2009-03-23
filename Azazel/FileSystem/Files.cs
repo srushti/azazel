@@ -8,7 +8,7 @@ namespace Azazel.FileSystem {
     public class Launchables : List<Launchable> {
         public Launchables() {}
 
-        public Launchables(IEnumerable<FileInfo> fileInfos) {
+        protected Launchables(IEnumerable<FileInfo> fileInfos) {
             foreach (var fileInfo in fileInfos) {
                 var file = new File(fileInfo);
                 if (!file.IsHidden) Add(file);
@@ -17,7 +17,7 @@ namespace Azazel.FileSystem {
 
         public Launchables(params Launchable[] launchables) : this(((IEnumerable<Launchable>) launchables)) {}
 
-        public Launchables(IEnumerable<Launchable> launchables) {
+        private Launchables(IEnumerable<Launchable> launchables) {
             foreach (var launchable in launchables) Add(launchable);
         }
 
@@ -30,33 +30,26 @@ namespace Azazel.FileSystem {
             return base[index];
         }
 
-        public Launchables Sort(string input, History history) {
-            var context = new FileRankContext(input, history);
-            var topList = new Launchables();
-            var bottomList = new Launchables();
-            foreach (var launchable in this) {
-                if (history.Contains(launchable) || launchable.Name.EqualsIgnoreCase(input)) topList.Add(launchable);
-                else bottomList.Add(launchable);
-            }
-            context.SortLaunchables(topList);
-            context.SortLaunchables(bottomList);
-            topList.AddRange(bottomList);
-            return topList;
-        }
-
         public void AddRange(Launchables launchables) {
             base.AddRange(launchables);
         }
 
         public Launchables Find(string searchString, History history) {
             if (string.IsNullOrEmpty(searchString)) return new Files();
-            var result = new Launchables();
             var regex = Regex(searchString);
+            var topList = new Launchables();
+            var bottomList = new Launchables();
             ForEach(launchable => {
-                        if (regex.IsMatch(launchable.Name))
-                            result.Add(launchable);
+                        if (regex.IsMatch(launchable.Name)) {
+                            if (history.Contains(launchable) || launchable.Name.EqualsIgnoreCase(searchString)) topList.Add(launchable);
+                            else bottomList.Add(launchable);
+                        }
                     });
-            return result.Sort(searchString, history);
+            var context = new FileRankContext(searchString, history);
+            context.SortLaunchables(topList);
+            context.SortLaunchables(bottomList);
+            topList.AddRange(bottomList);
+            return topList;
         }
 
         private static Regex Regex(string searchString) {

@@ -4,7 +4,7 @@ using Azazel.Extensions;
 using Azazel.FileSystem;
 
 namespace Azazel {
-    public class FileRank {
+    public class FileRank : IComparable<FileRank> {
         private readonly int rank;
 
         public FileRank(Launchable launchable, History history, string input) {
@@ -19,6 +19,10 @@ namespace Azazel {
 
         public static int operator -(FileRank x, FileRank y) {
             return x.rank - y.rank;
+        }
+
+        public int CompareTo(FileRank other) {
+            return rank - other.rank;
         }
 
         public override string ToString() {

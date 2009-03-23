@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -7,6 +8,14 @@ namespace Azazel {
     public static class Should {
         public static void ShouldBe<T>(this T actual, T expected) {
             Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        public static void ShouldBeLessThan<T>(this T actual, T expected) where T : IComparable<T> {
+            Assert.That(actual.CompareTo(expected), Is.LessThan(0));
+        }
+
+        public static void ShouldBeGreaterThan<T>(this T actual, T expected) where T : IComparable<T> {
+            Assert.That(actual.CompareTo(expected), Is.GreaterThan(0));
         }
 
         public static void ShouldNotBe<T>(this T actual, T expected) {

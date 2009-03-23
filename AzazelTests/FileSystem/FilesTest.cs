@@ -23,15 +23,15 @@ namespace Azazel.FileSystem {
         [Test]
         public void IfNotSubstringMatchLeftmostFirstLetter() {
             mocks.ReplayAll();
-            SortsAndAssertsOrder("c", new[] {abcdFile, abdcFile}, files);
-            SortsAndAssertsOrder("d", new[] {abdcFile, abcdFile}, files);
+            SortsAndAssertsOrder("c", new[] {abcdFile, abdcFile});
+            SortsAndAssertsOrder("d", new[] {abdcFile, abcdFile});
         }
 
         [Test]
         public void SubstringMatchesRankHigher() {
             mocks.ReplayAll();
-            SortsAndAssertsOrder("abc", new[] {abcdFile, abdcFile,}, files);
-            SortsAndAssertsOrder("abD", new[] {abdcFile, abcdFile,}, files);
+            SortsAndAssertsOrder("abc", new[] {abcdFile, abdcFile,});
+            SortsAndAssertsOrder("abD", new[] {abdcFile, abcdFile,});
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace Azazel.FileSystem {
             var adbFile = File(mocks, "abd");
             files.Add(adbFile);
             mocks.ReplayAll();
-            SortsAndAssertsOrder("abD", new[] {adbFile, abdcFile, abcdFile,}, files);
+            SortsAndAssertsOrder("abD", new[] {adbFile, abdcFile, abcdFile,});
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Azazel.FileSystem {
             files.Add(abracadabraFile);
             mocks.ReplayAll();
             history.Add("x", abracadabraFile);
-            SortsAndAssertsOrder("abd", new[] {abracadabraFile, abdcFile, abcdFile}, files);
+            SortsAndAssertsOrder("abd", new[] {abracadabraFile, abdcFile, abcdFile});
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Azazel.FileSystem {
             history.Add("x", abracadabraFile);
             history.Add("abc", abdcFile);
             history.Add("bcd", abcdFile);
-            SortsAndAssertsOrder("ab", new[] {abdcFile, abracadabraFile, abcdFile}, files);
+            SortsAndAssertsOrder("ab", new[] {abdcFile, abracadabraFile, abcdFile});
         }
 
         [Test]
@@ -69,12 +69,12 @@ namespace Azazel.FileSystem {
             mocks.ReplayAll();
             history.Add("x", abracadabraFile);
             history.Add("xabcd", abdcFile);
-            SortsAndAssertsOrder("x", new[] {abracadabraFile, abdcFile, abcdFile}, files);
+            SortsAndAssertsOrder("x", new[] {abracadabraFile, abdcFile, abcdFile});
         }
 
-        private void SortsAndAssertsOrder(string searchString, File[] expectedFiles, Launchables actualFiles) {
-            var sortedFiles = actualFiles.Sort(searchString, history);
-            for (var i = 0; i < expectedFiles.Length; i++) Assert.AreSame(expectedFiles[i], sortedFiles.Get(i), "at index: " + i);
+        private void SortsAndAssertsOrder(string searchString, File[] expectedFiles) {
+            for (int i = 0; i < expectedFiles.Length - 1; i++)
+                new FileRank(expectedFiles[0], history, searchString).ShouldBeGreaterThan(new FileRank(expectedFiles[i + 1], history, searchString));
         }
 
         private static File File(MockRepository mocks, string fileName) {
