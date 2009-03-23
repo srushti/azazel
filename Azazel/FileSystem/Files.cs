@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Azazel.Extensions;
 
 namespace Azazel.FileSystem {
     public class Launchables : List<Launchable> {
@@ -30,13 +31,17 @@ namespace Azazel.FileSystem {
         }
 
         public Launchables Sort(string input, History history) {
-            var context = new FileRankContext();
-            var result = new Launchables(this);
-            result.Sort((x, y) => {
-                            if (ReferenceEquals(x, y)) return 0;
-                            return context.Rank(y, history, input) - context.Rank(x, history, input);
-                        });
-            return result;
+            var context = new FileRankContext(input, history);
+            var topList = new Launchables();
+            var bottomList = new Launchables();
+            foreach (var launchable in this) {
+                if (history.Contains(launchable) || launchable.Name.EqualsIgnoreCase(input)) topList.Add(launchable);
+                else bottomList.Add(launchable);
+            }
+            context.SortLaunchables(topList);
+            context.SortLaunchables(bottomList);
+            topList.AddRange(bottomList);
+            return topList;
         }
 
         public void AddRange(Launchables launchables) {

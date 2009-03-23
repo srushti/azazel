@@ -9,7 +9,7 @@ namespace Azazel {
 
         public FileRank(Launchable launchable, History history, string input) {
             if (history.IsExactMatch(input, launchable)) rank = RankValue.PerfectMatch;
-            if (launchable.Name.Equals(input, StringComparison.InvariantCultureIgnoreCase)) rank += RankValue.ExactMatch;
+            if (launchable.Name.EqualsIgnoreCase(input)) rank += RankValue.ExactMatch;
             rank -= launchable.Name.IndexOf(input[0].ToString(), StringComparison.InvariantCultureIgnoreCase);
             if (launchable.Name.ContainsIgnoreCase(input)) rank += RankValue.NameContains;
             if (history.Contains(launchable)) rank += RankValue.HistoryContainsFile;
@@ -35,14 +35,30 @@ namespace Azazel {
     }
 
     internal class FileRankContext {
+        private readonly string input;
+        private readonly History history;
         private readonly Dictionary<Launchable, FileRank> fileRanks = new Dictionary<Launchable, FileRank>();
 
-        public FileRank Rank(Launchable launchable, History history, string input) {
+        public FileRankContext(string input, History history) {
+            this.input = input;
+            this.history = history;
+        }
+
+        private FileRank Rank(Launchable launchable) {
             FileRank fileRank;
             if (fileRanks.TryGetValue(launchable, out fileRank)) return fileRank;
             fileRank = new FileRank(launchable, history, input);
             fileRanks.Add(launchable, fileRank);
             return fileRank;
+        }
+
+        public void SortLaunchables(Launchables launchables) {
+            launchables.Sort(LaunchableComparison);
+        }
+
+        private int LaunchableComparison(Launchable x, Launchable y) {
+            if (ReferenceEquals(x, y)) return 0;
+            return Rank(y) - Rank(x);
         }
     }
 }

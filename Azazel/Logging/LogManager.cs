@@ -12,5 +12,9 @@ namespace Azazel.Logging {
         public static void WriteLog(string log) {
             logger.Debug(log);
         }
+
+        public static void WriteLog(string log, params object[] args) {
+            WriteLog(string.Format(log, args));
+        }
     }
 }

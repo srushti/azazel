@@ -3,33 +3,35 @@ using System.Threading;
 using System.Windows.Threading;
 
 namespace Azazel {
-    public class Timer {
+    public class Timer<T> {
         private readonly Dispatcher dispatcher;
-        private readonly VoidDelegate voidDelegate;
+        private readonly TimerDelegate<T> timerDelegate;
         private bool running;
-        private System.Threading.Timer timer = new System.Threading.Timer(delegate { });
+        private Timer timer = new Timer(delegate { });
+        private T arguments;
 
-        public Timer(VoidDelegate voidDelegate) : this(null, voidDelegate) {}
+        public Timer(TimerDelegate<T> timerDelegate) : this(null, timerDelegate) {}
 
-        public Timer(Dispatcher dispatcher, VoidDelegate voidDelegate) {
+        public Timer(Dispatcher dispatcher, TimerDelegate<T> timerDelegate) {
             this.dispatcher = dispatcher;
-            this.voidDelegate = voidDelegate;
+            this.timerDelegate = timerDelegate;
         }
 
         public bool Running {
             get { return running; }
         }
 
-        public void Start(double seconds) {
+        public void Start(double seconds, T arguments) {
+            this.arguments = arguments;
             Stop();
-            timer = new System.Threading.Timer(delegate { InvokeDelegate(); }, null, TimeSpan.FromSeconds(seconds), TimeSpan.FromTicks(Timeout.Infinite));
+            timer = new Timer(delegate { InvokeDelegate(); }, null, TimeSpan.FromSeconds(seconds), TimeSpan.FromTicks(Timeout.Infinite));
             running = true;
         }
 
         private void InvokeDelegate() {
             Stop();
-            if (dispatcher == null) voidDelegate();
-            else dispatcher.BeginInvoke(DispatcherPriority.Normal, voidDelegate);
+            if (dispatcher == null) timerDelegate(arguments);
+            else dispatcher.BeginInvoke(DispatcherPriority.Normal, timerDelegate);
         }
 
         public void Stop() {
@@ -44,4 +46,6 @@ namespace Azazel {
             InvokeDelegate();
         }
     }
+
+    public delegate void TimerDelegate<T>(T input);
 }

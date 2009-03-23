@@ -19,12 +19,12 @@ namespace Azazel {
         public void RunsAfterHalfASecond() {
             var startTime = new DateTime();
             var autoResetEvent = new AutoResetEvent(false);
-            var timer = new Timer(() => {
+            Timer<string> timer = new Timer<string>(a => {
                                       ThreadAssertion(DateTime.Now.Subtract(startTime), new GreaterThanConstraint(TimeSpan.FromSeconds(.5)));
                                       autoResetEvent.Set();
                                   });
             startTime = DateTime.Now;
-            timer.Start(.5);
+            timer.Start(.5, "");
             Assert.AreEqual(true, autoResetEvent.WaitOne(TimeSpan.FromSeconds(10), false));
         }
 
@@ -32,14 +32,14 @@ namespace Azazel {
         public void DoesntRunIfTimerIsStartedAgain() {
             var startTime = new DateTime();
             var autoResetEvent = new AutoResetEvent(false);
-            var timer = new Timer(() => {
+            var timer = new Timer<string>(a => {
                                       ThreadAssertion(DateTime.Now.Subtract(startTime), new GreaterThanOrEqualConstraint(TimeSpan.FromSeconds(.9)));
                                       autoResetEvent.Set();
                                   });
             startTime = DateTime.Now;
-            timer.Start(.5);
+            timer.Start(.5, "");
             Thread.Sleep(TimeSpan.FromSeconds(.4));
-            timer.Start(.5);
+            timer.Start(.5, "");
             Assert.AreEqual(true, autoResetEvent.WaitOne(TimeSpan.FromSeconds(10), false));
         }
 

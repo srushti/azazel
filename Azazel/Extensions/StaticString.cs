@@ -6,7 +6,11 @@ namespace Azazel.Extensions {
             return fullString.IndexOf(potentialSubstring, StringComparison.InvariantCultureIgnoreCase) != -1;
         }
 
-        public static string Substring(this string fullString, string startString, string endString) {
+        public static bool EqualsIgnoreCase(this string first, string second) {
+            return first.Equals(second, StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        public static string Substring(this string fullString, string startString, string endString) { 
             var startIndex = fullString.IndexOf(startString);
             var endIndex = fullString.IndexOf(endString);
             if (endIndex == -1) return fullString.Substring(startIndex);

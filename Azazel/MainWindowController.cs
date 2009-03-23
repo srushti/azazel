@@ -1,6 +1,7 @@
 using System.Windows;
 using Azazel.Extensions;
 using Azazel.FileSystem;
+using Azazel.Logging;
 using Azazel.PluggingIn;
 
 namespace Azazel {
@@ -19,10 +20,13 @@ namespace Azazel {
         }
 
         public bool SetInput(string value) {
-            var workingToken = latestToken = new Token();
             if (input == value) return false;
+            var workingToken = latestToken = new Token();
             var newFiles = value.Contains(input) && !selectedFiles.IsEmpty() ? appFinder.FindFiles(selectedFiles, value) : appFinder.FindFiles(value);
-            if (!latestToken.Equals(workingToken)) return false;
+            if (!latestToken.Equals(workingToken)) {
+                LogManager.WriteLog("token check failed with input {0} and value {1}", input, value);
+                return false;
+            }
             input = value;
             selectedFiles = newFiles;
             index = 0;
