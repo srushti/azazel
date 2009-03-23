@@ -55,7 +55,10 @@ namespace Azazel {
         }
 
         private void InputChanged() {
-            timer.Start(.15, input.Text);
+            var inputText = input.Text;
+            if (inputText.Length == 1)
+                timer.Start(.30, inputText);
+            else timer.Start(.15, inputText);
         }
 
         private void TimedMenuRefresh(string inputText) {
@@ -159,8 +162,6 @@ namespace Azazel {
             state = new CommandSelectingState(this);
             BeginAnimation(ResetStoryboard);
         }
-
-        public event EventHandler HaveNextCommand = delegate { };
 
         private void LaunchApp() {
             if (options.SelectedItem != null) controller.LaunchAction(((ActionItem) options.SelectedItem).Action);
