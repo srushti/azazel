@@ -52,9 +52,11 @@
     </VB>
     <GenerateMemberBody />
     <Naming2>
+      <ExceptionName IsNull="False">
+      </ExceptionName>
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Locals" />
-      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="NotPublicInstanceFields" />
-      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="NotPublicStaticFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="NotPublicInstanceFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="NotPublicStaticFields" />
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Parameters" />
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="TypesAndNamespaces" />
       <PredefinedRule Inspect="True" Prefix="I" Suffix="" Style="AaBb" ElementKind="Interfaces" />

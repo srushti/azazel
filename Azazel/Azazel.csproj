@@ -174,8 +174,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Extensions\StaticString.cs" />
-    <Compile Include="Thread.cs" />
-    <Compile Include="Timer.cs" />
+    <Compile Include="Threading\Thread.cs" />
+    <Compile Include="Threading\Timer.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="TODO.cs" />
     <Compile Include="WindowHider.cs" />

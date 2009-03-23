@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Azazel.FileSystem;
 using Azazel.Logging;
 using Azazel.PluggingIn;
+using Azazel.Threading;
 using xstream;
 using File=Azazel.FileSystem.File;
 

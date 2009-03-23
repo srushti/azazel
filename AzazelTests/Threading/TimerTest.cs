@@ -5,7 +5,7 @@ using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
-namespace Azazel {
+namespace Azazel.Threading {
     [TestFixture]
     public class TimerTest {
         private List<VoidDelegate> wrongThreadAssertions;
@@ -19,10 +19,10 @@ namespace Azazel {
         public void RunsAfterHalfASecond() {
             var startTime = new DateTime();
             var autoResetEvent = new AutoResetEvent(false);
-            Timer<string> timer = new Timer<string>(a => {
-                                      ThreadAssertion(DateTime.Now.Subtract(startTime), new GreaterThanConstraint(TimeSpan.FromSeconds(.5)));
-                                      autoResetEvent.Set();
-                                  });
+            var timer = new Timer<string>(a => {
+                                              ThreadAssertion(DateTime.Now.Subtract(startTime), new GreaterThanConstraint(TimeSpan.FromSeconds(.5)));
+                                              autoResetEvent.Set();
+                                          });
             startTime = DateTime.Now;
             timer.Start(.5, "");
             Assert.AreEqual(true, autoResetEvent.WaitOne(TimeSpan.FromSeconds(10), false));
@@ -33,9 +33,9 @@ namespace Azazel {
             var startTime = new DateTime();
             var autoResetEvent = new AutoResetEvent(false);
             var timer = new Timer<string>(a => {
-                                      ThreadAssertion(DateTime.Now.Subtract(startTime), new GreaterThanOrEqualConstraint(TimeSpan.FromSeconds(.9)));
-                                      autoResetEvent.Set();
-                                  });
+                                              ThreadAssertion(DateTime.Now.Subtract(startTime), new GreaterThanOrEqualConstraint(TimeSpan.FromSeconds(.9)));
+                                              autoResetEvent.Set();
+                                          });
             startTime = DateTime.Now;
             timer.Start(.5, "");
             Thread.Sleep(TimeSpan.FromSeconds(.4));

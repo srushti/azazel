@@ -8,6 +8,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Azazel.Extensions;
 using Azazel.FileSystem;
+using Azazel.Threading;
 using Action=Azazel.FileSystem.Action;
 
 namespace Azazel {
@@ -111,7 +112,7 @@ namespace Azazel {
             RefreshMenu();
         }
 
-        public void MoveDown(int count) {
+        private void MoveDown(int count) {
             controller.MoveDown(count);
         }
 
@@ -147,7 +148,7 @@ namespace Azazel {
             storyboard.Begin(this);
         }
 
-        public void ResetCommand() {
+        private void ResetCommand() {
             arguments.Focusable = false;
             input.Focusable = true;
             options.Focusable = false;

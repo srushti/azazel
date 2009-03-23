@@ -67,7 +67,7 @@
     <Compile Include="PluggingIn\LoadPluginTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Should.cs" />
-    <Compile Include="TimerTest.cs" />
+    <Compile Include="Threading\TimerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Azazel\Azazel.csproj">

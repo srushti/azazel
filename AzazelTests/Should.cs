@@ -9,6 +9,10 @@ namespace Azazel {
             Assert.That(actual, Is.EqualTo(expected));
         }
 
+        public static void ShouldNotBe<T>(this T actual, T expected) {
+            Assert.That(actual, Is.Not.EqualTo(expected));
+        }
+
         public static void ShouldBeTrue(this bool actual) {
             Assert.That(actual);
         }

@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Windows.Threading;
 
-namespace Azazel {
+namespace Azazel.Threading {
     public class Timer<T> {
         private readonly Dispatcher dispatcher;
         private readonly TimerDelegate<T> timerDelegate;

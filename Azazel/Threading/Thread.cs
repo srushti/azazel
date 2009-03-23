@@ -1,6 +1,6 @@
 using System;
 
-namespace Azazel {
+namespace Azazel.Threading {
     public class Thread {
         private readonly System.Threading.Thread thread;
 
