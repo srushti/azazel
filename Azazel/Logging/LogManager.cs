@@ -1,3 +1,4 @@
+using System;
 using log4net;
 using log4net.Config;
 
@@ -11,6 +12,10 @@ namespace Azazel.Logging {
 
         public static void WriteLog(object log) {
             logger.Debug(log.ToString());
+        }
+
+        public static void WriteLog(Exception exception) {
+            logger.Debug(exception.ToString());
         }
 
         public static void WriteLog(string log) {

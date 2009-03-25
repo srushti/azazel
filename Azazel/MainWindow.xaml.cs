@@ -25,7 +25,7 @@ namespace Azazel {
             state = new CommandSelectingState(this);
             InitializeComponent();
             HookEvents();
-            timer = new Timer<string>(TimedMenuRefresh);
+            timer = new Timer<string>(PresentInput);
             ParameterStoryboard = (Storyboard) Resources["Parameter"];
             ResetStoryboard = (Storyboard) Resources["Reset"];
             DisplayOptionsStoryboard = (Storyboard) Resources["DisplayOptions"];
@@ -33,6 +33,7 @@ namespace Azazel {
 
         public MainWindow(MainWindowController controller) : this() {
             this.controller = controller;
+            controller.RefreshedResults += CallBack;
         }
 
         private void InitialiseControls() {
@@ -61,9 +62,14 @@ namespace Azazel {
             else timer.Start(.15, inputText);
         }
 
-        private void TimedMenuRefresh(string inputText) {
-            if (controller.SetInput(inputText))
+        private void PresentInput(string inputText) {
+            controller.SetInput(inputText, true);
+        }
+
+        private void CallBack() {
+            if (!Dispatcher.Thread().Equals(Thread.CurrentThread))
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new VoidDelegate(RefreshMenu));
+            else RefreshMenu();
         }
 
         private void RefreshMenu() {
@@ -111,7 +117,7 @@ namespace Azazel {
 
         private void LoadFirstResult() {
             timer.Stop();
-            controller.SetInput(input.Text);
+            controller.SetInput(input.Text, false);
             RefreshMenu();
         }
 

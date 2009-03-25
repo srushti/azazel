@@ -3,6 +3,7 @@ using Azazel.Extensions;
 using Azazel.FileSystem;
 using Azazel.Logging;
 using Azazel.PluggingIn;
+using Azazel.Threading;
 
 namespace Azazel {
     public class MainWindowController {
@@ -11,6 +12,8 @@ namespace Azazel {
         private string input = "";
         private Launchables selectedFiles = new Launchables();
         private Token latestToken = new Token();
+        private Thread thread = new Thread(() => { });
+        public event VoidDelegate RefreshedResults = () => { };
 
         public MainWindowController(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins) {
             appFinder = new AppFinder(launchablePlugins, characterPlugins);
@@ -19,18 +22,28 @@ namespace Azazel {
             SelfPlugin.INSTANCE.ChangeShortcut += (() => new KeyboardShortcutChangeCommand().Execute());
         }
 
-        public bool SetInput(string value) {
-            if (input == value) return false;
+        public void SetInput(string value, bool asynchronous) {
+            thread.Abort();
+            if (asynchronous) {
+                thread = new Thread(RefreshResults, value);
+                thread.Start();
+            }
+            else RefreshResults(value);
+        }
+
+        private void RefreshResults(object parameter) {
+            var value = (string) parameter;
+            if (input == value) return;
             var workingToken = latestToken = new Token();
             var newFiles = value.Contains(input) && !selectedFiles.IsEmpty() ? appFinder.FindFiles(selectedFiles, value) : appFinder.FindFiles(value);
             if (!latestToken.Equals(workingToken)) {
                 LogManager.WriteLog("token check failed with input {0} and value {1}", input, value);
-                return false;
+                return;
             }
             input = value;
             selectedFiles = newFiles;
             index = 0;
-            return true;
+            RefreshedResults();
         }
 
         public string CommandName {

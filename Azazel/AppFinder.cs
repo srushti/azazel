@@ -52,7 +52,14 @@ namespace Azazel {
                 if (plugin.IsValidFor(searchString))
                     return new Launchables(plugin.Launchable(searchString));
             }
-            return launchables.Find(searchString, history);
+            try {
+                return launchables.Find(searchString, history);
+            }
+            catch (Exception e) {
+                //meant to catch exceptions caused by aborting threads
+                LogManager.WriteLog(e);
+                return new Launchables();
+            }
         }
 
         public void AppLaunched(string input, Launchable file) {

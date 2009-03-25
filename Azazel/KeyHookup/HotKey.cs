@@ -13,8 +13,8 @@ namespace Azazel.KeyHookup {
     [Serializable]
     public struct Hotkey {
         internal int id;
-        public Keys key;
-        public Modifiers modifiers;
+        public readonly Keys key;
+        public readonly Modifiers modifiers;
 
         public Hotkey(Modifiers modifiers, Keys key) {
             this.modifiers = modifiers;
@@ -81,7 +81,7 @@ namespace Azazel.KeyHookup {
         private int id;
         private ObservableCollection<Hotkey> observableHotkeys;
 
-        protected WindowInteropHelper window;
+        private WindowInteropHelper window;
 
         public WPFHotkeyManager(Window TopLevelWindow) {
             actualWindow = TopLevelWindow;
@@ -146,21 +146,18 @@ namespace Azazel.KeyHookup {
             else Marshal.ThrowExceptionForHR(Marshal.GetLastWin32Error());
         }
 
-        public bool Unregister(Hotkey key) {
+        public void Unregister(Hotkey key) {
             var index = IndexOf(key);
             if (index > 0) {
                 if (NativeMethods.UnregisterHotKey(handle, index)) {
                     Hotkeys.Remove(index);
                     observableHotkeys.Remove(key);
-                    return true;
                 }
-                Marshal.ThrowExceptionForHR(Marshal.GetLastWin32Error());
-                return false;
+                else Marshal.ThrowExceptionForHR(Marshal.GetLastWin32Error());
             }
-            return false;
         }
 
-        public void Clear() {
+        private void Clear() {
             foreach (var key in Hotkeys)
                 NativeMethods.UnregisterHotKey(handle, key.Key);
             Hotkeys.Clear();
@@ -190,15 +187,15 @@ namespace Azazel.KeyHookup {
             Hotkeys.Values.CopyTo(array, arrayIndex);
         }
 
-        public bool Remove(Hotkey item) {
-            return Unregister(item);
+        private void Remove(Hotkey item) {
+            Unregister(item);
         }
 
         public IEnumerator<Hotkey> GetEnumerator() {
             return Hotkeys.Values.GetEnumerator();
         }
 
-        public int IndexOf(Hotkey item) {
+        private int IndexOf(Hotkey item) {
             if (item.id > 0 && Hotkeys.ContainsKey(item.id))
                 return item.id;
             if (Hotkeys.ContainsValue(item)) {
@@ -213,10 +210,6 @@ namespace Azazel.KeyHookup {
             throw new ArgumentOutOfRangeException(string.Format("The hotkey \"{0}\" is not in this hotkey manager.", item));
         }
 
-        public void Insert(int index, Hotkey item) {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
         public void RemoveAt(int index) {
             Remove(Hotkeys[index]);
         }
@@ -228,7 +221,7 @@ namespace Azazel.KeyHookup {
         internal const int SetHotkey = 0x0032;
     }
 
-    public class NativeMethods {
+    public static class NativeMethods {
         [DllImport("User32", SetLastError = true)]
         [return : MarshalAs(UnmanagedType.Bool)]
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, ModifierKeys fsModifiers, Keys uVirtKey);
