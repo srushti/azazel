@@ -56,10 +56,7 @@ namespace Azazel {
         }
 
         private void InputChanged() {
-            var inputText = input.Text;
-            if (inputText.Length == 1)
-                timer.Start(.30, inputText);
-            else timer.Start(.15, inputText);
+            timer.Start(.15, input.Text);
         }
 
         private void PresentInput(string inputText) {
