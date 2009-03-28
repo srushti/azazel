@@ -1,21 +1,23 @@
 using System.Windows;
-using System.Windows.Forms;
 using Azazel.KeyHookup;
 using Azazel.PluggingIn;
 
 namespace Azazel {
     public class MainWindowCommand {
-        private readonly Hotkey displayHotkey = new Hotkey(Modifiers.Windows, Keys.Space);
         private readonly VoidDelegate killApplication;
-        private readonly Hotkey killHotkey = new Hotkey(Modifiers.Shift | Modifiers.Alt | Modifiers.Control, Keys.F4);
+        private readonly Hotkey displayHotkey;
+        private readonly Hotkey killHotkey;
         private WPFHotkeyManager hotkeyManager;
         private readonly MainWindowController controller;
         private MainWindow window;
 
-        public MainWindowCommand(VoidDelegate killApplication) {
-            var loader = new PluginLoader();
-            controller = new MainWindowController(loader.LaunchablePlugins, loader.CharacterPlugins);
+        public MainWindowCommand(VoidDelegate killApplication, AppSettings settings) {
+            var selfPlugin = new SelfPlugin();
+            var loader = new PluginLoader(selfPlugin);
+            controller = new MainWindowController(loader.LaunchablePlugins, loader.CharacterPlugins, selfPlugin);
             this.killApplication = killApplication;
+            displayHotkey = settings.DisplayHotKey;
+            killHotkey = settings.KillHotkey;
         }
 
         public void Execute() {

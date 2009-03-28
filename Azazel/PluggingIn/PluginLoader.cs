@@ -10,11 +10,11 @@ using File=Azazel.FileSystem.File;
 
 namespace Azazel.PluggingIn {
     public class PluginLoader {
-        private static readonly Assemblies assemblies = new Assemblies();
-        private static readonly CharacterPlugins characterPlugins = new CharacterPlugins();
-        private static readonly LaunchablePlugins launchablePlugins = new LaunchablePlugins();
+        private readonly Assemblies assemblies = new Assemblies();
+        private readonly CharacterPlugins characterPlugins = new CharacterPlugins();
+        private readonly LaunchablePlugins launchablePlugins = new LaunchablePlugins();
 
-        static PluginLoader() {
+        public PluginLoader(SelfPlugin selfPlugin) {
             characterPlugins = new CharacterPlugins();
             launchablePlugins = new LaunchablePlugins();
             var executableLocation = ConfigurationManager.AppSettings["executableLocation"];
@@ -31,10 +31,10 @@ namespace Azazel.PluggingIn {
                 }
             }
             LogManager.WriteLog("Done loading plugins");
-            launchablePlugins.Add(SelfPlugin.INSTANCE);
+            launchablePlugins.Add(selfPlugin);
         }
 
-        internal virtual Assembly[] Assemblies {
+        public Assembly[] Assemblies {
             get { return assemblies.ToArray(); }
         }
 

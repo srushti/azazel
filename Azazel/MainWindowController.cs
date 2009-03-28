@@ -13,13 +13,15 @@ namespace Azazel {
         private Launchables selectedFiles = new Launchables();
         private Token latestToken = new Token();
         private Thread thread = new Thread(() => { });
+        private readonly SelfPlugin selfPlugin;
         public event VoidDelegate RefreshedResults = () => { };
 
-        public MainWindowController(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins) {
-            appFinder = new AppFinder(launchablePlugins, characterPlugins);
-            SelfPlugin.INSTANCE.RefreshRequested += (() => appFinder.LoadFiles(launchablePlugins));
-            SelfPlugin.INSTANCE.AddAFolder += (() => appFinder.AddFolder(launchablePlugins));
-            SelfPlugin.INSTANCE.ChangeShortcut += (() => new KeyboardShortcutChangeCommand().Execute());
+        public MainWindowController(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins, SelfPlugin selfPlugin) {
+            this.selfPlugin = selfPlugin;
+            appFinder = new AppFinder(launchablePlugins, characterPlugins, selfPlugin.XStream);
+            selfPlugin.RefreshRequested += (() => appFinder.LoadFiles(launchablePlugins));
+            selfPlugin.AddAFolder += (() => appFinder.AddFolder(launchablePlugins));
+            selfPlugin.ChangeShortcut += (() => new KeyboardShortcutChangeCommand().Execute());
         }
 
         public void SetInput(string value, bool asynchronous) {
@@ -57,7 +59,7 @@ namespace Azazel {
         public void LaunchApp(string arguments) {
             try {
                 SelectedCommand.Launch(arguments);
-                SelfPlugin.INSTANCE.Recent.AddExecutedCommand(SelectedCommand, arguments);
+                selfPlugin.Recent.AddExecutedCommand(SelectedCommand, arguments);
             }
             catch (AzazelException e) {
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -67,7 +69,7 @@ namespace Azazel {
 
         public void LaunchAction(Action action) {
             action.Act();
-            SelfPlugin.INSTANCE.Recent.AddExecutedCommand(SelectedCommand, action);
+            selfPlugin.Recent.AddExecutedCommand(SelectedCommand, action);
             appFinder.AppLaunched(input, SelectedCommand);
         }
 

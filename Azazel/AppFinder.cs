@@ -11,14 +11,15 @@ using File=Azazel.FileSystem.File;
 namespace Azazel {
     public class AppFinder {
         private readonly History history;
-        private readonly XStream xstream = SelfPlugin.xstream;
+        private readonly XStream xstream;
         private Launchables allLaunchables;
         private readonly CharacterPlugins characterPlugins;
         private LaunchablesDictionary dictionary;
 
-        public AppFinder(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins) {
+        public AppFinder(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins, XStream xstream) {
+            this.xstream = xstream;
             LoadFiles(launchablePlugins);
-            history = new History(new File(new FileInfo(Paths.Instance.History)), xstream);
+            history = new History(new File(new FileInfo(Paths.Instance.History)), this.xstream);
             this.characterPlugins = characterPlugins;
         }
 

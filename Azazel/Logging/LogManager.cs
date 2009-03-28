@@ -15,7 +15,7 @@ namespace Azazel.Logging {
         }
 
         public static void WriteLog(Exception exception) {
-            logger.Debug(exception.ToString());
+            logger.Error(exception.ToString());
         }
 
         public static void WriteLog(string log) {

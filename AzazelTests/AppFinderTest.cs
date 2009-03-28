@@ -1,6 +1,7 @@
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
 using NUnit.Framework;
+using xstream;
 
 namespace Azazel {
     [TestFixture]
@@ -9,7 +10,7 @@ namespace Azazel {
 
         [SetUp]
         public void SetUp() {
-            finder = new AppFinder(new LaunchablePlugins(), new CharacterPlugins());
+            finder = new AppFinder(new LaunchablePlugins(), new CharacterPlugins(), new XStream());
         }
 
         [Test]

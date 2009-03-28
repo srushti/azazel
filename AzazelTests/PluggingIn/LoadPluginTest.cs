@@ -20,7 +20,7 @@ namespace Azazel.PluggingIn {
 
         [Test]
         public void LoadsPluginsDynamically() {
-            Assert.AreNotEqual(null, new PluginLoader().LaunchablePlugins);
+            Assert.AreNotEqual(null, new PluginLoader(new SelfPlugin()).LaunchablePlugins);
         }
     }
 }

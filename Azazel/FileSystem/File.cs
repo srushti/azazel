@@ -5,7 +5,7 @@ using xstream.Converters;
 
 namespace Azazel.FileSystem {
     public class File : FileSystemElement<FileInfo, File>, Launchable {
-        public static Converter Converter = new FileSystemElementConverter<File, FileInfo>(path => new File(path));
+        public static readonly Converter Converter = new FileSystemElementConverter<File, FileInfo>(path => new File(path));
         public static readonly File NULL = new NullFile();
 
         internal File(FileInfo fileInfo) : base(fileInfo) {}

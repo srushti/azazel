@@ -14,7 +14,7 @@ namespace Azazel.FileSystem {
     }
 
     public class IconExtractor {
-        public static IconExtractor Instance = new IconExtractor();
+        public static readonly IconExtractor Instance = new IconExtractor();
         private const uint SHGFI_ICON = 0x100;
         private const uint SHGFI_LARGEICON = 0x0;
         private const uint SHGFI_SMALLICON = 0x1;
@@ -46,7 +46,7 @@ namespace Azazel.FileSystem {
             }
         }
 
-        public ImageSource Extract(Stream strm) {
+        private static ImageSource Extract(Stream strm) {
             try {
                 var bmpImage = new BitmapImage();
                 bmpImage.BeginInit();

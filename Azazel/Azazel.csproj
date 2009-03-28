@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppFinder.cs" />
+    <Compile Include="AppSettings.cs" />
     <Compile Include="Arrays.cs" />
     <Compile Include="AzazelException.cs" />
     <Compile Include="Clipboard.cs" />
@@ -174,6 +175,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Extensions\StaticString.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Threading\Thread.cs" />
     <Compile Include="Threading\Timer.cs" />
     <Compile Include="Token.cs" />

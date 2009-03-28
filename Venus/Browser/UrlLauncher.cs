@@ -7,7 +7,7 @@ using Microsoft.Win32;
 
 namespace Venus.Browser {
     public static class UrlLauncher {
-        public static ImageSource BrowserIcon;
+        public static readonly ImageSource BrowserIcon;
 
         static UrlLauncher() {
             var processStartInfo = CommandToExecute("", "");

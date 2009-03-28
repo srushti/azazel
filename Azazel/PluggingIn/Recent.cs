@@ -64,6 +64,12 @@ namespace Azazel.PluggingIn {
         }
 
         public class RecentConverter : Converter {
+            private readonly SelfPlugin selfPlugin;
+
+            public RecentConverter(SelfPlugin selfPlugin) {
+                this.selfPlugin = selfPlugin;
+            }
+
             public bool CanConvert(Type type) {
                 return typeof (Recent).Equals(type);
             }
@@ -71,7 +77,7 @@ namespace Azazel.PluggingIn {
             public void ToXml(object value, XStreamWriter writer, MarshallingContext context) {}
 
             public object FromXml(XStreamReader reader, UnmarshallingContext context) {
-                return SelfPlugin.INSTANCE.Recent;
+                return selfPlugin.Recent;
             }
         }
     }

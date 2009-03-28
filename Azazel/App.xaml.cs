@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 using Azazel.FileSystem;
+using Azazel.Logging;
 
 namespace Azazel {
     public partial class App {
@@ -8,10 +9,13 @@ namespace Azazel {
             var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
             ShutdownMode = ShutdownMode.OnExplicitShutdown;
             if (processes.Length != 1) Shutdown();
-            var command = new MainWindowCommand(Shutdown);
+            var command = new MainWindowCommand(Shutdown, new AppSettings());
             command.Execute();
             command.Collapse();
-            DispatcherUnhandledException += (sender, args) => File.WriteAllText(Paths.Instance.Exception, args.Exception.ToString());
+            DispatcherUnhandledException += (sender, args) => {
+                                                LogManager.WriteLog(args.Exception);
+                                                File.WriteAllText(Paths.Instance.Exception, args.Exception.ToString());
+                                            };
         }
     }
 }

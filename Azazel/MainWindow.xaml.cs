@@ -4,10 +4,13 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Azazel.Extensions;
 using Azazel.FileSystem;
+using Azazel.Logging;
 using Azazel.Threading;
 using Action=Azazel.FileSystem.Action;
 
@@ -71,11 +74,21 @@ namespace Azazel {
 
         private void RefreshMenu() {
             selectedCommand.Text = controller.CommandName;
-            image.Source = controller.Command(0).Icon;
+            image.Source = Icon(controller.Command(0));
             command2Text.Text = controller.Command(1).Name;
             ((Image) command2.Bullet).Source = controller.Command(1).Icon;
             command3Text.Text = controller.Command(2).Name;
             ((Image) command3.Bullet).Source = controller.Command(2).Icon;
+        }
+
+        private new ImageSource Icon(Launchable launchable) {
+            try {
+                return launchable.Icon;
+            }
+            catch (Exception exception) {
+                LogManager.WriteLog(exception);
+                return new BitmapImage();
+            }
         }
 
         private void WindowClosing(object sender, CancelEventArgs e) {
