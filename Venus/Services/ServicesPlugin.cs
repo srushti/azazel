@@ -1,30 +1,22 @@
-using System;
 using System.ServiceProcess;
 using System.Windows.Media;
 using Azazel.FileSystem;
-using Azazel.Logging;
 using Azazel.PluggingIn;
-using Action=Azazel.FileSystem.Action;
 
 namespace Venus.Services {
     public class ServicesPlugin : LaunchablePlugin {
-        
-        
-            public bool IsAvailable {
-                get { return true; }
-            }
-
-            public Launchables Launchables() {
-                var services = new Launchables();
-                foreach (var service in ServiceController.GetServices()) {
-                    services.Add(new Service(service));
-                }
-                return services;
-
-            }
-
-            public event PluginChangedDelegate Changed = delegate { };
+        public bool IsAvailable {
+            get { return true; }
         }
+
+        public Launchables Launchables() {
+            var services = new Launchables();
+            foreach (var service in ServiceController.GetServices()) services.Add(new Service(service));
+            return services;
+        }
+
+        public event PluginChangedDelegate Changed = delegate { };
+    }
 
     public class Service : Launchable {
         private readonly ServiceController serviceController;
@@ -38,18 +30,15 @@ namespace Venus.Services {
         }
 
         public ImageSource Icon {
-            get { return null;}
+            get { return null; }
         }
 
         public Actions Actions {
             get {
                 var actions = new Actions();
-                if (CanStop) {
-                    actions.Add(new ServiceStop(serviceController));
-                }
-                if(CanStart) {
-                    actions.Add(new ServiceStart(serviceController));
-                }
+                serviceController.Refresh();
+                if (CanStop) actions.Add(new ServiceStop(serviceController));
+                if (CanStart) actions.Add(new ServiceStart(serviceController));
                 actions.Add(new ServiceStatus(serviceController));
                 return actions;
             }
@@ -87,16 +76,7 @@ namespace Venus.Services {
             }
 
             public void Act() {
-                new Runner(SafelyStart).AsyncStart();
-            }
-
-            private void SafelyStart() {
-                try {
-                    controller.Start();
-                }
-                catch (Exception e) {
-                    LogManager.WriteLog(e);
-                }
+                new Runner(controller.Start).AsyncStart();
             }
 
             public string Name {
@@ -104,44 +84,26 @@ namespace Venus.Services {
             }
         }
 
-        private class ServiceStop : Action
-        {
+        private class ServiceStop : Action {
             private readonly ServiceController controller;
 
-            public ServiceStop(ServiceController controller)
-            {
+            public ServiceStop(ServiceController controller) {
                 this.controller = controller;
             }
 
-            public void Act()
-            {
-                new Runner(SafelyStop).AsyncStart();
+            public void Act() {
+                new Runner(controller.Stop).AsyncStart();
             }
 
-            private void SafelyStop()
-            {
-                try
-                {
-                    controller.Stop();
-                }
-                catch (Exception e)
-                {
-                    LogManager.WriteLog(e);
-                }
-            }
-
-            public string Name
-            {
+            public string Name {
                 get { return "Stop Service"; }
             }
         }
 
-
-        public void Launch(string arguments) {
-        }
+        public void Launch(string arguments) {}
 
         public bool ShouldStoreHistory {
-            get { return false;}
+            get { return false; }
         }
     }
 }
