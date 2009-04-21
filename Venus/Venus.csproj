@@ -69,6 +69,7 @@
     <Compile Include="Browser\UrlLauncher.cs" />
     <Compile Include="Calculate\CalculatePlugin.cs" />
     <Compile Include="Calculate\CodeDomCalculator.cs" />
+    <Compile Include="ProcessKilller\ProcessKillerPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Run\RunPlugin.cs" />
     <Compile Include="Services\ServicesPlugin.cs" />
