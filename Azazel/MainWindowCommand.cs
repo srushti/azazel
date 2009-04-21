@@ -14,7 +14,7 @@ namespace Azazel {
         public MainWindowCommand(VoidDelegate killApplication, AppSettings settings) {
             var selfPlugin = new SelfPlugin();
             var loader = new PluginLoader(selfPlugin);
-            controller = new MainWindowController(loader.LaunchablePlugins, loader.CharacterPlugins, selfPlugin);
+            controller = new MainWindowController(loader.LaunchablePlugins, loader.CharacterPlugins, loader.LaunchableHandlers, selfPlugin);
             this.killApplication = killApplication;
             displayHotkey = settings.DisplayHotKey;
             killHotkey = settings.KillHotkey;

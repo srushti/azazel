@@ -121,6 +121,7 @@
     <Compile Include="AzazelException.cs" />
     <Compile Include="Clipboard.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\StaticAssembly.cs" />
     <Compile Include="Extensions\StaticDictionary.cs" />
     <Compile Include="Extensions\StaticEnumerable.cs" />
     <Compile Include="FileRank.cs" />
@@ -149,6 +150,9 @@
     <Compile Include="KeyHookup\HotKey.cs" />
     <Compile Include="PluggingIn\CharacterPlugin.cs" />
     <Compile Include="PluggingIn\ExecutedCommand.cs" />
+    <Compile Include="PluggingIn\FileHandler.cs" />
+    <Compile Include="PluggingIn\LaunchableHandler.cs" />
+    <Compile Include="PluggingIn\LaunchableHandlers.cs" />
     <Compile Include="PluggingIn\Plugin.cs" />
     <Compile Include="PluggingIn\Recent.cs" />
     <Compile Include="PluggingIn\SelfPlugin.cs" />

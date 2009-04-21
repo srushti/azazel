@@ -138,7 +138,7 @@ namespace Azazel {
         private void SelectDetails() {
             if (File.NULL.Equals(controller.Command(0))) return;
             arguments.Focusable = true;
-            var actions = controller.SelectedCommand.Actions;
+            var actions = controller.GetActionsForSelectedCommand();
             if (actions.IsEmpty()) AcceptParameters();
             else DisplayOptions(actions);
         }

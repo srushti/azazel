@@ -13,10 +13,12 @@ namespace Azazel.PluggingIn {
         private readonly Assemblies assemblies = new Assemblies();
         private readonly CharacterPlugins characterPlugins = new CharacterPlugins();
         private readonly LaunchablePlugins launchablePlugins = new LaunchablePlugins();
+        private readonly LaunchableHandlers launchableHandlers = new LaunchableHandlers();
 
         public PluginLoader(SelfPlugin selfPlugin) {
             characterPlugins = new CharacterPlugins();
             launchablePlugins = new LaunchablePlugins();
+            launchableHandlers = new LaunchableHandlers();
             var executableLocation = ConfigurationManager.AppSettings["executableLocation"];
             var executingAssembly = Assembly.GetExecutingAssembly();
             if (string.IsNullOrEmpty(executableLocation)) executableLocation = new File(executingAssembly.Location).ParentFolder.FullName;
@@ -28,6 +30,7 @@ namespace Azazel.PluggingIn {
                     assemblies.Add(assembly);
                     new List<Type>(assembly.GetTypes()).ForEach(type => AddPlugin(type, typeof (LaunchablePlugin), launchablePlugins));
                     new List<Type>(assembly.GetTypes()).ForEach(type => AddPlugin(type, typeof (CharacterPlugin), characterPlugins));
+                    new List<Type>(assembly.GetTypes()).ForEach(type => AddPlugin(type, typeof (LaunchableHandler), launchableHandlers));
                 }
             }
             LogManager.WriteLog("Done loading plugins");
@@ -46,6 +49,10 @@ namespace Azazel.PluggingIn {
             get { return launchablePlugins; }
         }
 
+        public LaunchableHandlers LaunchableHandlers {
+            get { return launchableHandlers; }
+        }
+
         private static void AddPlugin<T>(Type type, Type pluginType, ICollection<T> plugins) where T : Plugin {
             if (!type.IsClass || type.IsAbstract || !pluginType.IsAssignableFrom(type)) return;
             try {
@@ -53,7 +60,8 @@ namespace Azazel.PluggingIn {
                 var plugin = (T) Activator.CreateInstance(type, true);
                 if (plugin.IsAvailable) plugins.Add(plugin);
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                LogManager.WriteLog(ex);
                 MessageBox.Show("Could not load plugin : " + type, "Error loading plugin", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

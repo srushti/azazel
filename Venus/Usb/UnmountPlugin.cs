@@ -1,8 +1,11 @@
+using System;
+using System.Reflection;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Azazel.Extensions;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
+using Action=Azazel.FileSystem.Action;
 
 namespace Venus.Usb {
     public class UnmountPlugin : LaunchablePlugin {
@@ -24,10 +27,7 @@ namespace Venus.Usb {
 
         public ImageSource Icon {
             get {
-                return new BitmapImage();
-//                    var assembly = Assembly.GetExecutingAssembly();
-//                    var stream = assembly.GetManifestResourceStream("UsbEject.ico");
-//                    return IconExtractor.Instance.Extract(stream);
+                    return new BitmapImage(new Uri(Assembly.GetExecutingAssembly().GetExecutingFolder() + "\\UsbEject.ico"));
             }
         }
 

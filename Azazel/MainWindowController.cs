@@ -1,9 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using Azazel.Extensions;
 using Azazel.FileSystem;
 using Azazel.Logging;
 using Azazel.PluggingIn;
 using Azazel.Threading;
+using Action=Azazel.FileSystem.Action;
 
 namespace Azazel {
     public class MainWindowController {
@@ -13,10 +16,12 @@ namespace Azazel {
         private Launchables selectedFiles = new Launchables();
         private Token latestToken = new Token();
         private Thread thread = new Thread(() => { });
+        private readonly LaunchableHandlers launchableHandlers;
         private readonly SelfPlugin selfPlugin;
         public event VoidDelegate RefreshedResults = () => { };
 
-        public MainWindowController(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins, SelfPlugin selfPlugin) {
+        public MainWindowController(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins, LaunchableHandlers launchableHandlers, SelfPlugin selfPlugin) {
+            this.launchableHandlers = launchableHandlers;
             this.selfPlugin = selfPlugin;
             appFinder = new AppFinder(launchablePlugins, characterPlugins, selfPlugin.XStream);
             selfPlugin.RefreshRequested += (() => appFinder.LoadFiles(launchablePlugins));
@@ -83,6 +88,12 @@ namespace Azazel {
         public void MoveDown(int count) {
             if (index + count < selectedFiles.Count && index + count >= 0) index += count;
             else index = count < 0 ? 0 : selectedFiles.Count - 1;
+        }
+
+        public Actions GetActionsForSelectedCommand() {
+            var actions = new Actions(SelectedCommand.Actions);
+            actions.AddRange(launchableHandlers.ActionsFor(SelectedCommand));
+            return actions;
         }
     }
 

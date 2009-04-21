@@ -7,9 +7,12 @@ namespace Azazel.FileSystem {
         private readonly VoidDelegate voidDelegate;
         private readonly ProcessStartInfo startInfo;
 
-        public Runner(ProcessStartInfo startInfo) {
+        public Runner(ProcessStartInfo startInfo) : this(startInfo, true) {
+        }
+
+        public Runner(ProcessStartInfo startInfo, bool useShellExecute) {
             this.startInfo = startInfo;
-            startInfo.UseShellExecute = true;
+            startInfo.UseShellExecute = useShellExecute;
         }
 
         public Runner(VoidDelegate voidDelegate) {

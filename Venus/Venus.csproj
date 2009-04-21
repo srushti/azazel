@@ -69,6 +69,7 @@
     <Compile Include="Browser\UrlLauncher.cs" />
     <Compile Include="Calculate\CalculatePlugin.cs" />
     <Compile Include="Calculate\CodeDomCalculator.cs" />
+    <Compile Include="Handlers\NantTasks\NantTasksHandler.cs" />
     <Compile Include="ProcessKilller\ProcessKillerPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Run\RunPlugin.cs" />
@@ -91,7 +92,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Usb\UsbEject.ico">
+    <None Include="CallNantWithPause.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="UsbEject.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
