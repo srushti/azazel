@@ -37,9 +37,9 @@ namespace Venus.Services {
             get {
                 var actions = new Actions();
                 serviceController.Refresh();
-                if (CanStop) actions.Add(new ServiceStop(serviceController));
-                if (CanStart) actions.Add(new ServiceStart(serviceController));
-                actions.Add(new ServiceStatus(serviceController));
+                if (CanStop) actions.Add(new ServiceStopAction(serviceController));
+                if (CanStart) actions.Add(new ServiceStartAction(serviceController));
+                actions.Add(new ServiceStatusAction(serviceController));
                 return actions;
             }
         }
@@ -52,10 +52,10 @@ namespace Venus.Services {
             get { return serviceController.CanStop && serviceController.Status == ServiceControllerStatus.Running; }
         }
 
-        private class ServiceStatus : Action {
+        private class ServiceStatusAction : Action {
             private readonly ServiceController controller;
 
-            public ServiceStatus(ServiceController controller) {
+            public ServiceStatusAction(ServiceController controller) {
                 this.controller = controller;
             }
 
@@ -68,10 +68,10 @@ namespace Venus.Services {
             }
         }
 
-        private class ServiceStart : Action {
+        private class ServiceStartAction : Action {
             private readonly ServiceController controller;
 
-            public ServiceStart(ServiceController controller) {
+            public ServiceStartAction(ServiceController controller) {
                 this.controller = controller;
             }
 
@@ -84,10 +84,10 @@ namespace Venus.Services {
             }
         }
 
-        private class ServiceStop : Action {
+        private class ServiceStopAction : Action {
             private readonly ServiceController controller;
 
-            public ServiceStop(ServiceController controller) {
+            public ServiceStopAction(ServiceController controller) {
                 this.controller = controller;
             }
 

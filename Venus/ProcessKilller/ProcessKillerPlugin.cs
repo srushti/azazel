@@ -4,6 +4,7 @@ using System.Windows.Media;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
 using Action=Azazel.FileSystem.Action;
+using System.Linq;
 
 namespace Venus.ProcessKilller {
     public class ProcessKillerPlugin : LaunchablePlugin {
@@ -34,7 +35,7 @@ namespace Venus.ProcessKilller {
             {
                 get {
                     var actions = new Actions();
-                    foreach (var process in Process.GetProcesses()) {
+                    foreach (var process in Process.GetProcesses().OrderBy(process => process.ProcessName)) {
                         actions.Add(new ProcessAction(process));
                     }
                     return actions;
