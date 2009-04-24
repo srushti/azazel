@@ -27,12 +27,13 @@ namespace Venus.Handlers.NantTasks {
             return ConfiguredNantPath != null && File.Exists(ConfiguredNantPath);
         }
 
+        protected override bool Handles(FileInfo fileInfo) {
+            return IsValidNantBuidFile(fileInfo);
+        }
+
         protected override Actions ActionsFor(FileInfo buildFile) {
             var actions = new Actions();
             
-            if (!IsValidNantBuidFile(buildFile))
-                return actions;
-
             XmlNodeList targetNodes = GetAllTargets(buildFile);
             foreach (XmlNode targetNode in targetNodes) {
                 actions.Add(new NantTargetAction(targetNode, ConfiguredNantPath, buildFile.FullName));

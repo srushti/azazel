@@ -10,13 +10,16 @@ namespace Azazel.PluggingIn {
         public abstract bool IsAvailable { get; }
 
         public bool Handles(Launchable launchable) {
-            return launchable.GetType() == typeof (File);
+            if (launchable is File)
+                return Handles(((File) launchable).FileSystemInfo);
+            return false;
         }
 
         public IEnumerable<Action> ActionsFor(Launchable launchable) {
             return ActionsFor(((File) launchable).FileSystemInfo);
         }
 
+        protected abstract bool Handles(FileInfo fileInfo);
         protected abstract Actions ActionsFor(FileInfo fileInfo);
     }
 }
