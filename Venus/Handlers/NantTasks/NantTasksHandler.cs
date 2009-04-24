@@ -2,7 +2,9 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Xml;
+using Azazel.Extensions;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
 using Action=Azazel.FileSystem.Action;
@@ -60,12 +62,10 @@ namespace Venus.Handlers.NantTasks {
             }
 
             public void Act() {
-                //Calls Nant Directly, most of the time, not what we want    
-                new Runner(new ProcessStartInfo(nantPath, string.Format("-buildfile:{0} {1}", buildFileName, TargetName))).AsyncStart();
-                
-//                TODO:Still working on this...
-//                var processStartInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().GetExecutingFolder()+"\\CallNantWithPause.bat", BuildArguments());
-//                new Runner(processStartInfo, false).AsyncStart();
+                string batchFilePath = Assembly.GetExecutingAssembly().GetExecutingFolder()+"\\CallNantWithPause.bat";
+                var processStartInfo = new ProcessStartInfo(batchFilePath, BuildArguments());
+
+                new Runner(() => Process.Start(processStartInfo)).AsyncStart();
             }
 
             private string BuildArguments() {
