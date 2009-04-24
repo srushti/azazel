@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Azazel.Logging;
 using IWshRuntimeLibrary;
 
 namespace Azazel.FileSystem {
@@ -41,7 +42,12 @@ namespace Azazel.FileSystem {
                 bmp.Save(strm, ImageFormat.Png);
                 return Extract(strm);
             }
-            catch (ArgumentException) {
+            catch (ExternalException exception) {
+                LogManager.WriteLog(exception);
+                return new BitmapImage();
+            }
+            catch (ArgumentException exception) {
+                LogManager.WriteLog(exception);
                 return new BitmapImage();
             }
         }
