@@ -74,5 +74,9 @@ namespace Azazel {
             File.WriteAllText(Paths.Instance.Folders, xstream.ToXml(folders));
             LoadFiles(launchablePlugins);
         }
+
+        public Launchable ExactMatch(string input) {
+            return history[input];
+        }
     }
 }

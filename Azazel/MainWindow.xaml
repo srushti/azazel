@@ -120,7 +120,20 @@
 				<SplineDoubleKeyFrame KeyTime="00:00:00.2500000" Value="0"/>
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
+		<Storyboard x:Key="ShowOtherLaunchables">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="command2" Storyboard.TargetProperty="(FrameworkElement.Height)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="24"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="command3" Storyboard.TargetProperty="(FrameworkElement.Height)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="24"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="command3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="24"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
 	</Window.Resources>
+	<Window.Triggers>
+	</Window.Triggers>
   <Canvas SnapsToDevicePixels="False" HorizontalAlignment="Stretch" OpacityMask="{x:Null}" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" Height="168" Width="480" x:Name="canvas">
   	<Rectangle OpacityMask="{DynamicResource opacityMask}" VerticalAlignment="Stretch" Fill="{DynamicResource background}" RenderTransformOrigin="0.5,0.5" x:Name="rectangle" d:LayoutOverrides="VerticalAlignment" HorizontalAlignment="Stretch" Width="480" Height="48">
   		<Rectangle.RenderTransform>
@@ -142,13 +155,29 @@
   			</TransformGroup>
   		</TextBox.RenderTransform>
   	</TextBox>
-  	<BulletDecorator OpacityMask="{DynamicResource opacityMask}" x:Name="command2" Background="{DynamicResource background}" VerticalAlignment="Bottom" Height="24" d:LayoutOverrides="VerticalAlignment" Width="480" Canvas.Top="120">
+  	<BulletDecorator OpacityMask="{DynamicResource opacityMask}" x:Name="command2" Background="{DynamicResource background}" VerticalAlignment="Bottom" Height="0" d:LayoutOverrides="VerticalAlignment" Width="480" Canvas.Top="120" RenderTransformOrigin="0.5,0.5">
+  		<BulletDecorator.RenderTransform>
+  			<TransformGroup>
+  				<ScaleTransform ScaleX="1" ScaleY="1"/>
+  				<SkewTransform AngleX="0" AngleY="0"/>
+  				<RotateTransform Angle="0"/>
+  				<TranslateTransform X="0" Y="0"/>
+  			</TransformGroup>
+  		</BulletDecorator.RenderTransform>
   		<BulletDecorator.Bullet>
   			<Image/>
   		</BulletDecorator.Bullet>
   		<TextBlock x:Name="command2Text" Foreground="{DynamicResource text}" Text=""/>
   	</BulletDecorator>
-  	<BulletDecorator OpacityMask="{DynamicResource opacityMask}" x:Name="command3" Background="{DynamicResource background}" VerticalAlignment="Bottom" Height="24" d:LayoutOverrides="VerticalAlignment" Width="480" Canvas.Top="144">
+  	<BulletDecorator OpacityMask="{DynamicResource opacityMask}" x:Name="command3" Background="{DynamicResource background}" VerticalAlignment="Bottom" Height="0" d:LayoutOverrides="VerticalAlignment" Width="480" Canvas.Top="120" RenderTransformOrigin="0.5,0.5">
+  		<BulletDecorator.RenderTransform>
+  			<TransformGroup>
+  				<ScaleTransform ScaleX="1" ScaleY="1"/>
+  				<SkewTransform AngleX="0" AngleY="0"/>
+  				<RotateTransform Angle="0"/>
+  				<TranslateTransform X="0" Y="0"/>
+  			</TransformGroup>
+  		</BulletDecorator.RenderTransform>
   		<BulletDecorator.Bullet>
   			<Image/>
   		</BulletDecorator.Bullet>

@@ -23,7 +23,7 @@ namespace Azazel {
         }
 
         public Launchable this[string input] {
-            get { return dictionary[input.ToLower()]; }
+            get { return dictionary.ContainsKey(input) ? dictionary[input.ToLower()] : null; }
             set { dictionary.SetValue(input.ToLower(), value); }
         }
 

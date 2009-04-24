@@ -48,7 +48,7 @@ namespace Azazel.PluggingIn {
                 AddExecutedCommand(new ExecutedCommand(launchable, arguments));
         }
 
-        public bool Equals(Recent obj) {
+        private static bool Equals(Recent obj) {
             return !ReferenceEquals(null, obj);
         }
 

@@ -17,9 +17,10 @@ using Action=Azazel.FileSystem.Action;
 namespace Azazel {
     public partial class MainWindow {
         private readonly MainWindowController controller;
-        private readonly Storyboard DisplayOptionsStoryboard;
-        private readonly Storyboard ParameterStoryboard;
-        private readonly Storyboard ResetStoryboard;
+        private readonly Storyboard displayOptionsStoryboard;
+        private readonly Storyboard parameterStoryboard;
+        private readonly Storyboard resetStoryboard;
+        private readonly Storyboard showOtherLaunchablesStoryboard;
         private readonly Timer<string> timer;
         private bool closing;
         private CommandState state;
@@ -29,9 +30,10 @@ namespace Azazel {
             InitializeComponent();
             HookEvents();
             timer = new Timer<string>(PresentInput);
-            ParameterStoryboard = (Storyboard) Resources["Parameter"];
-            ResetStoryboard = (Storyboard) Resources["Reset"];
-            DisplayOptionsStoryboard = (Storyboard) Resources["DisplayOptions"];
+            parameterStoryboard = (Storyboard) Resources["Parameter"];
+            resetStoryboard = (Storyboard) Resources["Reset"];
+            displayOptionsStoryboard = (Storyboard) Resources["DisplayOptions"];
+            showOtherLaunchablesStoryboard = (Storyboard) Resources["ShowOtherLaunchables"];
         }
 
         public MainWindow(MainWindowController controller) : this() {
@@ -59,6 +61,12 @@ namespace Azazel {
         }
 
         private void InputChanged() {
+            var immediateResult = controller.ImmediateResult(input.Text);
+            if (immediateResult != null) {
+                selectedCommand.Text = immediateResult.Name;
+                image.Source = immediateResult.Icon;
+            }
+
             timer.Start(.15, input.Text);
         }
 
@@ -79,9 +87,10 @@ namespace Azazel {
             ((Image) command2.Bullet).Source = controller.Command(1).Icon;
             command3Text.Text = controller.Command(2).Name;
             ((Image) command3.Bullet).Source = controller.Command(2).Icon;
+            BeginAnimation(showOtherLaunchablesStoryboard);
         }
 
-        private new ImageSource Icon(Launchable launchable) {
+        private new static ImageSource Icon(Launchable launchable) {
             try {
                 return launchable.Icon;
             }
@@ -144,7 +153,7 @@ namespace Azazel {
         }
 
         private void DisplayOptions(IEnumerable<Action> actions) {
-            BeginAnimation(DisplayOptionsStoryboard);
+            BeginAnimation(displayOptionsStoryboard);
             options.Items.Clear();
             foreach (var action in actions) options.Items.Add(new ActionItem(action));
             input.Focusable = false;
@@ -159,7 +168,7 @@ namespace Azazel {
             arguments.Clear();
             arguments.Focus();
             state = new ArgumentEnteringState(this);
-            BeginAnimation(ParameterStoryboard);
+            BeginAnimation(parameterStoryboard);
         }
 
         private void BeginAnimation(Storyboard storyboard) {
@@ -176,7 +185,7 @@ namespace Azazel {
             input.SelectAll();
             arguments.Text = string.Empty;
             state = new CommandSelectingState(this);
-            BeginAnimation(ResetStoryboard);
+            BeginAnimation(resetStoryboard);
         }
 
         private void LaunchApp() {

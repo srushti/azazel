@@ -5,7 +5,6 @@
 *.bak
 *.cache
 *.log
-Azazel.4.5.resharper
 [Bb]in
 [Db]ebug*/
 obj/

@@ -95,6 +95,10 @@ namespace Azazel {
             actions.AddRange(launchableHandlers.ActionsFor(SelectedCommand));
             return actions;
         }
+
+        public Launchable ImmediateResult(string inputText) {
+            return appFinder.ExactMatch(inputText);
+        }
     }
 
     internal class KeyboardShortcutChangeCommand {
