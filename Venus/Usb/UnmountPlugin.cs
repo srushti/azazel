@@ -25,10 +25,16 @@ namespace Venus.Usb {
         public ImageSource Icon {
             get {
                 return new BitmapImage();
-//                    var assembly = Assembly.GetExecutingAssembly();
-//                    var stream = assembly.GetManifestResourceStream("UsbEject.ico");
-//                    return IconExtractor.Instance.Extract(stream);
             }
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj.GetType() == typeof (UnmountLaunchable);
+        }
+
+        public override int GetHashCode() {
+            return 0;
         }
 
         public Actions Actions {
@@ -51,7 +57,7 @@ namespace Venus.Usb {
 
     internal class UnmountAction : Action {
         private readonly Device device;
-        public static Action NoDevices = new UnmountAction();
+        public static readonly Action NoDevices = new UnmountAction();
 
         private UnmountAction() {}
 

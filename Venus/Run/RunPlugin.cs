@@ -17,8 +17,8 @@ namespace Venus.Run {
             return new RunLaunchable(searchString.Substring(1));
         }
 
-        public class RunLaunchable : Launchable {
-            private readonly string s;
+        private class RunLaunchable : Launchable {
+            private readonly string s = string.Empty;
 
             public RunLaunchable(string s) {
                 this.s = s;
@@ -42,6 +42,17 @@ namespace Venus.Run {
 
             public bool ShouldStoreHistory {
                 get { return false; }
+            }
+
+            public override bool Equals(object obj) {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != typeof (RunLaunchable)) return false;
+                return Equals(((RunLaunchable) obj).s, s);
+            }
+
+            public override int GetHashCode() {
+                return s.GetHashCode();
             }
         }
     }
