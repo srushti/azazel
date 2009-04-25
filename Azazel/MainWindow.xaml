@@ -122,13 +122,13 @@
 		</Storyboard>
 		<Storyboard x:Key="ShowOtherLaunchables">
 			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="command2" Storyboard.TargetProperty="(FrameworkElement.Height)">
-				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="24"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.2500000" Value="24"/>
 			</DoubleAnimationUsingKeyFrames>
 			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="command3" Storyboard.TargetProperty="(FrameworkElement.Height)">
-				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="24"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.2500000" Value="24"/>
 			</DoubleAnimationUsingKeyFrames>
 			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="command3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="24"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.2500000" Value="24"/>
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
 	</Window.Resources>

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Windows;
 using Azazel.Extensions;
 using Azazel.FileSystem;
@@ -98,6 +96,10 @@ namespace Azazel {
 
         public Launchable ImmediateResult(string inputText) {
             return appFinder.ExactMatch(inputText);
+        }
+
+        public void CancelSearch() {
+            thread.Abort();
         }
     }
 

@@ -63,10 +63,10 @@ namespace Azazel {
         private void InputChanged() {
             var immediateResult = controller.ImmediateResult(input.Text);
             if (immediateResult != null) {
+                controller.CancelSearch();
                 selectedCommand.Text = immediateResult.Name;
                 image.Source = immediateResult.Icon;
             }
-
             timer.Start(.15, input.Text);
         }
 

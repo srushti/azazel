@@ -10,8 +10,8 @@ using File=System.IO.File;
 
 namespace Venus.Handlers.NantTasks {
     public class NantTasksHandler : FileHandler{
-        private const string NantPathKey = "NantPath";
-        private static readonly string ConfiguredNantPath = ConfigurationManager.AppSettings[NantPathKey];
+        private const string NANT_PATH_KEY = "NantPath";
+        private static readonly string ConfiguredNantPath = ConfigurationManager.AppSettings[NANT_PATH_KEY];
 
         /* TODO: For now, you have to add something like this to the config file. Fix this.
        	<appSettings>

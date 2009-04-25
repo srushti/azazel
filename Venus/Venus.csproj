@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{70ED8BDF-0B96-4E1C-98B4-B5A5FC8FC86A}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Browser\Bookmark.cs" />
     <Compile Include="Browser\BrowsePlugin.cs" />
+    <Compile Include="Browser\DeliciousTag.cs" />
     <Compile Include="Browser\DirectBrowsePlugin.cs" />
     <Compile Include="Browser\Firefox.cs" />
     <Compile Include="Browser\FirefoxSearchPlugin.cs" />
@@ -95,7 +96,9 @@
     <None Include="CallNantWithPause.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="UsbEject.ico">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="delicious.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

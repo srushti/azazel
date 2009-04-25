@@ -45,10 +45,10 @@ namespace Azazel.FileSystem {
         protected class FileSystemElementConverter<V, X> : Converter where V : FileSystemElement<X, V> where X : FileSystemInfo {
             public delegate V NewFileSystemElement(string path);
 
-            private readonly NewFileSystemElement NewT;
+            private readonly NewFileSystemElement newT;
 
             public FileSystemElementConverter(NewFileSystemElement newT) {
-                NewT = newT;
+                this.newT = newT;
             }
 
             public bool CanConvert(Type type) {
@@ -60,7 +60,7 @@ namespace Azazel.FileSystem {
             }
 
             public object FromXml(XStreamReader reader, UnmarshallingContext context) {
-                return NewT(reader.GetValue());
+                return newT(reader.GetValue());
             }
         }
     }

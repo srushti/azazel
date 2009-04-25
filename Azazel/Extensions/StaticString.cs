@@ -22,5 +22,9 @@ namespace Azazel.Extensions {
             if (s.Length == 0) return s;
             return s.Substring(0, s.Length - 1);
         }
+
+        public static bool IsNullOrEmpty(this string s) {
+            return string.IsNullOrEmpty(s);
+        }
     }
 }

@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Azazel.FileSystem;
-using Action=Azazel.FileSystem.Action;
 using File=Azazel.FileSystem.File;
 
 namespace Azazel.PluggingIn {

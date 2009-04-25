@@ -31,7 +31,7 @@ namespace Venus.Browser {
             }
         }
 
-        public static Regex Regex {
+        private static Regex Regex {
             get {
                 var expression = new StringBuilder();
                 var nonCapturingAttributes1 = new[] {"ADD_DATE", "LAST_VISIT", "LAST_MODIFIED",};
@@ -61,30 +61,34 @@ namespace Venus.Browser {
         }
 
         private static Launchables LoadFFDeliciousBookmarks(File file) {
-            var connection = new SQLiteConnection(@"Data Source=" + file.FullName + @";Version=3;New=False;Compress=True;");
-            connection.Open();
-            var command = connection.CreateCommand();
-            command.CommandText = "SELECT name as title, url, shortcut as keyword FROM bookmarks where title is not null";
-            var reader = command.ExecuteReader(CommandBehavior.SequentialAccess);
-            var bookmarks = new Launchables();
-            while (reader.Read())
-                bookmarks.AddRange(CreateBookmarks(reader["title"].ToString(), reader["url"].ToString(), reader["keyword"].ToString()));
-            return bookmarks;
+            using (var connection = new Connection(file)) {
+                SQLiteDataReader keywordsReader =
+                    connection.ExecuteQuery("SELECT name as title, url, shortcut as keyword FROM bookmarks where title is not null and keyword <> ''");
+                var bookmarks = new Launchables();
+                while (keywordsReader.Read())
+                    bookmarks.AddRange(CreateBookmarks(keywordsReader["title"].ToString(), keywordsReader["url"].ToString(),
+                                                       keywordsReader["keyword"].ToString()));
+                var tagsReader = connection.ExecuteQuery("SELECT name, rowid from tags");
+                while (tagsReader.Read()) {
+                    if(!tagsReader["name"].ToString().StartsWith("shortcut:"))
+                    bookmarks.Add(new DeliciousTag(tagsReader["name"].ToString(), int.Parse(tagsReader["rowid"].ToString()), file));
+                }
+                return bookmarks;
+            }
         }
 
         private static Launchables LoadFF3Bookmarks(File file) {
-            var connection = new SQLiteConnection(@"Data Source=" + file.FullName + @";Version=3;New=False;Compress=True;");
-            connection.Open();
-            var command = connection.CreateCommand();
-            command.CommandText =
-                "select b.title,  p.url,k.keyword from moz_places p join moz_bookmarks b on p.id = b.fk left outer join moz_keywords k on keyword_id = k.id where b.title is not null";
-            var reader = command.ExecuteReader(CommandBehavior.SequentialAccess);
-            var bookmarks = new Launchables();
-            while (reader.Read()) {
-                if (!reader["url"].ToString().StartsWith("place:"))
-                    bookmarks.AddRange(CreateBookmarks(reader["title"].ToString(), reader["url"].ToString(), reader["keyword"].ToString()));
+            using (var connection = new Connection(file)) {
+                var reader =
+                    connection.ExecuteQuery(
+                        "select b.title,  p.url,k.keyword from moz_places p join moz_bookmarks b on p.id = b.fk left outer join moz_keywords k on keyword_id = k.id where b.title is not null");
+                var bookmarks = new Launchables();
+                while (reader.Read()) {
+                    if (!reader["url"].ToString().StartsWith("place:"))
+                        bookmarks.AddRange(CreateBookmarks(reader["title"].ToString(), reader["url"].ToString(), reader["keyword"].ToString()));
+                }
+                return bookmarks;
             }
-            return bookmarks;
         }
 
         public bool IsAvailable {
@@ -119,5 +123,28 @@ namespace Venus.Browser {
         public event PluginChangedDelegate Changed = delegate { };
 
         private class Bookmarks : Files {}
+    }
+
+    public class Connection : IDisposable {
+        private readonly SQLiteConnection connection;
+
+        public Connection(File file) {
+            connection = new SQLiteConnection(@"Data Source=" + file.FullName + @";Version=3;New=False;Compress=True;");
+            connection.Open();
+        }
+
+        void IDisposable.Dispose() {
+            connection.Dispose();
+        }
+
+        private SQLiteCommand CreateCommand() {
+            return connection.CreateCommand();
+        }
+
+        public SQLiteDataReader ExecuteQuery(string query) {
+            var command = CreateCommand();
+            command.CommandText = query;
+            return command.ExecuteReader(CommandBehavior.SequentialAccess);
+        }
     }
 }
