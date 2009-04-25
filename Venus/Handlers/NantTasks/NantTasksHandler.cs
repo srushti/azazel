@@ -9,7 +9,7 @@ using Action=Azazel.FileSystem.Action;
 using File=System.IO.File;
 
 namespace Venus.Handlers.NantTasks {
-    public class NantTasksHandler : FileHandler{
+    public class NantTasksHandler : FileHandler {
         private const string NANT_PATH_KEY = "NantPath";
         private static readonly string ConfiguredNantPath = ConfigurationManager.AppSettings[NANT_PATH_KEY];
 
@@ -29,14 +29,12 @@ namespace Venus.Handlers.NantTasks {
 
         protected override Actions ActionsFor(FileInfo buildFile) {
             var actions = new Actions();
-            
+
             if (!IsValidNantBuidFile(buildFile))
                 return actions;
 
             XmlNodeList targetNodes = GetAllTargets(buildFile);
-            foreach (XmlNode targetNode in targetNodes) {
-                actions.Add(new NantTargetAction(targetNode, ConfiguredNantPath, buildFile.FullName));
-            }
+            foreach (XmlNode targetNode in targetNodes) actions.Add(new NantTargetAction(targetNode, ConfiguredNantPath, buildFile.FullName));
             return actions;
         }
 
@@ -61,14 +59,14 @@ namespace Venus.Handlers.NantTasks {
             public void Act() {
                 //Calls Nant Directly, most of the time, not what we want    
                 new Runner(new ProcessStartInfo(nantPath, string.Format("-buildfile:{0} {1}", buildFileName, TargetName))).AsyncStart();
-                
+
 //                TODO:Still working on this...
 //                var processStartInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().GetExecutingFolder()+"\\CallNantWithPause.bat", BuildArguments());
 //                new Runner(processStartInfo, false).AsyncStart();
             }
 
             private string BuildArguments() {
-                return string.Format("{0} -buildfile:{1} {2}",nantPath, buildFileName, TargetName);
+                return string.Format("{0} -buildfile:{1} {2}", nantPath, buildFileName, TargetName);
             }
 
             public string Name {
