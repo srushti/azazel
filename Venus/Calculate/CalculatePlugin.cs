@@ -1,7 +1,6 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Azazel;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
@@ -57,7 +56,7 @@ namespace Venus.Calculate {
             }
 
             public ImageSource Icon {
-                get { return new BitmapImage(); }
+                get { return new PluginIconLoader().Icon("calc"); }
             }
 
             public Actions Actions {

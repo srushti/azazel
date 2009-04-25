@@ -24,7 +24,7 @@ namespace Venus.Browser {
 
         [Test]
         public void LoadsASearchPlugin() {
-            var googleSearch = FirefoxSearchPlugin.CreateSearchPlugin(searchPluginXml);
+            var googleSearch = new FirefoxSearchPlugin().CreateSearchPlugin(searchPluginXml);
             Assert.AreEqual("Google", googleSearch.Name);
             Assert.AreEqual("http://www.google.com/firefox", googleSearch.FullName);
             Assert.AreEqual("http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8&aq=t&", googleSearch.SearchQuery);

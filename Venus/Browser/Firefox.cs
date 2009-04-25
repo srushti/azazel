@@ -16,7 +16,7 @@ namespace Venus.Browser {
         private static readonly string profilesPath = Paths.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                                                     @"Mozilla\Firefox\Profiles");
 
-        private static readonly ImageSource icon = UrlLauncher.BrowserIcon;
+        private static readonly ImageSource icon = new PluginIconLoader().Png("firefox");
         private readonly Folder profilesFolder = new Folder(profilesPath);
 
         public Firefox() {
@@ -70,8 +70,8 @@ namespace Venus.Browser {
                                                        keywordsReader["keyword"].ToString()));
                 var tagsReader = connection.ExecuteQuery("SELECT name, rowid from tags");
                 while (tagsReader.Read()) {
-                    if(!tagsReader["name"].ToString().StartsWith("shortcut:"))
-                    bookmarks.Add(new DeliciousTag(tagsReader["name"].ToString(), int.Parse(tagsReader["rowid"].ToString()), file));
+                    if (!tagsReader["name"].ToString().StartsWith("shortcut:"))
+                        bookmarks.Add(new DeliciousTag(tagsReader["name"].ToString(), int.Parse(tagsReader["rowid"].ToString()), file));
                 }
                 return bookmarks;
             }

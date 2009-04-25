@@ -1,6 +1,5 @@
 using System.Text.RegularExpressions;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
 
@@ -27,19 +26,27 @@ namespace Venus.Browser {
             return new UrlLaunchable(searchString);
         }
 
-        public class EmailLaunchable : DirectBrowseLaunchable {
+        private class EmailLaunchable : DirectBrowseLaunchable {
             public EmailLaunchable(string url) : base(url) {}
 
             public override string Name {
                 get { return "Email: " + url; }
             }
+
+            public override ImageSource Icon {
+                get { return new PluginIconLoader().Icon("email"); }
+            }
         }
 
-        public class UrlLaunchable : DirectBrowseLaunchable {
+        private class UrlLaunchable : DirectBrowseLaunchable {
             public UrlLaunchable(string url) : base(url) {}
 
             public override string Name {
                 get { return "Open: " + url; }
+            }
+
+            public override ImageSource Icon {
+                get { return new PluginIconLoader().Png("internet"); }
             }
         }
 
@@ -51,10 +58,7 @@ namespace Venus.Browser {
             }
 
             public abstract string Name { get; }
-
-            public ImageSource Icon {
-                get { return new BitmapImage(); }
-            }
+            public abstract ImageSource Icon { get; }
 
             public Actions Actions {
                 get { return new Actions(); }

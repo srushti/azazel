@@ -1,10 +1,11 @@
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
 
 namespace Venus.Run {
     public class RunPlugin : CharacterPlugin {
+        private readonly ImageSource icon = new PluginIconLoader().Icon("run");
+
         public bool IsAvailable {
             get { return true; }
         }
@@ -14,14 +15,16 @@ namespace Venus.Run {
         }
 
         public Launchable Launchable(string searchString) {
-            return new RunLaunchable(searchString.Substring(1));
+            return new RunLaunchable(searchString.Substring(1), icon);
         }
 
         private class RunLaunchable : Launchable {
             private readonly string s = string.Empty;
+            private readonly ImageSource icon;
 
-            public RunLaunchable(string s) {
+            public RunLaunchable(string s, ImageSource icon) {
                 this.s = s;
+                this.icon = icon;
             }
 
             public string Name {
@@ -29,7 +32,7 @@ namespace Venus.Run {
             }
 
             public ImageSource Icon {
-                get { return new BitmapImage(); }
+                get { return icon; }
             }
 
             public Actions Actions {

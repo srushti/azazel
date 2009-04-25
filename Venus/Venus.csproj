@@ -71,6 +71,7 @@
     <Compile Include="Calculate\CalculatePlugin.cs" />
     <Compile Include="Calculate\CodeDomCalculator.cs" />
     <Compile Include="Handlers\NantTasks\NantTasksHandler.cs" />
+    <Compile Include="PluginIconLoader.cs" />
     <Compile Include="ProcessKilller\ProcessKillerPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Run\RunPlugin.cs" />
@@ -99,6 +100,32 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="delicious.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="usb.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="firefox.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="calc.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="email.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="internet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="run.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

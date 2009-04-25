@@ -20,9 +20,7 @@ namespace Venus.Browser {
 
         public ImageSource Icon {
             get {
-                return
-                    IconExtractor.Instance.Extract(
-                        new File(Paths.Combine(new File(Assembly.GetExecutingAssembly().FullName).ParentFolder.FullName, "delicious.ico")));
+                return new PluginIconLoader().Icon("delicious");
             }
         }
 

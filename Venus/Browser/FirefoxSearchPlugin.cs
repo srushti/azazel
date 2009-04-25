@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Media;
 using Azazel.Extensions;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
@@ -10,6 +11,7 @@ namespace Venus.Browser {
     public class FirefoxSearchPlugin : LaunchablePlugin {
         private readonly Folder searchPluginsFolder;
         private readonly bool isAvailable = true;
+        private ImageSource icon = new PluginIconLoader().Png("firefox");
 
         public FirefoxSearchPlugin() {
             try {
@@ -38,11 +40,11 @@ namespace Venus.Browser {
 
         public event PluginChangedDelegate Changed = delegate { };
 
-        public static Search CreateSearchPlugin(string contents) {
+        public Search CreateSearchPlugin(string contents) {
             var name = Regex.Match(contents, "<ShortName>(.*)</ShortName>").Groups[1].Value;
             var url = Regex.Match(contents, "<SearchForm>(.*)</SearchForm>").Groups[1].Value;
             var searchQuery = ParseSearchQuery(contents);
-            return new Search(name, url, searchQuery, UrlLauncher.BrowserIcon);
+            return new Search(name, url, searchQuery, icon);
         }
 
         private static string ParseSearchQuery(string contents) {

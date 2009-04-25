@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Azazel.Extensions;
 using Azazel.Logging;
 using IWshRuntimeLibrary;
 
@@ -35,6 +37,7 @@ namespace Azazel.FileSystem {
         }
 
         public ImageSource Extract(File file, IconSize iconSize) {
+            if (new List<string>{".ico", ".png"}.Contains(file.Extension.ToLower())) return new BitmapImage(new Uri(file.FullName));
             try {
                 var icon = ExtractIcon(ActualFile(file), iconSize);
                 var bmp = icon.ToBitmap();
