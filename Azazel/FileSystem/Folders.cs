@@ -10,7 +10,7 @@ namespace Azazel.FileSystem {
 
         public Folders(params Folder[] folders) : this((IEnumerable<Folder>) folders) {}
 
-        public Folders(IEnumerable<Folder> folders) {
+        private Folders(IEnumerable<Folder> folders) {
             AddRange(folders);
             foreach (var folder in folders) WatchFolder(folder);
         }

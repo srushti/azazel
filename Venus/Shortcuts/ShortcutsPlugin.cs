@@ -1,6 +1,5 @@
 using System;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
 
@@ -14,32 +13,35 @@ namespace Venus.Shortcuts {
             var launchables = new Launchables();
             var specialFolders = new[]
                                      {
-                                         Environment.SpecialFolder.MyDocuments, Environment.SpecialFolder.MyMusic, Environment.SpecialFolder.Desktop,
+                                         Environment.SpecialFolder.Personal, Environment.SpecialFolder.MyMusic, Environment.SpecialFolder.Desktop,
                                          Environment.SpecialFolder.Recent, Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolder.MyPictures,
                                      };
             foreach (var specialFolder in specialFolders)
                 if (Folder.Exists(Environment.GetFolderPath(specialFolder))) launchables.Add(new Shortcut(specialFolder));
-            launchables.Add(new Shortcut("Add or Remove Programs", "appwiz.cpl"));
-            launchables.Add(new Shortcut("Windows Explorer", "explorer.exe"));
+            launchables.Add(new Shortcut("Add or Remove Programs", "appwiz.cpl", "AddRemovePrograms"));
+            launchables.Add(new Shortcut("Windows Explorer", "explorer.exe", "WindowsExplorer"));
             return launchables;
         }
 
         public event PluginChangedDelegate Changed = delegate { };
 
-        public class Shortcut : Launchable {
+        private class Shortcut : Launchable {
             private readonly string name;
             private readonly string command;
+            private readonly ImageSource icon;
             private Shortcut() {}
 
             public Shortcut(Environment.SpecialFolder specialFolder) {
                 var folder = new Folder(Environment.GetFolderPath(specialFolder));
                 name = folder.Name;
                 command = folder.FullName;
+                icon = new PluginIconLoader().Png(specialFolder.ToString());
             }
 
-            public Shortcut(string name, string command) : this() {
+            public Shortcut(string name, string command, string imageName) : this() {
                 this.name = name;
                 this.command = command;
+                icon = new PluginIconLoader().Png(imageName);
             }
 
             public string Name {
@@ -47,7 +49,7 @@ namespace Venus.Shortcuts {
             }
 
             public ImageSource Icon {
-                get { return new BitmapImage(); }
+                get { return icon; }
             }
 
             public Actions Actions {
