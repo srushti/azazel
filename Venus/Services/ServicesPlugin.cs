@@ -11,7 +11,10 @@ namespace Venus.Services {
 
         public Launchables Launchables() {
             var services = new Launchables();
-            foreach (var service in ServiceController.GetServices()) services.Add(new Service(service));
+            foreach (var service in ServiceController.GetServices()) {
+                var icon = new PluginIconLoader().Png("services");
+                services.Add(new Service(service, icon));
+            }
             return services;
         }
 
@@ -20,9 +23,11 @@ namespace Venus.Services {
 
     public class Service : Launchable {
         private readonly ServiceController serviceController;
+        private readonly ImageSource icon;
 
-        public Service(ServiceController serviceController) {
+        public Service(ServiceController serviceController, ImageSource icon) {
             this.serviceController = serviceController;
+            this.icon = icon;
         }
 
         public string Name {
@@ -30,7 +35,7 @@ namespace Venus.Services {
         }
 
         public ImageSource Icon {
-            get { return null; }
+            get { return icon; }
         }
 
         public Actions Actions {
