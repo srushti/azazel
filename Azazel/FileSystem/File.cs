@@ -6,7 +6,7 @@ using xstream.Converters;
 namespace Azazel.FileSystem {
     public class File : FileSystemElement<FileInfo, File>, Launchable {
         public static readonly Converter Converter = new FileSystemElementConverter<File, FileInfo>(path => new File(path));
-        public static readonly File NULL = new NullFile();
+        public static readonly File Null = new NullFile();
 
         internal File(FileInfo fileInfo) : base(fileInfo) {}
         public File(string path) : this(new FileInfo(path)) {}
@@ -32,7 +32,7 @@ namespace Azazel.FileSystem {
         public static File First(Files fileInfos) {
             foreach (File file in fileInfos)
                 if (file.IsHidden) return file;
-            return NULL;
+            return Null;
         }
 
         public override string ToString() {

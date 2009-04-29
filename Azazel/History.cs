@@ -33,7 +33,7 @@ namespace Azazel {
 
         public void Add(string input, Launchable launchable) {
             if (!launchable.ShouldStoreHistory) return;
-            if (File.NULL.Equals(launchable)) return;
+            if (File.Null.Equals(launchable)) return;
             dictionary[input.ToLower()] = launchable;
             StoreHistory();
         }

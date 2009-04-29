@@ -4,7 +4,7 @@ using xstream;
 using xstream.Converters;
 
 namespace Azazel.FileSystem {
-    public abstract class FileSystemElement<T, U> : IEquatable<FileSystemElement<T, U>> where T : FileSystemInfo where U : FileSystemElement<T, U> {
+    public abstract class FileSystemElement<T, U> where T : FileSystemInfo where U : FileSystemElement<T, U> {
         protected readonly T fileSystemInfo;
 
         public T FileSystemInfo {
@@ -39,7 +39,7 @@ namespace Azazel.FileSystem {
         }
 
         public override int GetHashCode() {
-            return fileSystemInfo.GetHashCode();
+            return fileSystemInfo.FullName.GetHashCode();
         }
 
         protected class FileSystemElementConverter<V, X> : Converter where V : FileSystemElement<X, V> where X : FileSystemInfo {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Azazel.PluggingIn;
@@ -7,6 +8,8 @@ namespace Azazel.FileSystem {
         internal static readonly Folder QuickLaunch = new Folder(Constants.QuickLaunch);
         internal static readonly Folder StartMenu = new Folder(Constants.StartMenu);
         internal static readonly Folder AllUsersStartMenu = new Folder(Constants.AllUsersStartMenu);
+        private DateTime endOfPenaltyTime = DateTime.MinValue;
+        private readonly TimeSpan penaltyPeriod = TimeSpan.FromMinutes(10);
 
         public Folders(params Folder[] folders) : this((IEnumerable<Folder>) folders) {}
 
@@ -16,11 +19,14 @@ namespace Azazel.FileSystem {
         }
 
         private void WatchFolder(Folder folder) {
-            new FileSystemStalker(folder, FileChangeTypes.Created | FileChangeTypes.Deleted | FileChangeTypes.Renamed, delegate(File changedFile) {
-                                                                                                                           if (!changedFile.Exists() ||
-                                                                                                                               !changedFile.IsHidden)
-                                                                                                                               Changed(this);
-                                                                                                                       });
+            new FileSystemStalker(folder, FileChangeTypes.Created | FileChangeTypes.Deleted | FileChangeTypes.Renamed, OnFilChanged);
+        }
+
+        private void OnFilChanged(File file) {
+            if (file.Exists() && !file.IsHidden && DateTime.Now > endOfPenaltyTime) {
+                endOfPenaltyTime = DateTime.Now.Add(penaltyPeriod);
+                Changed(this);
+            }
         }
 
         public new void Add(Folder folder) {

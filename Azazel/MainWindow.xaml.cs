@@ -87,7 +87,7 @@ namespace Azazel {
             ((Image) command2.Bullet).Source = controller.Command(1).Icon;
             command3Text.Text = controller.Command(2).Name;
             ((Image) command3.Bullet).Source = controller.Command(2).Icon;
-            BeginAnimation(showOtherLaunchablesStoryboard);
+            if (controller.ResultCount > 1) BeginAnimation(showOtherLaunchablesStoryboard);
         }
 
         private new static ImageSource Icon(Launchable launchable) {
@@ -145,7 +145,7 @@ namespace Azazel {
         }
 
         private void SelectDetails() {
-            if (File.NULL.Equals(controller.Command(0))) return;
+            if (File.Null.Equals(controller.Command(0))) return;
             arguments.Focusable = true;
             var actions = controller.GetActionsForSelectedCommand();
             if (actions.IsEmpty()) AcceptParameters();

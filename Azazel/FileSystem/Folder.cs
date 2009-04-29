@@ -4,7 +4,7 @@ using xstream.Converters;
 
 namespace Azazel.FileSystem {
     public class Folder : FileSystemElement<DirectoryInfo, Folder> {
-        public static Converter Converter = new FileSystemElementConverter<Folder, DirectoryInfo>(path => new Folder(path));
+        public static readonly Converter Converter = new FileSystemElementConverter<Folder, DirectoryInfo>(path => new Folder(path));
         public Folder(string folderPath) : this(new DirectoryInfo(folderPath)) {}
         public Folder(DirectoryInfo directoryInfo) : base(directoryInfo) {}
 

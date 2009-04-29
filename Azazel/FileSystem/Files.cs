@@ -26,7 +26,7 @@ namespace Azazel.FileSystem {
         }
 
         public Launchable Get(int index) {
-            if (index >= Count) return File.NULL;
+            if (index >= Count) return File.Null;
             return base[index];
         }
 

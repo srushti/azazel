@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using Azazel.Extensions;
 using Azazel.FileSystem;
@@ -59,6 +60,10 @@ namespace Azazel {
             get { return selectedFiles.Get(index); }
         }
 
+        public int ResultCount {
+            get { return selectedFiles.Count; }
+        }
+
         public void LaunchApp(string arguments) {
             try {
                 SelectedCommand.Launch(arguments);
@@ -80,7 +85,7 @@ namespace Azazel {
             int actualIndex = index + relativeIndex;
             if (selectedFiles.Count > actualIndex)
                 return selectedFiles.Get(actualIndex);
-            return File.NULL;
+            return File.Null;
         }
 
         public void MoveDown(int count) {
