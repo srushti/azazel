@@ -1,4 +1,3 @@
-using System;
 using System.Windows;
 using Azazel.Extensions;
 using Azazel.FileSystem;
@@ -29,7 +28,6 @@ namespace Azazel {
         }
 
         public void SetInput(string value, bool asynchronous) {
-            thread.Abort();
             if (asynchronous) {
                 thread = new Thread(RefreshResults, value);
                 thread.Start();

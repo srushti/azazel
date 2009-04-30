@@ -66,8 +66,9 @@ namespace Azazel {
                 controller.CancelSearch();
                 selectedCommand.Text = immediateResult.Name;
                 image.Source = immediateResult.Icon;
+                timer.Start(.5, input.Text);
             }
-            timer.Start(.15, input.Text);
+            else timer.Start(.15, input.Text);
         }
 
         private void PresentInput(string inputText) {
