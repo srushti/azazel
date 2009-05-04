@@ -56,11 +56,6 @@ namespace Azazel {
             try {
                 return launchables.Find(searchString, history);
             }
-            catch (InvalidOperationException e) {
-                //meant to catch exceptions caused by aborting threads
-                LogManager.WriteLog(e);
-                return new Launchables();
-            }
             catch (Exception e) {
                 //meant to catch exceptions caused by aborting threads
                 LogManager.WriteLog(e);

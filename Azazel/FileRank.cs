@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Azazel.Extensions;
 using Azazel.FileSystem;
+using Azazel.Logging;
 
 namespace Azazel {
     public class FileRank : IComparable<FileRank> {
@@ -57,7 +58,12 @@ namespace Azazel {
         }
 
         public void SortLaunchables(Launchables launchables) {
-            launchables.Sort(LaunchableComparison);
+            try {
+                launchables.Sort(LaunchableComparison);
+            }
+            catch (InvalidOperationException e) {
+                LogManager.WriteLog(e);
+            }
         }
 
         private int LaunchableComparison(Launchable x, Launchable y) {
