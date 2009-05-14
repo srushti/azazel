@@ -29,14 +29,8 @@ namespace Azazel.FileSystem {
             get { return new Folder(fileSystemInfo.Directory); }
         }
 
-        public static File First(Files fileInfos) {
-            foreach (File file in fileInfos)
-                if (file.IsHidden) return file;
-            return Null;
-        }
-
         public override string ToString() {
-            return Name;
+            return FullName;
         }
 
         private class NullFile : File {

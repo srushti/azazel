@@ -61,14 +61,19 @@ namespace Azazel {
         }
 
         private void InputChanged() {
-            var immediateResult = controller.ImmediateResult(input.Text);
+            var inputText = input.Text;
+            if (inputText.IsNullOrEmpty()) {
+                timer.Start(0, inputText);
+                return;
+            }
+            var immediateResult = controller.ImmediateResult(inputText);
             if (immediateResult != null) {
                 controller.CancelSearch();
                 selectedCommand.Text = immediateResult.Name;
                 image.Source = immediateResult.Icon;
-                timer.Start(.5, input.Text);
+                timer.Start(1, inputText);
             }
-            else timer.Start(.15, input.Text);
+            else timer.Start(.5, inputText);
         }
 
         private void PresentInput(string inputText) {

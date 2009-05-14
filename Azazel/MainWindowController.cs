@@ -98,6 +98,7 @@ namespace Azazel {
         }
 
         public Launchable ImmediateResult(string inputText) {
+            if(inputText.IsNullOrEmpty()) return File.Null;
             return appFinder.ExactMatch(inputText);
         }
 
