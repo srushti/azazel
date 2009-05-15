@@ -6,7 +6,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Azazel.Extensions;
 using Azazel.Logging;
 using IWshRuntimeLibrary;
 
@@ -26,7 +25,10 @@ namespace Azazel.FileSystem {
         [DllImport("shell32.dll")]
         private static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
 
-        private static Icon ExtractIcon(FileSystemElement<FileInfo, File> file, IconSize size) {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern bool DestroyIcon(IntPtr handle);
+
+        private static Icon ExtractIcon(File file, IconSize size) {
             var shinfo = new SHFILEINFO();
 
             if (size == IconSize.Large)
@@ -38,9 +40,10 @@ namespace Azazel.FileSystem {
 
         public ImageSource Extract(File file, IconSize iconSize) {
             try {
-                if (new List<string> { ".ico", ".png" }.Contains(file.Extension.ToLower())) return new BitmapImage(new Uri(file.FullName));
+                if (new List<string> {".ico", ".png"}.Contains(file.Extension.ToLower())) return new BitmapImage(new Uri(file.FullName));
                 var icon = ExtractIcon(ActualFile(file), iconSize);
                 var bmp = icon.ToBitmap();
+                DestroyIcon(icon.Handle);
                 var strm = new MemoryStream();
                 bmp.Save(strm, ImageFormat.Png);
                 return Extract(strm);

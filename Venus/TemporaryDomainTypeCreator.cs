@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Windows.Threading;
 using Azazel.FileSystem;
 using Azazel.Logging;
 
@@ -13,9 +14,9 @@ namespace Venus {
             setup.ApplicationBase = new File(Type.Assembly.Location).ParentFolder.FullName;
             domain = AppDomain.CreateDomain("SomethingElse", null, setup);
             AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs args) {
-                                          LogManager.WriteLog("trying to load " + args.Name);
-                                          return Assembly.Load(args.Name);
-                                      };
+                                                           LogManager.WriteLog("trying to load " + args.Name);
+                                                           return Assembly.Load(args.Name);
+                                                       };
         }
 
         public T Create(params object[] arguments) {
@@ -36,6 +37,7 @@ namespace Venus {
         }
 
         public void Dispose() {
+            Dispatcher.CurrentDispatcher.InvokeShutdown();
             AppDomain.Unload(domain);
         }
     }
