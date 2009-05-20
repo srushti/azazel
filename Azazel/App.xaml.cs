@@ -16,6 +16,7 @@ namespace Azazel {
                                                 LogManager.WriteLog(args.Exception);
                                                 File.WriteAllText(Paths.Instance.Exception, args.Exception.ToString());
                                             };
+            Exit += (sender, args) => LogManager.WriteLog("exiting");
         }
     }
 }

@@ -4,10 +4,10 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using Azazel.Extensions;
 using Azazel.FileSystem;
 using Azazel.Logging;
 using File=Azazel.FileSystem.File;
-using Azazel.Extensions;
 
 namespace Azazel.PluggingIn {
     public class PluginLoader {
