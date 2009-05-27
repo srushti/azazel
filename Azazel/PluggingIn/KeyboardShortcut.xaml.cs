@@ -38,7 +38,7 @@ namespace Azazel.PluggingIn {
         }
 
         private void SaveAsKeyboardShortcut() {
-//            PersistanceHelper.SaveOrLoadAndSave<Hotkey>()
+//            PersistanceHelper.LoadOrSaveAndLoad<Hotkey>()
         }
     }
 }

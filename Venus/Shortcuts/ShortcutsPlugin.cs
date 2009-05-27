@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Media;
+using System.Xml.Serialization;
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
 
@@ -18,8 +19,8 @@ namespace Venus.Shortcuts {
                                      };
             foreach (var specialFolder in specialFolders)
                 if (Folder.Exists(Environment.GetFolderPath(specialFolder))) launchables.Add(new Shortcut(specialFolder));
-            launchables.Add(new Shortcut("Add or Remove Programs", "appwiz.cpl", "AddRemovePrograms"));
-            launchables.Add(new Shortcut("Windows Explorer", "explorer.exe", "WindowsExplorer"));
+            launchables.Add(new Shortcut("Add or Remove Programs", "appwiz.cpl"));
+            launchables.Add(new Shortcut("Windows Explorer", "explorer.exe"));
             return launchables;
         }
 
@@ -28,7 +29,7 @@ namespace Venus.Shortcuts {
         private class Shortcut : Launchable {
             private readonly string name;
             private readonly string command;
-            private readonly ImageSource icon;
+            [XmlIgnore] private readonly ImageSource icon;
             private Shortcut() {}
 
             public Shortcut(Environment.SpecialFolder specialFolder) {
@@ -38,10 +39,10 @@ namespace Venus.Shortcuts {
                 icon = new PluginIconLoader().Png(specialFolder.ToString());
             }
 
-            public Shortcut(string name, string command, string imageName) : this() {
+            public Shortcut(string name, string command) : this() {
                 this.name = name;
                 this.command = command;
-                icon = new PluginIconLoader().Png(imageName);
+                icon = new PluginIconLoader().Png(name.Replace(" ", ""));
             }
 
             public string Name {
@@ -79,6 +80,10 @@ namespace Venus.Shortcuts {
                 unchecked {
                     return (name.GetHashCode()*397) ^ command.GetHashCode();
                 }
+            }
+
+            public override string ToString() {
+                return "Shortcut to " + Name;
             }
         }
     }

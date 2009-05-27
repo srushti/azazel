@@ -123,11 +123,11 @@ namespace Azazel {
             else if (key == Key.E && modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
                 UseSelectedFile(file => Runner.ExplorerRunner(file.ParentFolder).AsyncStart());
             else if (key == Key.Enter) {
-                LoadFirstResult();
+                LoadResultsImmediately();
                 LaunchApp();
             }
             else if (key == Key.Tab) {
-                LoadFirstResult();
+                LoadResultsImmediately();
                 state.HandleTab();
             }
             else return;
@@ -140,7 +140,7 @@ namespace Azazel {
                 useFile(file);
         }
 
-        private void LoadFirstResult() {
+        private void LoadResultsImmediately() {
             timer.Stop();
             controller.SetInput(input.Text, false);
             RefreshMenu();

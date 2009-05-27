@@ -35,7 +35,7 @@ namespace Azazel {
         }
 
         private Folders LoadFoldersToParse() {
-            return PersistanceHelper.SaveOrLoadAndSave<Folders>(xstream, Paths.Instance.Folders, () => File.Contents(Paths.Instance.Folders),
+            return PersistanceHelper.LoadOrSaveAndLoad<Folders>(xstream, Paths.Instance.Folders, () => File.Contents(Paths.Instance.Folders),
                                                                 StoreDefaultFolders,
                                                                 "Because of some error (probably connected with plugins) all the folders you have added have been lost!! You will have to add them again!!");
         }

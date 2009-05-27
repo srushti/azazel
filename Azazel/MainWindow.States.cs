@@ -32,6 +32,7 @@ namespace Azazel {
             }
 
             public void MoveDown(int count) {
+                window.LoadResultsImmediately();
                 window.MoveDown(count);
             }
         }

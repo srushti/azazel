@@ -155,7 +155,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AddRemovePrograms.png">
+    <None Include="AddorRemovePrograms.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
