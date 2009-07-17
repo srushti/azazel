@@ -18,7 +18,7 @@ namespace Venus {
             iconExtractor = IconExtractor.Instance;
             return
                 iconExtractor.Extract(
-                    new File(Paths.Combine(new File(Assembly.GetExecutingAssembly().Location).ParentFolder.FullName, "plugins", name + "." + extension)));
+                    new File(Paths.Combine(new File(Assembly.GetExecutingAssembly().Location).ParentFolder.FullName, name + "." + extension)));
         }
     }
 }

@@ -117,7 +117,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6042F61EB53D4E9588E9FE003E9FE64C"
+        "MsmKey" = "8:_74547EDF83964108879B8757C465CD9C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -621,10 +621,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6042F61EB53D4E9588E9FE003E9FE64C"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_74547EDF83964108879B8757C465CD9C"
             {
-            "SourcePath" = "8:..\\Venus\\AddRemovePrograms.png"
-            "TargetName" = "8:AddRemovePrograms.png"
+            "SourcePath" = "8:..\\Venus\\AddorRemovePrograms.png"
+            "TargetName" = "8:AddorRemovePrograms.png"
             "Tag" = "8:"
             "Folder" = "8:_FEEE09E4A258425D8DE76C7C0E76D2A0"
             "Condition" = "8:"

@@ -40,7 +40,7 @@ namespace Azazel.FileSystem {
 
         public ImageSource Extract(File file, IconSize iconSize) {
             try {
-                if (new List<string> {".ico", ".png"}.Contains(file.Extension.ToLower())) return new BitmapImage(new Uri(file.FullName));
+                if (new List<string> {".ico", ".png", ".jpg", ".gif"}.Contains(file.Extension.ToLower())) return new BitmapImage(new Uri(file.FullName));
                 var icon = ExtractIcon(ActualFile(file), iconSize);
                 var bmp = icon.ToBitmap();
                 DestroyIcon(icon.Handle);
@@ -49,6 +49,11 @@ namespace Azazel.FileSystem {
                 return Extract(strm);
             }
             catch (ExternalException exception) {
+                LogManager.WriteLog(exception);
+                return new BitmapImage();
+            }
+            catch (DirectoryNotFoundException exception) {
+                LogManager.WriteLog("Requested file: {0}", file);
                 LogManager.WriteLog(exception);
                 return new BitmapImage();
             }
