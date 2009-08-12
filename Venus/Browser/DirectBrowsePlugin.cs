@@ -7,7 +7,7 @@ namespace Venus.Browser {
     public class DirectBrowsePlugin : CharacterPlugin {
         private static readonly Regex emailRegex = new Regex(@"[a-zA-Z][a-zA-Z0-9_\.]*@[a-zA-Z0-9_\.]+\.[a-zA-Z0-9_\.]+");
         private static readonly Regex startingUrlRegex = new Regex(@"^(https?://)|(www\.)");
-        private static readonly Regex endingUrlRegex = new Regex(@"\.(com)|(net)|(org)|(co\.\w\w)");
+        private static readonly Regex endingUrlRegex = new Regex(@"\.(com|net|org|co\.\w\w)");
 
         public bool IsAvailable {
             get { return true; }

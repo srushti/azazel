@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B4FF5CC0-68A5-45EE-8089-77A4CA9D372C}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -58,6 +58,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AzazelTests\AzazelTests.csproj">
+      <Project>{1586CC3E-8261-4AC0-B1BC-72558A313A25}</Project>
+      <Name>AzazelTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Azazel\Azazel.csproj">
       <Project>{832572F6-F3D9-46C7-B922-E7F69D35FE6A}</Project>
       <Name>Azazel</Name>

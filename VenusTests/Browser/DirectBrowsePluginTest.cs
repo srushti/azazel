@@ -1,25 +1,21 @@
+using Azazel;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace Venus.Browser {
     [TestFixture]
     public class DirectBrowsePluginTest {
         [Test]
         public void DetectsUrl() {
-            Assert.That(new DirectBrowsePlugin().IsValidFor("http://gmail.com"));
-            Assert.That(new DirectBrowsePlugin().IsValidFor("https://www.thoughtworks.com"));
-            Assert.That(new DirectBrowsePlugin().IsValidFor("https://www."));
-            Assert.That(new DirectBrowsePlugin().IsValidFor("www.thoug"));
-            Assert.That(new DirectBrowsePlugin().IsValidFor("thoughtworks.com"));
-            Assert.That(new DirectBrowsePlugin().IsValidFor("thoughtworks.org"));
-            Assert.That(new DirectBrowsePlugin().IsValidFor("thoughtworks.org"));
-            Assert.That(new DirectBrowsePlugin().IsValidFor("thoughtworks.co.in"));
-            Assert.That(new DirectBrowsePlugin().IsValidFor("sssiii"), Is.False);
-        }
-
-        [Test]
-        public void MethodName() {
-            Assert.AreEqual(false, new DirectBrowsePlugin().IsValidFor("mail."));
+            new DirectBrowsePlugin().IsValidFor("http://gmail.com").ShouldBeTrue();
+            new DirectBrowsePlugin().IsValidFor("https://www.thoughtworks.com").ShouldBeTrue();
+            new DirectBrowsePlugin().IsValidFor("https://www.").ShouldBeTrue();
+            new DirectBrowsePlugin().IsValidFor("www.thoug").ShouldBeTrue();
+            new DirectBrowsePlugin().IsValidFor("thoughtworks.com").ShouldBeTrue();
+            new DirectBrowsePlugin().IsValidFor("thoughtworks.org").ShouldBeTrue();
+            new DirectBrowsePlugin().IsValidFor("thoughtworks.org").ShouldBeTrue();
+            new DirectBrowsePlugin().IsValidFor("thoughtworks.co.in").ShouldBeTrue();
+            new DirectBrowsePlugin().IsValidFor("sssiii").ShouldBeFalse();
+            new DirectBrowsePlugin().IsValidFor("internet").ShouldBeFalse();
         }
     }
 }
