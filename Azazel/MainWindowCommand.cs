@@ -12,6 +12,7 @@ namespace Azazel {
         private WPFHotkeyManager hotkeyManager;
         private readonly MainWindowController controller;
         private MainWindow window;
+        private readonly Hotkey unchangeableDisplayHotkey = new Hotkey(Modifiers.Alt | Modifiers.Control | Modifiers.Shift, Keys.Space);
 
         public MainWindowCommand(VoidDelegate killApplication, AppSettings settings) {
             var selfPlugin = new SelfPlugin();
@@ -40,6 +41,7 @@ namespace Azazel {
             hotkeyManager = new WPFHotkeyManager(window);
             hotkeyManager.Register(displayHotkey);
             hotkeyManager.Register(killHotkey);
+            hotkeyManager.Register(unchangeableDisplayHotkey);
             hotkeyManager.HotkeyPressed += (window1, hotkey) => HandleHotkey(hotkey);
         }
 
@@ -48,10 +50,11 @@ namespace Azazel {
                 window.Close();
                 hotkeyManager.Unregister(displayHotkey);
                 hotkeyManager.Unregister(killHotkey);
+                hotkeyManager.Unregister(unchangeableDisplayHotkey);
                 if (hotkey.Equals(displayHotkey)) Execute();
                 else if (hotkey.Equals(killHotkey)) killApplication();
             }
-            if (hotkey.Equals(displayHotkey)) window.Activate();
+            if (hotkey.Equals(displayHotkey) || hotkey.Equals(unchangeableDisplayHotkey)) window.Activate();
         }
     }
 
