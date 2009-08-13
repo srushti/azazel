@@ -6,7 +6,7 @@ using Azazel.PluggingIn;
 
 namespace Venus.Browser {
     public class InternetExplorer : LaunchablePlugin {
-        private static readonly ImageSource icon = UrlLauncher.BrowserIcon;
+        private static readonly ImageSource icon = new PluginIconLoader().Icon("internetExplorer");
         private readonly string path;
 
         public InternetExplorer() {

@@ -66,6 +66,7 @@
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PublicFields" />
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AA_BB" ElementKind="Constants">
         <ExtraRule Prefix="" Suffix="" Style="AaBb" />
+        <ExtraRule Prefix="" Suffix="" Style="aaBb" />
       </PredefinedRule>
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="StaticReadonly">
         <ExtraRule Prefix="" Suffix="" Style="AaBb" />
