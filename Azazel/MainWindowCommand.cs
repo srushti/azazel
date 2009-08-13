@@ -14,16 +14,17 @@ namespace Azazel {
         private MainWindow window;
         private readonly Hotkey unchangeableDisplayHotkey = new Hotkey(Modifiers.Alt | Modifiers.Control | Modifiers.Shift, Keys.Space);
 
-        public MainWindowCommand(VoidDelegate killApplication, AppSettings settings) {
+        public MainWindowCommand(VoidDelegate killApplication) {
             var selfPlugin = new SelfPlugin();
             var loader = new PluginLoader(selfPlugin);
-            PersistanceHelper.LoadOrSaveAndLoad(selfPlugin.XStream, Paths.Instance.AppSettings,
-                                                new AppSettings(new Hotkey(Modifiers.Alt, Keys.F2),
-                                                                new Hotkey(Modifiers.Alt | Modifiers.Control | Modifiers.Shift, Keys.F4)));
+            AppSettings appSettings = PersistanceHelper.LoadOrSaveAndLoad(selfPlugin.XStream, Paths.Instance.AppSettings,
+                                                                          new AppSettings(new Hotkey(Modifiers.Alt, Keys.F2),
+                                                                                          new Hotkey(Modifiers.Alt | Modifiers.Control | Modifiers.Shift,
+                                                                                                     Keys.F4)));
+            displayHotkey = appSettings.DisplayHotKey;
+            killHotkey = appSettings.KillHotKey;
             controller = new MainWindowController(loader.LaunchablePlugins, loader.CharacterPlugins, loader.LaunchableHandlers, selfPlugin);
             this.killApplication = killApplication;
-            displayHotkey = settings.DisplayHotKey;
-            killHotkey = settings.KillHotKey;
         }
 
         public void Execute() {

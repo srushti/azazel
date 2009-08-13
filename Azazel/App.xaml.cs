@@ -9,7 +9,7 @@ namespace Azazel {
             var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
             ShutdownMode = ShutdownMode.OnExplicitShutdown;
             if (processes.Length != 1) Shutdown();
-            var command = new MainWindowCommand(Shutdown, new AppSettings());
+            var command = new MainWindowCommand(Shutdown);
             command.Execute();
             command.Collapse();
             DispatcherUnhandledException += (sender, args) => {

@@ -11,7 +11,7 @@ namespace Venus.Browser {
     public class FirefoxSearchPlugin : LaunchablePlugin {
         private readonly Folder searchPluginsFolder;
         private readonly bool isAvailable = true;
-        private ImageSource icon = new PluginIconLoader().Png("firefox");
+        private readonly ImageSource icon = new PluginIconLoader().Png("firefox");
 
         public FirefoxSearchPlugin() {
             try {
@@ -20,6 +20,7 @@ namespace Venus.Browser {
                 var firefoxInstallationDirectory = (string) firefoxSubKey.OpenSubKey(curVersionNumber + @"\Main").GetValue("Install Directory");
                 searchPluginsFolder = new Folder(Paths.Combine(firefoxInstallationDirectory, "searchplugins"));
                 new FileSystemStalker(searchPluginsFolder, FileChangeTypes.Created | FileChangeTypes.Deleted, delegate { Changed(this); });
+                isAvailable = searchPluginsFolder.Exists();
             }
             catch (NullReferenceException) {
                 isAvailable = false;

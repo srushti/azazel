@@ -8,6 +8,7 @@ namespace Azazel.FileSystem {
 
         public FileSystemStalker(Folder folder, FileChangeTypes fileChangeTypes, FileChangedDelegate changedDelegate) {
             this.changedDelegate = changedDelegate;
+            if (!folder.Exists()) return;
             watcher = new FileSystemWatcher(folder.FullName) {IncludeSubdirectories = true, EnableRaisingEvents = true};
             if (AskedForEvent(fileChangeTypes, FileChangeTypes.Created)) watcher.Created += RaiseEvent;
             if (AskedForEvent(fileChangeTypes, FileChangeTypes.Changed)) watcher.Changed += RaiseEvent;
