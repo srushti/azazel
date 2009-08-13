@@ -35,13 +35,8 @@ namespace Azazel {
         }
 
         private Folders LoadFoldersToParse() {
-            return PersistanceHelper.LoadOrSaveAndLoad<Folders>(xstream, Paths.Instance.Folders, () => File.Contents(Paths.Instance.Folders),
-                                                                StoreDefaultFolders,
-                                                                "Because of some error (probably connected with plugins) all the folders you have added have been lost!! You will have to add them again!!");
-        }
-
-        private void StoreDefaultFolders() {
-            File.WriteAllText(Paths.Instance.Folders, xstream.ToXml(new Folders(Folders.QuickLaunch, Folders.StartMenu, Folders.AllUsersStartMenu)));
+            return PersistanceHelper.LoadOrSaveAndLoad(xstream, Paths.Instance.Folders,
+                                                       new Folders(Folders.QuickLaunch, Folders.StartMenu, Folders.AllUsersStartMenu));
         }
 
         public Launchables FindFiles(string searchString) {
@@ -68,7 +63,7 @@ namespace Azazel {
         }
 
         public void AddFolder(LaunchablePlugins launchablePlugins) {
-            var folders = LoadFoldersToParse();
+            Folders folders = LoadFoldersToParse();
             var dialog = new FolderBrowserDialog {SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)};
             if (dialog.ShowDialog() == DialogResult.OK) folders.Add(new Folder(dialog.SelectedPath));
             File.WriteAllText(Paths.Instance.Folders, xstream.ToXml(folders));

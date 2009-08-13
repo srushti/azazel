@@ -14,12 +14,7 @@ namespace Azazel {
         public History(File historyFile, XStream xstream) {
             this.historyFile = historyFile;
             this.xstream = xstream;
-            dictionary = PersistanceHelper.LoadOrSaveAndLoad<Dictionary<string, Launchable>>(xstream, Paths.Instance.History, LoadHistory, StoreHistory,
-                                                                                             "Because of some error (probably connected with plugins) all your history has been lost!!");
-        }
-
-        protected virtual string LoadHistory() {
-            return File.Contents(Paths.Instance.History);
+            dictionary = PersistanceHelper.LoadOrSaveAndLoad(xstream, Paths.Instance.History, dictionary);
         }
 
         public Launchable this[string input] {
@@ -28,8 +23,7 @@ namespace Azazel {
         }
 
         protected virtual void StoreHistory() {
-            PersistanceHelper.Save(xstream, historyFile, dictionary);
-            historyFile.WriteAllText(xstream.ToXml(dictionary));
+            PersistanceHelper.Save(historyFile.FullName, xstream, dictionary);
         }
 
         public void Add(string input, Launchable launchable) {

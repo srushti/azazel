@@ -26,6 +26,10 @@ namespace Azazel.FileSystem {
             get { return AppDataFile("exception.txt"); }
         }
 
+        public string AppSettings {
+            get { return AppDataFile("AppSettings.xml"); }
+        }
+
         private static string AppDataFile(string fileName) {
             return Combine(Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Azazel", fileName));
         }

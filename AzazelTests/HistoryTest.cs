@@ -2,7 +2,6 @@ using System;
 using Azazel.FileSystem;
 using NUnit.Framework;
 using Rhino.Mocks;
-using xstream;
 
 namespace Azazel {
     [TestFixture]
@@ -45,10 +44,6 @@ namespace Azazel {
         }
 
         public class HistoryStub : History {
-            protected override string LoadHistory() {
-                return new XStream().ToXml(this);
-            }
-
             protected override void StoreHistory() {}
         }
     }

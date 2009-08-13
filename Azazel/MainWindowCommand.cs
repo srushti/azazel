@@ -1,4 +1,6 @@
 using System.Windows;
+using System.Windows.Forms;
+using Azazel.FileSystem;
 using Azazel.KeyHookup;
 using Azazel.PluggingIn;
 
@@ -14,10 +16,13 @@ namespace Azazel {
         public MainWindowCommand(VoidDelegate killApplication, AppSettings settings) {
             var selfPlugin = new SelfPlugin();
             var loader = new PluginLoader(selfPlugin);
+            PersistanceHelper.LoadOrSaveAndLoad(selfPlugin.XStream, Paths.Instance.AppSettings,
+                                                new AppSettings(new Hotkey(Modifiers.Alt, Keys.F2),
+                                                                new Hotkey(Modifiers.Alt | Modifiers.Control | Modifiers.Shift, Keys.F4)));
             controller = new MainWindowController(loader.LaunchablePlugins, loader.CharacterPlugins, loader.LaunchableHandlers, selfPlugin);
             this.killApplication = killApplication;
             displayHotkey = settings.DisplayHotKey;
-            killHotkey = settings.KillHotkey;
+            killHotkey = settings.KillHotKey;
         }
 
         public void Execute() {

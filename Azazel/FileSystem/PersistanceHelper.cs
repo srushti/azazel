@@ -4,11 +4,11 @@ using xstream;
 
 namespace Azazel.FileSystem {
     public static class PersistanceHelper {
-        public static T LoadOrSaveAndLoad<T>(XStream xStream, string filePath, LoadFile loadFile, VoidDelegate defaultSave, string messageBoxText) {
+        public static T LoadOrSaveAndLoad<T>(XStream xStream, string filePath, T defaultObject) {
             if (!File.Exists(filePath))
-                defaultSave();
+                Save(filePath, xStream, defaultObject);
             try {
-                return (T) xStream.FromXml(loadFile().Trim());
+                return (T) xStream.FromXml(((LoadFile) (() => File.Contents(filePath)))().Trim());
             }
             catch (Exception e) {
                 LogManager.WriteLog(e);
@@ -16,14 +16,14 @@ namespace Azazel.FileSystem {
                 File.WriteAllText(
                     file.FullName + DateTime.Now.ToString().Replace("/", "").Replace("\\", "").Replace(" ", "").Replace(":", "") + file.Extension,
                     File.Contents(filePath));
-                defaultSave();
+                Save(filePath, xStream, defaultObject);
                 return (T) xStream.FromXml(File.Contents(filePath).Trim());
             }
         }
 
-        public static void Save<T>(XStream xStream, File file, T t) {
+        public static void Save<T>(string path, XStream xStream, T t) {
             try {
-                file.WriteAllText(xStream.ToXml(t));
+                File.WriteAllText(path, xStream.ToXml(t));
             }
             catch (Exception e) {
                 LogManager.WriteLog(e);

@@ -1,9 +1,15 @@
-using System.Windows.Forms;
 using Azazel.KeyHookup;
 
 namespace Azazel {
     public class AppSettings {
-        public readonly Hotkey DisplayHotKey = new Hotkey(Modifiers.Windows, Keys.Space);
-        public readonly Hotkey KillHotkey = new Hotkey(Modifiers.Shift | Modifiers.Alt | Modifiers.Control, Keys.F4);
+        public readonly Hotkey DisplayHotKey;
+        public readonly Hotkey KillHotKey;
+
+        public AppSettings() {}
+
+        public AppSettings(Hotkey displayHotKey, Hotkey killHotKey) {
+            DisplayHotKey = displayHotKey;
+            KillHotKey = killHotKey;
+        }
     }
 }

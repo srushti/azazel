@@ -7,6 +7,8 @@ using Azazel.KeyHookup;
 
 namespace Azazel.PluggingIn {
     public partial class KeyboardShortcut {
+        private Hotkey newHotkey;
+
         public KeyboardShortcut() {
             InitializeComponent();
             HookEvents();
@@ -32,7 +34,7 @@ namespace Azazel.PluggingIn {
                     !new List<Key> {Key.LeftAlt, Key.LeftCtrl, Key.LeftShift, Key.RightAlt, Key.RightCtrl, Key.RightShift, Key.LWin, Key.RWin, Key.System}.
                          Contains(key)) {
                     currentlySelected.Content = keyboardCombo.ToString();
-                    var newHotkey = new Hotkey(modifiers, (Keys) Enum.Parse(typeof (Keys), key.ToString()));
+                    newHotkey = new Hotkey(modifiers, (Keys) Enum.Parse(typeof (Keys), key.ToString()));
                 }
             }
         }
