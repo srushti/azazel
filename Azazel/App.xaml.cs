@@ -6,9 +6,12 @@ using Azazel.Logging;
 namespace Azazel {
     public partial class App {
         protected override void OnStartup(StartupEventArgs e) {
-            var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
+            Process[] processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
             ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            if (processes.Length != 1) Shutdown();
+            if (processes.Length != 1) {
+                Shutdown();
+                return;
+            }
             var command = new MainWindowCommand(Shutdown);
             command.Execute();
             command.Collapse();
