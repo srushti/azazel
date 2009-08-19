@@ -11,10 +11,10 @@ namespace Azazel {
 
         protected History() {}
 
-        public History(File historyFile, XStream xstream) {
+        public History(File historyFile, XStream xstream, PersistanceHelper persistanceHelper) {
             this.historyFile = historyFile;
             this.xstream = xstream;
-            dictionary = PersistanceHelper.LoadOrSaveAndLoad(xstream, Paths.Instance.History, dictionary);
+            dictionary = persistanceHelper.LoadOrSaveAndLoad(Paths.Instance.History, dictionary);
         }
 
         public Launchable this[string input] {

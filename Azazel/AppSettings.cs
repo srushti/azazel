@@ -2,14 +2,27 @@ using Azazel.KeyHookup;
 
 namespace Azazel {
     public class AppSettings {
+        private Hotkeys appHotkeys;
+        public HotkeysChangedHandler HotkeysChanged = hotkeys => { };
+
+        public Hotkeys AppHotkeys {
+            get { return appHotkeys; }
+            set {
+                appHotkeys = value;
+                HotkeysChanged(appHotkeys);
+            }
+        }
+    }
+
+    public delegate void HotkeysChangedHandler(Hotkeys hotkeys);
+
+    public class Hotkeys {
         public readonly Hotkey DisplayHotKey;
-        public readonly Hotkey KillHotKey;
 
-        public AppSettings() {}
+        protected Hotkeys() {}
 
-        public AppSettings(Hotkey displayHotKey, Hotkey killHotKey) {
+        public Hotkeys(Hotkey displayHotKey) {
             DisplayHotKey = displayHotKey;
-            KillHotKey = killHotKey;
         }
     }
 }

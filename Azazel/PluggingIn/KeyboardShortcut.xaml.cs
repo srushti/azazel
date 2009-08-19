@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Azazel.FileSystem;
 using Azazel.KeyHookup;
 
 namespace Azazel.PluggingIn {
     public partial class KeyboardShortcut {
+        private readonly AppSettings settings;
+        private readonly PersistanceHelper persistanceHelper;
         private Hotkey newHotkey;
 
-        public KeyboardShortcut() {
+        public KeyboardShortcut(AppSettings settings, PersistanceHelper persistanceHelper) {
+            this.settings = settings;
+            this.persistanceHelper = persistanceHelper;
             InitializeComponent();
             HookEvents();
         }
@@ -17,6 +22,11 @@ namespace Azazel.PluggingIn {
         private void HookEvents() {
             Activated += delegate { new WindowHider(this).Hide(); };
             KeyUp += ((sender, e) => KeyPressed(e.Key, Modifiers.Current));
+            useWindowsKey.Checked += delegate { OnUseWindowsCheckedChanged(); };
+        }
+
+        private void OnUseWindowsCheckedChanged() {
+            KeyPressed((Key) Enum.Parse(typeof (Key), newHotkey.key.ToString()), newHotkey.modifiers);
         }
 
         private void KeyPressed(Key key, Modifiers modifiers) {
@@ -40,7 +50,8 @@ namespace Azazel.PluggingIn {
         }
 
         private void SaveAsKeyboardShortcut() {
-//            PersistanceHelper.LoadOrSaveAndLoad<Hotkey>()
+            settings.AppHotkeys = persistanceHelper.SaveAndLoad(Paths.Instance.AppHotkeys, new Hotkeys(newHotkey));
+            Close();
         }
     }
 }

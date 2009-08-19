@@ -4,7 +4,6 @@ using Azazel.FileSystem;
 using Azazel.Logging;
 using Azazel.PluggingIn;
 using Azazel.Threading;
-using Action=Azazel.FileSystem.Action;
 
 namespace Azazel {
     public class MainWindowController {
@@ -18,13 +17,14 @@ namespace Azazel {
         private readonly SelfPlugin selfPlugin;
         public event VoidDelegate RefreshedResults = () => { };
 
-        public MainWindowController(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins, LaunchableHandlers launchableHandlers, SelfPlugin selfPlugin) {
+        public MainWindowController(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins, LaunchableHandlers launchableHandlers,
+                                    SelfPlugin selfPlugin, PersistanceHelper persistanceHelper, AppSettings settings) {
             this.launchableHandlers = launchableHandlers;
             this.selfPlugin = selfPlugin;
-            appFinder = new AppFinder(launchablePlugins, characterPlugins, selfPlugin.XStream);
+            appFinder = new AppFinder(launchablePlugins, characterPlugins, selfPlugin.XStream, persistanceHelper);
             selfPlugin.RefreshRequested += (() => appFinder.LoadFiles(launchablePlugins));
             selfPlugin.AddAFolder += (() => appFinder.AddFolder(launchablePlugins));
-            selfPlugin.ChangeShortcut += (() => new KeyboardShortcutChangeCommand().Execute());
+            selfPlugin.ChangeShortcut += (() => new KeyboardShortcutChangeCommand(settings, persistanceHelper).Execute());
         }
 
         public void SetInput(string value, bool asynchronous) {
@@ -38,8 +38,8 @@ namespace Azazel {
         private void RefreshResults(object parameter) {
             var value = (string) parameter;
             if (input == value) return;
-            var workingToken = latestToken = new Token();
-            var newFiles = value.Contains(input) && !selectedFiles.IsEmpty() ? appFinder.FindFiles(selectedFiles, value) : appFinder.FindFiles(value);
+            Token workingToken = latestToken = new Token();
+            Launchables newFiles = value.Contains(input) && !selectedFiles.IsEmpty() ? appFinder.FindFiles(selectedFiles, value) : appFinder.FindFiles(value);
             if (!latestToken.Equals(workingToken)) {
                 LogManager.WriteLog("token check failed with input {0} and value {1}", input, value);
                 return;
@@ -98,7 +98,7 @@ namespace Azazel {
         }
 
         public Launchable ImmediateResult(string inputText) {
-            if(inputText.IsNullOrEmpty()) return File.Null;
+            if (inputText.IsNullOrEmpty()) return File.Null;
             return appFinder.ExactMatch(inputText);
         }
 
@@ -108,8 +108,16 @@ namespace Azazel {
     }
 
     internal class KeyboardShortcutChangeCommand {
+        private readonly AppSettings settings;
+        private readonly PersistanceHelper persistanceHelper;
+
+        public KeyboardShortcutChangeCommand(AppSettings settings, PersistanceHelper persistanceHelper) {
+            this.settings = settings;
+            this.persistanceHelper = persistanceHelper;
+        }
+
         public void Execute() {
-            var window = new KeyboardShortcut();
+            var window = new KeyboardShortcut(settings, persistanceHelper);
             window.Show();
             window.Activate();
         }

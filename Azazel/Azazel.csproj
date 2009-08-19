@@ -140,7 +140,8 @@
     <Compile Include="FileSystem\Runner.cs" />
     <Compile Include="History.cs" />
     <Compile Include="KeyHookup\InterceptKeys.cs" />
-    <Compile Include="KeyHelper.cs" />
+    <Compile Include="KeyHookup\NativeMethods.cs" />
+    <Compile Include="KeyHookup\WPFHotkeyManager.cs" />
     <Compile Include="LaunchablesDictionary.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="MainWindowCommand.cs" />

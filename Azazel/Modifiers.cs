@@ -38,10 +38,6 @@ namespace Azazel {
             get { return HasModifier(ModifierKeys.Alt); }
         }
 
-        public bool IsNone {
-            get { return Equals(modifierKeys, ModifierKeys.None); }
-        }
-
         public ModifierKeys ModifierKeys {
             get { return modifierKeys; }
         }
@@ -52,6 +48,10 @@ namespace Azazel {
 
         public static Modifiers operator |(Modifiers first, Modifiers second) {
             return new Modifiers(first.modifierKeys | second.modifierKeys);
+        }
+
+        public override string ToString() {
+            return modifierKeys.ToString();
         }
     }
 }

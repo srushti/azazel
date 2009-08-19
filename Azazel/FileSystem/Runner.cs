@@ -22,12 +22,13 @@ namespace Azazel.FileSystem {
             return new Runner("explorer", folder.FullName);
         }
 
-        public void AsyncStart() {
+        public void AsyncStart(VoidDelegate callback) {
             if (voidDelegate == null) {
                 startInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 new VoidDelegate(delegate {
                                      try {
                                          Process.Start(startInfo);
+                                         callback();
                                      }
                                      catch (Exception e) {
                                          LogManager.WriteLog(e);
@@ -37,11 +38,16 @@ namespace Azazel.FileSystem {
             else {
                 try {
                     voidDelegate();
+                    callback();
                 }
                 catch (Exception e) {
                     LogManager.WriteLog(e);
                 }
             }
+        }
+
+        public void AsyncStart() {
+            AsyncStart(() => { });
         }
     }
 

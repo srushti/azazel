@@ -26,8 +26,8 @@ namespace Azazel.FileSystem {
             get { return AppDataFile("exception.txt"); }
         }
 
-        public string AppSettings {
-            get { return AppDataFile("AppSettings.xml"); }
+        public string AppHotkeys {
+            get { return AppDataFile("AppHotkeys.xml"); }
         }
 
         private static string AppDataFile(string fileName) {

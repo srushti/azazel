@@ -3,8 +3,14 @@ using Azazel.Logging;
 using xstream;
 
 namespace Azazel.FileSystem {
-    public static class PersistanceHelper {
-        public static T LoadOrSaveAndLoad<T>(XStream xStream, string filePath, T defaultObject) {
+    public class PersistanceHelper {
+        private XStream xStream;
+
+        public PersistanceHelper(XStream xStream) {
+            this.xStream = xStream;
+        }
+
+        public T LoadOrSaveAndLoad<T>(string filePath, T defaultObject) {
             if (!File.Exists(filePath))
                 Save(filePath, xStream, defaultObject);
             try {
@@ -12,13 +18,16 @@ namespace Azazel.FileSystem {
             }
             catch (Exception e) {
                 LogManager.WriteLog(e);
-                var file = new File(filePath);
-                File.WriteAllText(
-                    file.FullName + DateTime.Now.ToString().Replace("/", "").Replace("\\", "").Replace(" ", "").Replace(":", "") + file.Extension,
-                    File.Contents(filePath));
-                Save(filePath, xStream, defaultObject);
-                return (T) xStream.FromXml(File.Contents(filePath).Trim());
+                return SaveAndLoad(filePath, defaultObject);
             }
+        }
+
+        public T SaveAndLoad<T>(string filePath, T defaultObject) {
+            var file = new File(filePath);
+            File.WriteAllText(file.FullName + DateTime.Now.ToString().Replace("/", "").Replace("\\", "").Replace(" ", "").Replace(":", "") + file.Extension,
+                              File.Contents(filePath));
+            Save(filePath, xStream, defaultObject);
+            return (T) xStream.FromXml(File.Contents(filePath).Trim());
         }
 
         public static void Save<T>(string path, XStream xStream, T t) {

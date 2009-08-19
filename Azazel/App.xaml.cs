@@ -15,7 +15,7 @@ namespace Azazel {
                     return;
                 }
             }
-            var command = new MainWindowCommand(Shutdown);
+            var command = new MainWindowCommand(Shutdown, new AppSettings());
             command.Execute();
             command.Collapse();
             DispatcherUnhandledException += (sender, args) => {

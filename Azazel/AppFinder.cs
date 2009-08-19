@@ -12,14 +12,16 @@ namespace Azazel {
     public class AppFinder {
         private readonly History history;
         private readonly XStream xstream;
+        private readonly PersistanceHelper persistanceHelper;
         private Launchables allLaunchables;
         private readonly CharacterPlugins characterPlugins;
         private LaunchablesDictionary dictionary;
 
-        public AppFinder(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins, XStream xstream) {
+        public AppFinder(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins, XStream xstream, PersistanceHelper persistanceHelper) {
             this.xstream = xstream;
+            this.persistanceHelper = persistanceHelper;
             LoadFiles(launchablePlugins);
-            history = new History(new File(new FileInfo(Paths.Instance.History)), this.xstream);
+            history = new History(new File(new FileInfo(Paths.Instance.History)), this.xstream, persistanceHelper);
             this.characterPlugins = characterPlugins;
         }
 
@@ -35,7 +37,7 @@ namespace Azazel {
         }
 
         private Folders LoadFoldersToParse() {
-            return PersistanceHelper.LoadOrSaveAndLoad(xstream, Paths.Instance.Folders,
+            return persistanceHelper.LoadOrSaveAndLoad(Paths.Instance.Folders,
                                                        new Folders(Folders.QuickLaunch, Folders.StartMenu, Folders.AllUsersStartMenu));
         }
 

@@ -100,7 +100,7 @@ namespace Azazel.FileSystem {
         }
 
         public static void WriteAllText(string path, string contents) {
-            var parentFolderPath = new File(path).ParentFolder.FullName;
+            string parentFolderPath = new File(path).ParentFolder.FullName;
             if (!Folder.Exists(parentFolderPath)) Folder.Create(parentFolderPath);
             System.IO.File.WriteAllText(path, contents);
         }

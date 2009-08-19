@@ -12,7 +12,7 @@ namespace Venus.Services {
         public Launchables Launchables() {
             var services = new Launchables();
             foreach (var service in ServiceController.GetServices()) {
-                var icon = new PluginIconLoader().Png("services");
+                ImageSource icon = new PluginIconLoader().Png("services");
                 services.Add(new Service(service, icon));
             }
             return services;
@@ -42,7 +42,10 @@ namespace Venus.Services {
             get {
                 var actions = new Actions();
                 serviceController.Refresh();
-                if (CanStop) actions.Add(new ServiceStopAction(serviceController));
+                if (CanStop) {
+                    actions.Add(new ServiceStopAction(serviceController));
+                    actions.Add(new ServiceRestartAction(serviceController));
+                }
                 if (CanStart) actions.Add(new ServiceStartAction(serviceController));
                 actions.Add(new ServiceStatusAction(serviceController));
                 return actions;
@@ -102,6 +105,22 @@ namespace Venus.Services {
 
             public string Name {
                 get { return "Stop Service"; }
+            }
+        }
+
+        private class ServiceRestartAction : Action {
+            private readonly ServiceController controller;
+
+            public ServiceRestartAction(ServiceController controller) {
+                this.controller = controller;
+            }
+
+            public void Act() {
+                new Runner(controller.Stop).AsyncStart(controller.Start);
+            }
+
+            public string Name {
+                get { return "Restart Service"; }
             }
         }
 

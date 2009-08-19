@@ -1,6 +1,7 @@
 using Azazel.FileSystem;
 using Azazel.PluggingIn;
 using NUnit.Framework;
+using Rhino.Mocks;
 using xstream;
 
 namespace Azazel {
@@ -10,7 +11,7 @@ namespace Azazel {
 
         [SetUp]
         public void SetUp() {
-            finder = new AppFinder(new LaunchablePlugins(), new CharacterPlugins(), new XStream());
+            finder = new AppFinder(new LaunchablePlugins(), new CharacterPlugins(), new XStream(), MockRepository.GenerateMock<PersistanceHelper>());
         }
 
         [Test]
