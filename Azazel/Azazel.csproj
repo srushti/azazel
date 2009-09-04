@@ -32,6 +32,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <ExpressionBlendVersion>3.0.1927.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -102,6 +103,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\FolderAddDetails.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -185,6 +190,9 @@
     <Compile Include="Threading\Timer.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="TODO.cs" />
+    <Compile Include="View\FolderAddDetails.xaml.cs">
+      <DependentUpon>FolderAddDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowHider.cs" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>

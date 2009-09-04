@@ -12,10 +12,13 @@ namespace Azazel.PluggingIn {
         private readonly PersistanceHelper persistanceHelper;
         private Hotkey newHotkey;
 
-        public KeyboardShortcut(AppSettings settings, PersistanceHelper persistanceHelper) {
+        protected KeyboardShortcut() {
+            InitializeComponent();
+        }
+
+        public KeyboardShortcut(AppSettings settings, PersistanceHelper persistanceHelper) : this() {
             this.settings = settings;
             this.persistanceHelper = persistanceHelper;
-            InitializeComponent();
             HookEvents();
         }
 

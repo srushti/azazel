@@ -1,0 +1,14 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Azazel.FolderAddDetails"
+	x:Name="Window"
+	Title="FolderAddDetails"
+	Width="640" Height="480" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+
+	<Grid x:Name="LayoutRoot">
+		<Slider Margin="98,41,261,0" VerticalAlignment="Top" TickPlacement="TopLeft" Value="2" SmallChange="1"/>
+		<ListBox Margin="98,87,261,94"/>
+		<TextBlock Margin="98,63,261,0" VerticalAlignment="Top" TextWrapping="Wrap" Text="2 Levels"/>
+	</Grid>
+</Window>

@@ -8,7 +8,7 @@
 
 	<Grid x:Name="LayoutRoot">
 		<Rectangle Fill="{DynamicResource background}" Stroke="#FF000000" OpacityMask="{DynamicResource opacityMask}"/>
-		<Label FontSize="22" x:Name="currentlySelected" Content="ue" VerticalAlignment="Top" Foreground="{DynamicResource text}"/>
+		<Label FontSize="22" x:Name="currentlySelected" VerticalAlignment="Top" Foreground="{DynamicResource text}"/>
 		<CheckBox Margin="0,0,0,20.1" x:Name="useWindowsKey" Content="Use Windows Key?" d:LayoutOverrides="Width, Height" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
 	</Grid>
 </Window>
