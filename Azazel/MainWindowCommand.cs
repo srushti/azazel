@@ -19,8 +19,8 @@ namespace Azazel {
             var selfPlugin = new SelfPlugin();
             var loader = new PluginLoader(selfPlugin);
             var persistanceHelper = new PersistanceHelper(selfPlugin.XStream);
-            appSettings.AppHotkeys = persistanceHelper.LoadOrSaveAndLoad(Paths.Instance.AppHotkeys,
-                                                                         new Hotkeys(new Hotkey(Modifiers.Alt, Keys.F2)));
+            appSettings.AppHotkeys = persistanceHelper.LoadOrSaveAndLoad<Hotkeys>(Paths.Instance.AppHotkeys,
+                                                                                  new KeyboardShortcutChangeCommand(appSettings).Execute);
             Hotkeys hotkeys = appSettings.AppHotkeys;
             displayHotkey = hotkeys.DisplayHotKey;
             controller = new MainWindowController(loader.LaunchablePlugins, loader.CharacterPlugins, loader.LaunchableHandlers, selfPlugin, persistanceHelper,

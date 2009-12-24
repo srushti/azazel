@@ -5,24 +5,29 @@ using xstream;
 namespace Azazel.FileSystem {
     public class PersistanceHelper {
         private XStream xStream;
+        protected PersistanceHelper() {}
 
-        public PersistanceHelper(XStream xStream) {
+        public PersistanceHelper(XStream xStream) : this() {
             this.xStream = xStream;
         }
 
-        public T LoadOrSaveAndLoad<T>(string filePath, T defaultObject) {
+        public virtual T LoadOrSaveAndLoad<T>(string filePath, Func<T> defaultObjectCreator) {
             if (!File.Exists(filePath))
-                Save(filePath, xStream, defaultObject);
+                Save(filePath, xStream, defaultObjectCreator());
             try {
                 return (T) xStream.FromXml(((LoadFile) (() => File.Contents(filePath)))().Trim());
             }
             catch (Exception e) {
                 LogManager.WriteLog(e);
-                return SaveAndLoad(filePath, defaultObject);
+                return SaveAndLoad(filePath, defaultObjectCreator());
             }
         }
 
-        public T SaveAndLoad<T>(string filePath, T defaultObject) {
+        public T LoadOrSaveAndLoad<T>(string filePath, T defaultObject) {
+            return LoadOrSaveAndLoad(filePath, () => defaultObject);
+        }
+
+        private T SaveAndLoad<T>(string filePath, T defaultObject) {
             var file = new File(filePath);
             File.WriteAllText(file.FullName + DateTime.Now.ToString().Replace("/", "").Replace("\\", "").Replace(" ", "").Replace(":", "") + file.Extension,
                               File.Contents(filePath));

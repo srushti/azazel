@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Azazel.FileSystem;
 using Azazel.KeyHookup;
 
 namespace Azazel.PluggingIn {
     public partial class KeyboardShortcut {
-        private readonly AppSettings settings;
-        private readonly PersistanceHelper persistanceHelper;
+        private readonly Hotkeys hotkeys;
         private Hotkey newHotkey;
 
         protected KeyboardShortcut() {
             InitializeComponent();
         }
 
-        public KeyboardShortcut(AppSettings settings, PersistanceHelper persistanceHelper) : this() {
-            this.settings = settings;
-            this.persistanceHelper = persistanceHelper;
+        public KeyboardShortcut(Hotkeys hotkeys) : this() {
+            this.hotkeys = hotkeys;
             HookEvents();
         }
 
@@ -26,6 +23,7 @@ namespace Azazel.PluggingIn {
             Activated += delegate { new WindowHider(this).Hide(); };
             KeyUp += ((sender, e) => KeyPressed(e.Key, Modifiers.Current));
             useWindowsKey.Checked += delegate { OnUseWindowsCheckedChanged(); };
+            Deactivated += delegate { Close(); };
         }
 
         private void OnUseWindowsCheckedChanged() {
@@ -34,8 +32,8 @@ namespace Azazel.PluggingIn {
 
         private void KeyPressed(Key key, Modifiers modifiers) {
             if (useWindowsKey.IsChecked ?? false) modifiers = new Modifiers(modifiers, Modifiers.Windows);
-            if (key == Key.Enter) SaveAsKeyboardShortcut();
-            else if (key == Key.Escape) Close();
+            if (Equals(key, Key.Enter)) SaveAsKeyboardShortcut();
+            else if (Equals(key, Key.Escape)) Close();
             else {
                 var keyboardCombo = new StringBuilder();
                 if (modifiers.HasCtrl) keyboardCombo.Append("Ctrl + ");
@@ -53,7 +51,8 @@ namespace Azazel.PluggingIn {
         }
 
         private void SaveAsKeyboardShortcut() {
-            settings.AppHotkeys = persistanceHelper.SaveAndLoad(Paths.Instance.AppHotkeys, new Hotkeys(newHotkey));
+            hotkeys.DisplayHotKey = newHotkey;
+            DialogResult = false;
             Close();
         }
     }

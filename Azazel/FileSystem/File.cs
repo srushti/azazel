@@ -22,7 +22,7 @@ namespace Azazel.FileSystem {
         }
 
         public virtual ImageSource Icon {
-            get { return IconExtractor.Instance.Extract(this, IconSize.Large); }
+            get { return IconExtractor.Instance.Extract(this); }
         }
 
         public Folder ParentFolder {
@@ -68,7 +68,7 @@ namespace Azazel.FileSystem {
                 return nullFile != null;
             }
 
-            public override bool Equals(FileSystemElement<FileInfo, File> fileSystemElement) {
+            protected override bool Equals(FileSystemElement<FileInfo, File> fileSystemElement) {
                 return Equals(((object) fileSystemElement));
             }
 

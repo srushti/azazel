@@ -30,6 +30,7 @@ namespace Azazel.FileSystem {
         }
 
         public new void Add(Folder folder) {
+            if (Contains(folder)) return;
             base.Add(folder);
             WatchFolder(folder);
         }

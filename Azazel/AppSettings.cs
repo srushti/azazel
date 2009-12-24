@@ -17,11 +17,11 @@ namespace Azazel {
     public delegate void HotkeysChangedHandler(Hotkeys hotkeys);
 
     public class Hotkeys {
-        public readonly Hotkey DisplayHotKey;
+        public Hotkey DisplayHotKey;
 
-        protected Hotkeys() {}
+        private Hotkeys() {}
 
-        public Hotkeys(Hotkey displayHotKey) {
+        public Hotkeys(Hotkey displayHotKey) : this() {
             DisplayHotKey = displayHotKey;
         }
     }
