@@ -61,7 +61,9 @@
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="TypeParameters" />
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="MethodPropertyEvent" />
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="LocalConstants" />
-      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="PublicFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="PublicFields">
+        <ExtraRule Prefix="" Suffix="" Style="AaBb" />
+      </PredefinedRule>
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AA_BB" ElementKind="Constants">
         <ExtraRule Prefix="" Suffix="" Style="AaBb" />
         <ExtraRule Prefix="" Suffix="" Style="aaBb" />

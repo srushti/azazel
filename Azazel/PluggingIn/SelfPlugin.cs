@@ -39,11 +39,11 @@ namespace Azazel.PluggingIn {
             get { return false; }
         }
 
-        public event VoidDelegate RefreshRequested = delegate { };
+        public event System.Action RefreshRequested = delegate { };
 
-        public event VoidDelegate AddAFolder = delegate { };
+        public event System.Action AddAFolder = delegate { };
 
-        public event VoidDelegate ChangeShortcut = delegate { };
+        public event System.Action ChangeShortcut = delegate { };
 
         public override bool Equals(object obj) {
             if (ReferenceEquals(this, obj)) return true;
@@ -91,9 +91,9 @@ namespace Azazel.PluggingIn {
                 get { return new Actions(reparseFolders, addAFolder, changeShortcut); }
             }
 
-            public event VoidDelegate RefreshRequested = delegate { };
-            public event VoidDelegate AddFolder = delegate { };
-            public event VoidDelegate ChangeShortcut = delegate { };
+            public event System.Action RefreshRequested = delegate { };
+            public event System.Action AddFolder = delegate { };
+            public event System.Action ChangeShortcut = delegate { };
 
             private class BaseAction : Action {
                 private readonly string name;
@@ -110,7 +110,7 @@ namespace Azazel.PluggingIn {
                     Invoked();
                 }
 
-                public event VoidDelegate Invoked = delegate { };
+                public event System.Action Invoked = delegate { };
             }
         }
 

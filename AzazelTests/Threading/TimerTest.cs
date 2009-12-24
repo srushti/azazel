@@ -8,11 +8,11 @@ using NUnit.Framework.Constraints;
 namespace Azazel.Threading {
     [TestFixture]
     public class TimerTest {
-        private List<VoidDelegate> wrongThreadAssertions;
+        private List<Action> wrongThreadAssertions;
 
         [SetUp]
         public void SetUp() {
-            wrongThreadAssertions = new List<VoidDelegate>();
+            wrongThreadAssertions = new List<Action>();
         }
 
         [Test]

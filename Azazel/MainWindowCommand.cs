@@ -3,18 +3,19 @@ using System.Windows.Forms;
 using Azazel.FileSystem;
 using Azazel.KeyHookup;
 using Azazel.PluggingIn;
+using Action=System.Action;
 
 namespace Azazel {
     public class MainWindowCommand {
-        private readonly VoidDelegate killApplication;
+        private readonly Action killApplication;
         private Hotkey displayHotkey;
         private readonly Hotkey killHotkey = new Hotkey(Modifiers.Alt | Modifiers.Control | Modifiers.Shift, Keys.F4);
         private WPFHotkeyManager hotkeyManager;
         private readonly MainWindowController controller;
-        private MainWindow window;
+        private readonly MainWindow window;
         private readonly Hotkey unchangeableDisplayHotkey = new Hotkey(Modifiers.Alt | Modifiers.Control | Modifiers.Shift, Keys.Space);
 
-        public MainWindowCommand(VoidDelegate killApplication, AppSettings appSettings) {
+        public MainWindowCommand(Action killApplication, AppSettings appSettings) {
             var selfPlugin = new SelfPlugin();
             var loader = new PluginLoader(selfPlugin);
             var persistanceHelper = new PersistanceHelper(selfPlugin.XStream);
@@ -26,6 +27,7 @@ namespace Azazel {
                                                   appSettings);
             this.killApplication = killApplication;
             appSettings.HotkeysChanged += HandleHotkeysChanged;
+            window = new MainWindow(controller);
         }
 
         private void HandleHotkeysChanged(Hotkeys hotkeys) {
@@ -35,7 +37,6 @@ namespace Azazel {
         }
 
         public void Execute() {
-            window = new MainWindow(controller);
             window.Show();
             window.Activate();
             RegisterEvents();
@@ -55,8 +56,8 @@ namespace Azazel {
 
         private void HandleHotkey(Hotkey hotkey) {
             if (window.Visibility != Visibility.Visible) {
-                window.Close();
-                UnregisterHotkeys();
+                window.Collapse();
+//                UnregisterHotkeys();
                 if (hotkey.Equals(displayHotkey)) Execute();
                 else if (hotkey.Equals(killHotkey)) killApplication();
             }
@@ -69,6 +70,4 @@ namespace Azazel {
             hotkeyManager.Unregister(unchangeableDisplayHotkey);
         }
     }
-
-    public delegate void VoidDelegate();
 }

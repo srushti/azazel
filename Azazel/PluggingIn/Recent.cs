@@ -32,7 +32,7 @@ namespace Azazel.PluggingIn {
             get { return true; }
         }
 
-        public void AddExecutedCommand(Launchable launchable, Action action) {
+        public void AddExecutedCommand(Launchable launchable, FileSystem.Action action) {
             if (typeof (ExecutedCommand).IsAssignableFrom(action.GetType())) AddExecutedCommand((ExecutedCommand) action);
             else AddExecutedCommand(new ExecutedCommand(launchable, action));
         }

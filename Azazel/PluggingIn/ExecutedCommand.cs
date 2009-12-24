@@ -3,10 +3,10 @@ using Azazel.FileSystem;
 using Action=Azazel.FileSystem.Action;
 
 namespace Azazel.PluggingIn {
-    public class ExecutedCommand : Action {
+    public class ExecutedCommand : FileSystem.Action {
         private readonly Launchable launchable;
         private readonly string arguments = String.Empty;
-        private readonly Action action;
+        private readonly FileSystem.Action action;
         private ExecutedCommand() {}
 
         public ExecutedCommand(Launchable launchable, string arguments) : this() {
@@ -14,7 +14,7 @@ namespace Azazel.PluggingIn {
             this.arguments = arguments;
         }
 
-        public ExecutedCommand(Launchable launchable, Action action) : this() {
+        public ExecutedCommand(Launchable launchable, FileSystem.Action action) : this() {
             this.launchable = launchable;
             this.action = action;
         }

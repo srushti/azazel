@@ -11,7 +11,7 @@ namespace Azazel.PluggingIn {
             return launchable.GetType() == typeof (File);
         }
 
-        public IEnumerable<Action> ActionsFor(Launchable launchable) {
+        public IEnumerable<FileSystem.Action> ActionsFor(Launchable launchable) {
             return ActionsFor(((File) launchable).FileSystemInfo);
         }
 
