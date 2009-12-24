@@ -32,7 +32,7 @@ namespace Venus.Browser {
 
         [Test]
         public void LoadsAllSearchPlugins() {
-            Assert.AreEqual(7, new FirefoxSearchPlugin().Launchables().Count);
+            Assert.AreEqual(8, new FirefoxSearchPlugin().Launchables().Count);
         }
     }
 }

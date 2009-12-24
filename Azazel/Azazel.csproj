@@ -144,6 +144,7 @@
     <Compile Include="FileSystem\PersistanceHelper.cs" />
     <Compile Include="FileSystem\Runner.cs" />
     <Compile Include="History.cs" />
+    <Compile Include="KeyboardShortcutChangeCommand.cs" />
     <Compile Include="KeyHookup\InterceptKeys.cs" />
     <Compile Include="KeyHookup\NativeMethods.cs" />
     <Compile Include="KeyHookup\WPFHotkeyManager.cs" />

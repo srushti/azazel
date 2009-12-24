@@ -25,7 +25,7 @@ namespace Azazel {
             appFinder = new AppFinder(launchablePlugins, characterPlugins, selfPlugin.XStream, persistanceHelper);
             selfPlugin.RefreshRequested += (() => appFinder.LoadFiles(launchablePlugins));
             selfPlugin.AddAFolder += (() => appFinder.AddFolder(launchablePlugins));
-            selfPlugin.ChangeShortcut += (() => new KeyboardShortcutChangeCommand(settings, persistanceHelper).Execute());
+            selfPlugin.ChangeShortcut += (() => new KeyboardShortcutChangeCommand(settings).Execute());
         }
 
         public void SetInput(string value, bool asynchronous) {
@@ -105,22 +105,6 @@ namespace Azazel {
 
         public void CancelSearch() {
             thread.Abort();
-        }
-    }
-
-    internal class KeyboardShortcutChangeCommand {
-        private readonly AppSettings settings;
-        private readonly PersistanceHelper persistanceHelper;
-
-        public KeyboardShortcutChangeCommand(AppSettings settings, PersistanceHelper persistanceHelper) {
-            this.settings = settings;
-            this.persistanceHelper = persistanceHelper;
-        }
-
-        public void Execute() {
-            var window = new KeyboardShortcut(settings, persistanceHelper);
-            window.Show();
-            window.Activate();
         }
     }
 }

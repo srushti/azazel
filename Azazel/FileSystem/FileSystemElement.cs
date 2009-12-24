@@ -29,7 +29,7 @@ namespace Azazel.FileSystem {
 
         public abstract string Name { get; }
 
-        public virtual bool Equals(FileSystemElement<T, U> fileSystemElement) {
+        protected virtual bool Equals(FileSystemElement<T, U> fileSystemElement) {
             if (fileSystemElement == null) return false;
             return Equals(FullName, fileSystemElement.FullName);
         }
