@@ -4,7 +4,7 @@ using Azazel.Logging;
 
 namespace Azazel.FileSystem {
     public class Runner {
-        private readonly VoidDelegate voidDelegate;
+        private readonly System.Action action;
         private readonly ProcessStartInfo startInfo;
 
         public Runner(ProcessStartInfo startInfo) {
@@ -12,8 +12,8 @@ namespace Azazel.FileSystem {
             startInfo.UseShellExecute = true;
         }
 
-        public Runner(VoidDelegate voidDelegate) {
-            this.voidDelegate = voidDelegate;
+        public Runner(System.Action action) {
+            this.action = action;
         }
 
         public Runner(string fileName, string arguments) : this(new ProcessStartInfo(fileName, arguments)) {}
@@ -22,10 +22,10 @@ namespace Azazel.FileSystem {
             return new Runner("explorer", folder.FullName);
         }
 
-        public void AsyncStart(VoidDelegate callback) {
-            if (voidDelegate == null) {
+        public void AsyncStart(System.Action callback) {
+            if (action == null) {
                 startInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                new VoidDelegate(delegate {
+                new System.Action(delegate {
                                      try {
                                          Process.Start(startInfo);
                                          callback();
@@ -37,7 +37,7 @@ namespace Azazel.FileSystem {
             }
             else {
                 try {
-                    voidDelegate();
+                    action();
                     callback();
                 }
                 catch (Exception e) {

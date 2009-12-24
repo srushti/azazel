@@ -5,7 +5,7 @@ namespace Azazel.Threading {
     public class Thread {
         private readonly System.Threading.Thread thread;
 
-        public Thread(VoidDelegate voidDelegate) : this(new System.Threading.Thread(() => voidDelegate())) {}
+        public Thread(Action action) : this(new System.Threading.Thread(() => action())) {}
 
         public Thread(ParameterisedDelegate parameterisedDelegate, object parameter)
             : this(new System.Threading.Thread(() => parameterisedDelegate(parameter))) {}

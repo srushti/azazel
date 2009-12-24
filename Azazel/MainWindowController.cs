@@ -4,6 +4,7 @@ using Azazel.FileSystem;
 using Azazel.Logging;
 using Azazel.PluggingIn;
 using Azazel.Threading;
+using Action=System.Action;
 
 namespace Azazel {
     public class MainWindowController {
@@ -15,7 +16,7 @@ namespace Azazel {
         private Thread thread = new Thread(() => { });
         private readonly LaunchableHandlers launchableHandlers;
         private readonly SelfPlugin selfPlugin;
-        public event VoidDelegate RefreshedResults = () => { };
+        public event Action RefreshedResults = () => { };
 
         public MainWindowController(LaunchablePlugins launchablePlugins, CharacterPlugins characterPlugins, LaunchableHandlers launchableHandlers,
                                     SelfPlugin selfPlugin, PersistanceHelper persistanceHelper, AppSettings settings) {
@@ -73,7 +74,7 @@ namespace Azazel {
             appFinder.AppLaunched(input, SelectedCommand);
         }
 
-        public void LaunchAction(Action action) {
+        public void LaunchAction(FileSystem.Action action) {
             action.Act();
             selfPlugin.Recent.AddExecutedCommand(SelectedCommand, action);
             appFinder.AppLaunched(input, SelectedCommand);

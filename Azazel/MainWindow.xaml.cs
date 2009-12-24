@@ -61,12 +61,13 @@ namespace Azazel {
         }
 
         private void InputChanged() {
-            var inputText = input.Text;
+            string inputText = input.Text;
             if (inputText.IsNullOrEmpty()) {
                 timer.Start(0, inputText);
                 return;
             }
-            var immediateResult = controller.ImmediateResult(inputText);
+            if (closing) return;
+            Launchable immediateResult = controller.ImmediateResult(inputText);
             if (immediateResult != null) {
                 controller.CancelSearch();
                 selectedCommand.Text = immediateResult.Name;
@@ -82,7 +83,7 @@ namespace Azazel {
 
         private void CallBack() {
             if (!Dispatcher.Thread().Equals(Thread.CurrentThread))
-                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new VoidDelegate(RefreshMenu));
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new System.Action(RefreshMenu));
             else RefreshMenu();
         }
 
@@ -153,7 +154,7 @@ namespace Azazel {
         private void SelectDetails() {
             if (File.Null.Equals(controller.Command(0))) return;
             arguments.Focusable = true;
-            var actions = controller.GetActionsForSelectedCommand();
+            Actions actions = controller.GetActionsForSelectedCommand();
             if (actions.IsEmpty()) AcceptParameters();
             else DisplayOptions(actions);
         }
@@ -195,9 +196,14 @@ namespace Azazel {
         }
 
         private void LaunchApp() {
-            if (options.SelectedItem != null) controller.LaunchAction(((ActionItem) options.SelectedItem).Action);
+            if (options.SelectedItem != null) controller.LaunchAction(((ActionItem) options.SelectedItem).action);
             else controller.LaunchApp(arguments.Text.Trim());
             Collapse();
+        }
+
+        public new void Show() {
+            closing = false;
+            base.Show();
         }
 
         public void Collapse() {
@@ -209,16 +215,7 @@ namespace Azazel {
             catch (InvalidOperationException) {}
         }
 
-        public void StartWorking() {
-            Visibility = Visibility.Visible;
-            input.Focus();
-            ClearOut();
-            Activate();
-        }
-
         private void ClearOut() {
-            input.Text = string.Empty;
-            selectedCommand.Text = string.Empty;
             arguments.Text = string.Empty;
         }
 
@@ -229,14 +226,14 @@ namespace Azazel {
         }
 
         private class ActionItem {
-            public readonly Action Action;
+            public readonly Action action;
 
             public ActionItem(Action action) {
-                Action = action;
+                this.action = action;
             }
 
             public override string ToString() {
-                return Action.Name;
+                return action.Name;
             }
         }
 
